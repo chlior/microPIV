@@ -1,4 +1,5 @@
-function [m,doc] = Correlation(hObject, eventdata, handles)
+function [m,handles] = Correlation(hObject, eventdata,handles)
+
     set(handles.text_Status,'String','Wait: Correlation...'); drawnow;
     
     handles.wins = str2num(get(handles.edit1,'String'))
@@ -26,6 +27,8 @@ function [m,doc] = Correlation(hObject, eventdata, handles)
     m.y = y;
     m.u = repmat(u,1,1,1);
     m.v = repmat(v,1,1,1);
+    m.snr = snr;
+    m.pkh = pkh;
 %     clear m
     
     set(handles.text_Status,'String','Wait: Plot Data'); drawnow;
@@ -38,7 +41,7 @@ function [m,doc] = Correlation(hObject, eventdata, handles)
     
     str = sprintf('Finished Correlation , %.2fsec',elapsedTime)
     set(handles.text_Status,'String',str); drawnow;
-    
+    handles.wins
     guidata(hObject, handles)
-
+    handles.wins
 end

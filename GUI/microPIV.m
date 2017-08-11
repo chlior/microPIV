@@ -92,20 +92,30 @@ val = get(handles.listbox1, 'string'); % Determine the selected data set.
 str = get(handles.listbox1, 'Value');
 switch str;
     case 1
-        handles.functionDir = val(str) 
-        SetText(hObject, eventdata, handles,'Window Size','Time Gap','Overlap','Method','SizeFactor')
-        SetEdit(hObject, eventdata, handles,64,1,0.5,'single',5)
-        set(handles.text_Status,'String','Choose Parameters'); drawnow;
+        if fieldCheck(hObject, eventdata, handles, 1)==1 return; end
+        handles.functionDir = val(str)
         set(handles.text_Information,'String',doc.Correlation);drawnow;
+        SetText(hObject, eventdata, handles,'Window Size','Time Gap','Overlap','Method','SizeFactor')
+        updateEdit(hObject, eventdata, handles , 1);
+        set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 2
-        handles.functionDir = val(str)
-        resetEdit(hObject, eventdata, handles);
-        resetText(hObject, eventdata, handles);
         set(handles.text_Information,'String',doc.Mask);drawnow;
+        if fieldCheck(hObject, eventdata, handles , 2)==1 return; end
+        handles.functionDir = val(str)
     case 3
+        set(handles.text_Information,'String',doc.Filtering);drawnow;
+        if fieldCheck(hObject, eventdata, handles , 3)==1 return; end
         handles.functionDir = val(str)
+        SetText(hObject, eventdata, handles,'Choose Filter','Global Threshold','Local Threshold','Snr Threshold','SizeFactor')
+        updateEdit(hObject, eventdata, handles , 3);        
+        set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 4
+        set(handles.text_Information,'String',doc.Interpolate);drawnow;
+        if fieldCheck(hObject, eventdata, handles , 4)==1 return; end        
         handles.functionDir = val(str)
+        SetText(hObject, eventdata, handles,'SizeFactor')
+        SetEdit(hObject, eventdata, handles,5)
+        set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 5
         handles.functionDir = val(str)
     case 6
@@ -136,11 +146,23 @@ handles.maskfile=[];
 end
 
 if strcmp(handles.functionDir,'Correlation')
-    handles.mCorrelation = Correlation(hObject, eventdata, handles); 
+    [handles.mCorrelation,hand] = Correlation(hObject, eventdata,handles)
+    handles = hand;
+    guidata(hObject , handles)    
+
 elseif strcmp(handles.functionDir,'Mask')
-    CreateMask(hObject, eventdata, handles)
+    CreateMask(hObject, eventdata, handles , 2)
+elseif strcmp(handles.functionDir,'Filtering')  
+    [handles.mFiltering,hand] = Filtering(hObject, eventdata, handles)
+    handles = hand;
+    guidata(hObject , handles)   
+elseif strcmp(handles.functionDir,'Interpolate')  
+    [handles.mInterpolate, hand] = Interpolate(hObject, eventdata, handles)
+    handles = hand;
+    guidata(hObject , handles)  
 end
 infoData(hObject, eventdata, handles)
+guidata(hObject, handles)
 
 
 % --- Executes on selection change in listbox2.
