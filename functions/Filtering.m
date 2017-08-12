@@ -1,4 +1,4 @@
-function [m, handles] = Filtering(hObject, eventdata, handles)
+function [handles] = Filtering(hObject, eventdata, handles)
 hold off
 set(handles.text_Status,'String','Wait: Loading parameters'); drawnow;
 
@@ -13,9 +13,9 @@ uiwait(msgbox('Load pair of images first!'));
 return
 end
 
-if isfield(handles,'maskfile')==0
-handles.maskfile=[];
-end
+% if isfield(handles,'maskfile')==0
+% handles.maskfile=[];
+% end
 
 mCorrelation = handles.mCorrelation;
 x = mCorrelation.x; y = mCorrelation.y; u = mCorrelation.u; v = mCorrelation.v; snr = mCorrelation.snr; pkh = mCorrelation.pkh;
@@ -55,7 +55,8 @@ imshow(handles.image{1});   hold on;
     m.v = repmat(v,1,1,1);
     m.snr = mCorrelation.snr;
     m.pkh = mCorrelation.pkh;
- 
+    handles.mFiltering = m;
+    
  set(handles.text_Status,'String','Finished');drawnow;
  guidata(hObject, handles)
 end

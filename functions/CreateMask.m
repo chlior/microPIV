@@ -1,4 +1,4 @@
-function CreateMask(hObject, eventdata, handles)
+function [handles] = CreateMask(hObject, eventdata, handles)
 
 % Construct a questdlg with three options
 choice = questdlg('Do you already have a Maskfile?', ...
@@ -9,10 +9,10 @@ switch choice
         handles.maskfile = uigetfile('Select mask.mat')         
         if ischar(handles.maskfile)     %two type of mask exist
             mss = load(handles.maskfile)
-            maske = mss.maske
-            1
+%             maske = mss.maske
+            handles.maskfile = mss.maske;
         elseif isstruct(handles.maskfile) 
-            maske = handles.maskfile;
+%             maske = handles.maskfile;
             2 
         end    
         set(handles.text_Status,'String','Maskfile is loaded');drawnow;

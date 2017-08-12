@@ -92,9 +92,9 @@ val = get(handles.listbox1, 'string'); % Determine the selected data set.
 str = get(handles.listbox1, 'Value');
 switch str;
     case 1
+        set(handles.text_Information,'String',doc.Correlation);drawnow;
         if fieldCheck(hObject, eventdata, handles, 1)==1 return; end
         handles.functionDir = val(str)
-        set(handles.text_Information,'String',doc.Correlation);drawnow;
         SetText(hObject, eventdata, handles,'Window Size','Time Gap','Overlap','Method','SizeFactor')
         updateEdit(hObject, eventdata, handles , 1);
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
@@ -146,18 +146,23 @@ handles.maskfile=[];
 end
 
 if strcmp(handles.functionDir,'Correlation')
-    [handles.mCorrelation,hand] = Correlation(hObject, eventdata,handles)
+    str = 'Correlation';
+    [hand] = Correlation(hObject, eventdata,handles);
     handles = hand;
     guidata(hObject , handles)    
-
 elseif strcmp(handles.functionDir,'Mask')
-    CreateMask(hObject, eventdata, handles , 2)
+    str = 'Mask';
+    hand = CreateMask(hObject, eventdata, handles);
+    handles = hand;
+    guidata(hObject , handles) 
 elseif strcmp(handles.functionDir,'Filtering')  
-    [handles.mFiltering,hand] = Filtering(hObject, eventdata, handles)
+    str = 'Filtering';
+    hand = Filtering(hObject, eventdata, handles);
     handles = hand;
     guidata(hObject , handles)   
-elseif strcmp(handles.functionDir,'Interpolate')  
-    [handles.mInterpolate, hand] = Interpolate(hObject, eventdata, handles)
+elseif strcmp(handles.functionDir,'Interpolate') 
+    str = 'Interpolate';
+    hand = Interpolate(hObject, eventdata, handles);
     handles = hand;
     guidata(hObject , handles)  
 end

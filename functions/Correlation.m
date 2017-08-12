@@ -1,4 +1,4 @@
-function [m,handles] = Correlation(hObject, eventdata,handles)
+function [handles] = Correlation(hObject, eventdata,handles)
 
     set(handles.text_Status,'String','Wait: Correlation...'); drawnow;
     
@@ -30,6 +30,7 @@ function [m,handles] = Correlation(hObject, eventdata,handles)
     m.snr = snr;
     m.pkh = pkh;
 %     clear m
+    handles.mCorrelation = m;
     
     set(handles.text_Status,'String','Wait: Plot Data'); drawnow;
     imshow(handles.image{1});   hold on;
@@ -41,7 +42,5 @@ function [m,handles] = Correlation(hObject, eventdata,handles)
     
     str = sprintf('Finished Correlation , %.2fsec',elapsedTime)
     set(handles.text_Status,'String',str); drawnow;
-    handles.wins
     guidata(hObject, handles)
-    handles.wins
 end
