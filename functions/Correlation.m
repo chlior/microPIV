@@ -31,7 +31,8 @@ function [handles] = Correlation(hObject, eventdata,handles)
     m.pkh = pkh;
 %     clear m
     handles.mCorrelation = m;
-    
+
+    cla(handles.axes1);
     set(handles.text_Status,'String','Wait: Plot Data'); drawnow;
     imshow(handles.image{1});   hold on;
     handles.fig=quiver(x,y,u,v,handles.sizeFactor);

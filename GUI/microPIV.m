@@ -23,7 +23,7 @@ addpath('../functions')
 addpath('../gui_functions')
 % Edit the above text to modify the response to help microPIV
 
-% Last Modified by GUIDE v2.5 11-Aug-2017 01:15:17
+% Last Modified by GUIDE v2.5 13-Aug-2017 02:39:40
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -64,7 +64,6 @@ guidata(hObject, handles);
 % uiwait(handles.figure1);
 set(handles.text_Status,'String','Choose Saving Path First'); drawnow;
 
-
 % --- Outputs from this function are returned to the command line.
 function varargout = microPIV_OutputFcn(hObject, eventdata, handles) 
 % varargout  cell array for returning output args (see VARARGOUT);
@@ -85,6 +84,7 @@ function listbox1_Callback(hObject, eventdata, handles)
 % Hints: contents = cellstr(get(hObject,'String')) returns listbox1 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from listbox1
 
+handles.islist = 1;
 resetEdit(hObject, eventdata, handles)
 resetText(hObject, eventdata, handles)
 doc = funDoc();
@@ -114,10 +114,15 @@ switch str;
         if fieldCheck(hObject, eventdata, handles , 4)==1 return; end        
         handles.functionDir = val(str)
         SetText(hObject, eventdata, handles,'SizeFactor')
-        SetEdit(hObject, eventdata, handles,5)
+        updateEdit(hObject, eventdata, handles , 4);
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 5
+        set(handles.text_Information,'String',doc.Pixel2Unit);drawnow;
+        if fieldCheck(hObject, eventdata, handles , 5)==1 return; end 
         handles.functionDir = val(str)
+        SetText(hObject, eventdata, handles,'Channel width [um]','Channel width [pixel]','Y Calibration distance [um]','Y Calibration distance','Choose Convert Data','sizeFactor')
+        SetEdit(hObject, eventdata, handles,600,1000,600,1000,'Interpolate',3)
+        set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 6
         handles.functionDir = val(str)
 end
@@ -141,30 +146,33 @@ function PB_Run_Callback(hObject, eventdata, handles)
 % hObject    handle to PB_Run (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+if  isfield(handles,'islist')==0  uiwait(msgbox('Choos Function to Execute!')); return; end
+
 if isfield(handles,'maskfile')==0
 handles.maskfile=[];
 end
 
 if strcmp(handles.functionDir,'Correlation')
-    str = 'Correlation';
     [hand] = Correlation(hObject, eventdata,handles);
     handles = hand;
     guidata(hObject , handles)    
 elseif strcmp(handles.functionDir,'Mask')
-    str = 'Mask';
     hand = CreateMask(hObject, eventdata, handles);
     handles = hand;
     guidata(hObject , handles) 
 elseif strcmp(handles.functionDir,'Filtering')  
-    str = 'Filtering';
-    hand = Filtering(hObject, eventdata, handles);
+    [hand] = Filtering(hObject, eventdata, handles);
     handles = hand;
     guidata(hObject , handles)   
 elseif strcmp(handles.functionDir,'Interpolate') 
-    str = 'Interpolate';
     hand = Interpolate(hObject, eventdata, handles);
     handles = hand;
     guidata(hObject , handles)  
+elseif strcmp(handles.functionDir,'Pixel2Unit') 
+    hand = pix2unit(hObject, eventdata, handles);
+    handles = hand;
+    guidata(hObject , handles) 
 end
 infoData(hObject, eventdata, handles)
 guidata(hObject, handles)

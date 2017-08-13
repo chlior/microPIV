@@ -1,15 +1,19 @@
 function [handles] = Interpolate(hObject, eventdata, handles)
 
-sizeFactor = str2num(get(handles.edit1,'string'));
+handles.sizeFactor = str2num(get(handles.edit1,'string'));
 set(handles.text_Status,'String','Wait: Interpolating');drawnow;
 
 m = handles.mFiltering;
 
-[u,v] = naninterp(m.u,m.v,'linear',handles.maskfile,m.x,m.y);
+[m.u,m.v] = naninterp(m.u,m.v,'linear',handles.maskfile,m.x,m.y);
  set(handles.text_Status,'String','Finished');
- handles.fig=quiver(m.x,m.y,m.u,m.v,sizeFactor); 
+ 
+ cla(handles.axes1);
+ imshow(handles.image{1});   hold on; 
+ handles.fig=quiver(m.x,m.y,m.u,m.v,handles.sizeFactor); 
  xlabel('pixel'); ylabel('pixel');
  title('Filtered And Interpolated Correlation');
+ axis tight
  axis on
  zoom on
  

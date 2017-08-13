@@ -3,6 +3,8 @@ function infoData(hObject, eventdata, handles)
 strCorrelation=  '';
 strMask = '';
 strFiltering = '';
+strInterpolate = '';
+strPixel2Unit ='';
 
 if isfield(handles,'wins')
     wins = sprintf('Wins = %d   / ',handles.wins);
@@ -28,9 +30,10 @@ end
 if isfield(handles,'mInterpolate')
     strInterpolate = sprintf('/   Interpolate = Yes   /');
 end
-
-
-str = strcat(strCorrelation,strMask,strFiltering,strInterpolate)
+if isfield(handles,'mPhysical')
+    strInterpolate = sprintf('/   mPhysical = Yes   /');
+end
+str = strcat(strCorrelation,strMask,strFiltering,strInterpolate,strPixel2Unit)
 set(handles.text_Data,'String',str);drawnow;   
 end
 

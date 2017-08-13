@@ -1,12 +1,12 @@
 function [handles] = Filtering(hObject, eventdata, handles)
-hold off
+
 set(handles.text_Status,'String','Wait: Loading parameters'); drawnow;
 
-handles.filterChoose = str2num(get(handles.edit1,'string'))
-handles.globtrld = str2num(get(handles.edit2,'string'))
-handles.loctrld = str2num(get(handles.edit3,'string'))
-handles.snrtrld = str2num(get(handles.edit4,'string'))
-handles.sizeFactor = str2num(get(handles.edit5,'string'))
+handles.filterChoose = (get(handles.edit1,'string'));
+handles.globtrld = str2num(get(handles.edit2,'string'));
+handles.loctrld = str2num(get(handles.edit3,'string'));
+handles.snrtrld = str2num(get(handles.edit4,'string'));
+handles.sizeFactor = str2num(get(handles.edit5,'string'));
 
 if isfield(handles,'image')==0
 uiwait(msgbox('Load pair of images first!'));
@@ -19,10 +19,11 @@ end
 
 mCorrelation = handles.mCorrelation;
 x = mCorrelation.x; y = mCorrelation.y; u = mCorrelation.u; v = mCorrelation.v; snr = mCorrelation.snr; pkh = mCorrelation.pkh;
- 
+
+ cla(handles.axes1);
 imshow(handles.image{1});   hold on; 
  set(handles.text_Status,'String','Wait: Filtering');drawnow;
- for choice=handles.filterChoose    
+ for choice=str2num(handles.filterChoose)  
      switch choice
         case 1
             [u,v] = globfilt(x,y,u,v,handles.globtrld);
@@ -33,9 +34,11 @@ imshow(handles.image{1});   hold on;
      end
  end
  
+
  handles.fig=quiver(x,y,u,v,handles.sizeFactor); 
  xlabel('pixel');  ylabel('pixel');
- title('Filtered Correlation');
+ title('Filtered Correlation'); 
+
  axis on
  zoom on
  

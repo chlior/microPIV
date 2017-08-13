@@ -1,4 +1,4 @@
-function [x,y,u,v] = pix2unit(xp,yp,up,vp,cal)
+function [handles] = pix2unit(hObject, eventdata, handles)
 %Pixels to Units
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%Input:                                                                        %
@@ -8,8 +8,79 @@ function [x,y,u,v] = pix2unit(xp,yp,up,vp,cal)
 % x,u[um] , u,v[um/s]                                                                %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+x_cal = str2double(get(handles.edit1,'String'));
+xp_cal = str2double(get(handles.edit2,'String'));
+y_cal = str2double(get(handles.edit3,'String'));
+yp_cal = str2double(get(handles.edit4,'String'));
+ChooseConvert =  get(handles.edit5,'String');
+handles.sizeFactor = str2double(get(handles.edit6,'String'));
+
+
+switch ChooseConvert
+    case 'Correlation'
+        mpix = handles.mCorrelation;
+        1
+    case 'Filtering'
+        if isfield(handles,'mFiltering')
+            mpix = handles.mFiltering;
+            2
+        else
+            mpix = handles.mCorrelation;
+            1
+        end
+    case 'Interpolate'
+        if isfield(handles,'mInterpolate')
+            mpix = handles.mInterpolate;
+            3
+        elseif isfield(handles,'mFiltering')
+            mpix = handles.mFiltering;
+            2
+        else
+            mpix = handles.mCorrelation;
+            1
+        end
+    otherwise
+            uiwait(msgbox('Write Correctly Which Data To Convert?')); return;
+        
+end
+
+
+xp = mpix.x;
+yp = mpix.y;
+up = mpix.u;
+vp = mpix.v;
+
+
+cal = Calibration(x_cal, xp_cal, y_cal,  yp_cal);
+handles.cal = cal;
 
 x=xp/cal.x;
 y=yp/cal.y;
 u=up/cal.x;
 v=vp/cal.y;
+
+ %Save
+   datetime=datestr(now);
+   datetime=strrep(datetime,':','_'); %Replace colon with underscore
+   datetime=strrep(datetime,'-','_');%Replace minus sign with underscore
+   datetime=strrep(datetime,' ','_');%Replace space with underscore 
+   datetime = strcat(datetime,'.mat');
+   folder  = fullfile(handles.FolderName,'Converted Data');   
+   if exist(folder)==0 mkdir(folder); end
+   FileName = fullfile(folder,datetime)
+    m = matfile(FileName, 'Writable', true);
+    m.x = x;
+    m.y = y;
+    m.u = repmat(u,1,1,1);
+    m.v = repmat(v,1,1,1);
+%     clear m
+    handles.mphysical = m;
+    
+        cla(handles.axes1);
+    handles.fig=quiver(m.x,m.y,m.u,m.v,handles.sizeFactor);
+    xlabel('um'); ylabel('um');
+    title('um/sec');
+    axis tight
+    axis on
+    zoom on
+    end
