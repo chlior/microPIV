@@ -34,6 +34,13 @@ m = handles.mFiltering;
     mn.snr = m.snr;
     mn.pkh = m.pkh;
     handles.mInterpolate = mn;
+    handles.m = m; %Global use;
+        
+    %save to image
+    datetime = strcat(datetime,'.png');
+    FileName = fullfile(folder,datetime)
+    a = getframe(gca)
+    imwrite(a.cdata,FileName)
     
     guidata(hObject, handles)
 end

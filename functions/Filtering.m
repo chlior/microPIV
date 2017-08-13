@@ -59,6 +59,13 @@ imshow(handles.image{1});   hold on;
     m.snr = mCorrelation.snr;
     m.pkh = mCorrelation.pkh;
     handles.mFiltering = m;
+    handles.m = m; %Global use;
+            
+    %save to image
+    datetime = strcat(datetime,'.png');
+    FileName = fullfile(folder,datetime)
+    a = getframe(gca)
+    imwrite(a.cdata,FileName)
     
  set(handles.text_Status,'String','Finished');drawnow;
  guidata(hObject, handles)

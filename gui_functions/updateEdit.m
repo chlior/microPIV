@@ -19,5 +19,23 @@ switch caseIndex
         else
            SetEdit(hObject, eventdata, handles,handles.sizeFactor)
         end
+        case 6 %Magnitude
+            if isfield(handles,'magitudeComponent')~=1
+               SetEdit(hObject, eventdata, handles,'m')
+            else
+               SetEdit(hObject, eventdata, handles,handles.magitudeComponent)
+            end
+        case 7 %AvgVelocity
+            if isfield(handles,'AvgVelocity')~=1
+               SetEdit(hObject, eventdata, handles, 'u','x' , handles.channelWitdh)
+            else
+               SetEdit(hObject, eventdata, handles, handles.avgComponent , handles.avgDirection)
+            end
+        case 8 %FlowRate
+            if isfield(handles,'channelHeight')~=1
+               SetEdit(hObject, eventdata, handles, handles.channelWitdh ,'200')
+            else
+               SetEdit(hObject, eventdata, handles, handles.channelWidth , handles.channelHeight)
+            end
 end
 end

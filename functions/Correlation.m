@@ -31,6 +31,7 @@ function [handles] = Correlation(hObject, eventdata,handles)
     m.pkh = pkh;
 %     clear m
     handles.mCorrelation = m;
+    handles.m = m; %Global use;
 
     cla(handles.axes1);
     set(handles.text_Status,'String','Wait: Plot Data'); drawnow;
@@ -40,6 +41,25 @@ function [handles] = Correlation(hObject, eventdata,handles)
     title('Raw Data Correlation');
     axis on
     zoom on
+    
+%     ax =handles.axes1
+%     ax.Units = 'pixels';
+%     pos = ax.Position
+%     
+%     marg = 30;
+%     rect = [-marg, -marg, pos(3)+2*marg, pos(4)+2*marg];
+%     F = getframe(handles.axes1, rect);
+%     IM = frame2im(F);
+%     imwrite(IM,'gfd.png')
+
+    %save to image   
+    datetime = strcat(datetime,'.png');
+    FileName = fullfile(folder,datetime)
+    a = getframe(gca)
+    imwrite(a.cdata,FileName)
+
+ 
+ %%%%%%%%%%%%%%%%%%%%%%%%%%
     
     str = sprintf('Finished Correlation , %.2fsec',elapsedTime)
     set(handles.text_Status,'String',str); drawnow;

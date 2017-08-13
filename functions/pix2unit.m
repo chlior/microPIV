@@ -15,6 +15,7 @@ yp_cal = str2double(get(handles.edit4,'String'));
 ChooseConvert =  get(handles.edit5,'String');
 handles.sizeFactor = str2double(get(handles.edit6,'String'));
 
+handles.channelWitdh = y_cal; %for calculations
 
 switch ChooseConvert
     case 'Correlation'
@@ -75,7 +76,7 @@ v=vp/cal.y;
     m.v = repmat(v,1,1,1);
 %     clear m
     handles.mphysical = m;
-    
+    handles.mp = m;
         cla(handles.axes1);
     handles.fig=quiver(m.x,m.y,m.u,m.v,handles.sizeFactor);
     xlabel('um'); ylabel('um');

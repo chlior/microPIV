@@ -23,7 +23,7 @@ addpath('../functions')
 addpath('../gui_functions')
 % Edit the above text to modify the response to help microPIV
 
-% Last Modified by GUIDE v2.5 13-Aug-2017 02:39:40
+% Last Modified by GUIDE v2.5 13-Aug-2017 18:09:25
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -98,7 +98,7 @@ switch str;
         SetText(hObject, eventdata, handles,'Window Size','Time Gap','Overlap','Method','SizeFactor')
         updateEdit(hObject, eventdata, handles , 1);
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
-    case 2
+    case 2 
         set(handles.text_Information,'String',doc.Mask);drawnow;
         if fieldCheck(hObject, eventdata, handles , 2)==1 return; end
         handles.functionDir = val(str)
@@ -124,7 +124,26 @@ switch str;
         SetEdit(hObject, eventdata, handles,600,1000,600,1000,'Interpolate',3)
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 6
+        set(handles.text_Information,'String',doc.Magnitude);drawnow;
+        if fieldCheck(hObject, eventdata, handles , 6)==1 return; end 
         handles.functionDir = val(str)
+        SetText(hObject, eventdata, handles,'Velocity Component')
+        updateEdit(hObject, eventdata, handles , 6);
+        set(handles.text_Status,'String','Choose Parameters'); drawnow;
+    case 7
+        set(handles.text_Information,'String',doc.AvgVelocity);drawnow;
+        if fieldCheck(hObject, eventdata, handles , 7)==1 return; end 
+        handles.functionDir = val(str)
+        SetText(hObject, eventdata, handles,'Velocity Component','Average Direction' , 'Channel Width')
+        updateEdit(hObject, eventdata, handles , 7);
+        set(handles.text_Status,'String','Choose Parameters'); drawnow;
+    case 8
+        set(handles.text_Information,'String',doc.FlowRate);drawnow;
+        if fieldCheck(hObject, eventdata, handles , 8)==1 return; end 
+        handles.functionDir = val(str)
+        SetText(hObject, eventdata, handles,'Channel Width','Channel Height')
+        updateEdit(hObject, eventdata, handles , 8);
+        set(handles.text_Status,'String','Choose Parameters'); drawnow;
 end
 guidata(hObject, handles)
 
@@ -173,7 +192,20 @@ elseif strcmp(handles.functionDir,'Pixel2Unit')
     hand = pix2unit(hObject, eventdata, handles);
     handles = hand;
     guidata(hObject , handles) 
+elseif strcmp(handles.functionDir,'Magnitude') 
+    hand = Magnitude(hObject, eventdata, handles);
+    handles = hand;
+    guidata(hObject , handles) 
+elseif strcmp(handles.functionDir,'AvgVelocity') 
+    hand = AvgVelocity(hObject, eventdata, handles);
+    handles = hand;
+    guidata(hObject , handles) 
+elseif strcmp(handles.functionDir,'FlowRate') 
+    hand = FlowRate(hObject, eventdata, handles);
+    handles = hand;
+    guidata(hObject , handles)
 end
+
 infoData(hObject, eventdata, handles)
 guidata(hObject, handles)
 
@@ -636,3 +668,43 @@ function edit14_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --- Executes on button press in PB_Reset.
+function PB_Reset_Callback(hObject, eventdata, handles)
+% hObject    handle to PB_Reset (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+clc;
+set(handles.text_Status,'String','Choose Saving Path First');drawnow;
+cla(handles.axes1,'reset');
+
+if isfield(handles,'image')==1  handles=rmfield(handles,{'image'}); end
+if isfield(handles,'FolderName')==1  handles=rmfield(handles,{'FolderName'}); end
+if isfield(handles,'mCorrelation')==1  handles=rmfield(handles,{'mCorrelation'}); end
+if isfield(handles,'islist')==1  handles=rmfield(handles,{'islist'}); end
+if isfield(handles,'m')==1  handles=rmfield(handles,{'m'}); end
+if isfield(handles,'mp')==1  handles=rmfield(handles,{'mp'}); end
+if isfield(handles,'w')==1  handles=rmfield(handles,{'w'}); end
+if isfield(handles,'maskfile')==1  handles=rmfield(handles,{'maskfile'}); end
+if isfield(handles,'isvideo')==1  handles=rmfield(handles,{'isvideo'}); end
+if isfield(handles,'videObj')==1  handles=rmfield(handles,{'videObj'}); end
+if isfield(handles,'functionDir')==1  handles=rmfield(handles,{'functionDir'}); end
+if isfield(handles,'wins')==1  handles=rmfield(handles,{'wins'}); end
+if isfield(handles,'deltaT')==1  handles=rmfield(handles,{'deltaT'}); end
+if isfield(handles,'overlap')==1  handles=rmfield(handles,{'overlap'}); end
+if isfield(handles,'method')==1  handles=rmfield(handles,{'method'}); end
+if isfield(handles,'sizeFactor')==1  handles=rmfield(handles,{'sizeFactor'}); end
+if isfield(handles,'channelLength')==1  handles=rmfield(handles,{'channelLength'}); end
+if isfield(handles,'channelLength')==1  handles=rmfield(handles,{'channelLength'}); end
+
+
+%text
+% set(handles.velocityInfo,'String','');drawnow;
+% set(handles.flowRateUm,'String','');drawnow;
+% set(handles.flowRateUl,'String','');drawnow;
+% set(handles.text_frame,'String','');drawnow;
+
+guidata(hObject, handles)
+handles
+clear all;
