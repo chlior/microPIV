@@ -27,15 +27,21 @@ switch caseIndex
             end
         case 7 %AvgVelocity
             if isfield(handles,'AvgVelocity')~=1
-               SetEdit(hObject, eventdata, handles, 'u','x' , handles.channelWitdh)
+               SetEdit(hObject, eventdata, handles, 'u','x' , handles.channelWitdh , handles.channelWitdh)
             else
-               SetEdit(hObject, eventdata, handles, handles.avgComponent , handles.avgDirection)
+               SetEdit(hObject, eventdata, handles, handles.avgComponent , handles.avgDirection , handles.channelWitdh, handles.channelLength)
             end
         case 8 %FlowRate
             if isfield(handles,'channelHeight')~=1
                SetEdit(hObject, eventdata, handles, handles.channelWitdh ,'200')
             else
                SetEdit(hObject, eventdata, handles, handles.channelWidth , handles.channelHeight)
+            end
+        case 9 
+            if isfield(handles,'densityWinW')~=1
+               SetEdit(hObject, eventdata, handles, 2 , 200)
+            else
+               SetEdit(hObject, eventdata, handles, handles.densityWinW , handles.densityWinH)
             end
 end
 end

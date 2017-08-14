@@ -5,6 +5,7 @@ function [handles] = AvgVelocity(hObject, eventdata, handles)
     handles.avgComponent = get(handles.edit1,'string')
     handles.avgDirection = get(handles.edit2,'string')
     handles.channelWidth = str2num(get(handles.edit3,'string'))
+    handles.channelLength = str2num(get(handles.edit4,'string'))
 
     m = handles.mp;
 

@@ -1,6 +1,6 @@
 function [bol] = fieldCheck(hObject, eventdata, handles , caseIndex)
     
-    bol = 0; image = 0; correlation = 0; filtering = 0; physica = 0; 
+    bol = 0; image = 0; correlation = 0; filtering = 0; physical = 0; 
     
     if isfield(handles,'image')==1  image = 1; end
     if isfield(handles,'mCorrelation')==1  correlation = 1; end

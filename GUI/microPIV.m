@@ -23,7 +23,7 @@ addpath('../functions')
 addpath('../gui_functions')
 % Edit the above text to modify the response to help microPIV
 
-% Last Modified by GUIDE v2.5 13-Aug-2017 18:09:25
+% Last Modified by GUIDE v2.5 14-Aug-2017 23:15:01
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -134,7 +134,7 @@ switch str;
         set(handles.text_Information,'String',doc.AvgVelocity);drawnow;
         if fieldCheck(hObject, eventdata, handles , 7)==1 return; end 
         handles.functionDir = val(str)
-        SetText(hObject, eventdata, handles,'Velocity Component','Average Direction' , 'Channel Width')
+        SetText(hObject, eventdata, handles,'Velocity Component','Average Direction' , 'Channel Width' , 'Channel Length')
         updateEdit(hObject, eventdata, handles , 7);
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 8
@@ -144,6 +144,13 @@ switch str;
         SetText(hObject, eventdata, handles,'Channel Width','Channel Height')
         updateEdit(hObject, eventdata, handles , 8);
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
+    case 9
+%         set(handles.text_Information,'String',doc.Density);drawnow;
+%         if fieldCheck(hObject, eventdata, handles , 9)==1 return; end 
+        handles.functionDir = val(str)
+        SetText(hObject, eventdata, handles,'Window Width','Window Height')
+        updateEdit(hObject, eventdata, handles , 9);
+        set(handles.text_Status,'String','Choose Parameters'); drawnow;        
 end
 guidata(hObject, handles)
 
@@ -204,9 +211,12 @@ elseif strcmp(handles.functionDir,'FlowRate')
     hand = FlowRate(hObject, eventdata, handles);
     handles = hand;
     guidata(hObject , handles)
+elseif strcmp(handles.functionDir,'Density') 
+    Density(hObject, eventdata, handles);
 end
 
 infoData(hObject, eventdata, handles)
+infoResults(hObject, eventdata, handles)
 guidata(hObject, handles)
 
 
@@ -708,3 +718,4 @@ if isfield(handles,'channelLength')==1  handles=rmfield(handles,{'channelLength'
 guidata(hObject, handles)
 handles
 clear all;
+
