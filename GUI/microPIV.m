@@ -23,7 +23,7 @@ addpath('../functions')
 addpath('../gui_functions')
 % Edit the above text to modify the response to help microPIV
 
-% Last Modified by GUIDE v2.5 14-Aug-2017 23:15:01
+% Last Modified by GUIDE v2.5 14-Aug-2017 23:40:09
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -75,21 +75,21 @@ function varargout = microPIV_OutputFcn(hObject, eventdata, handles)
 varargout{1} = handles.output;
 
 
-% --- Executes on selection change in listbox1.
-function listbox1_Callback(hObject, eventdata, handles)
-% hObject    handle to listbox1 (see GCBO)
+% --- Executes on selection change in ListboxPair.
+function ListboxPair_Callback(hObject, eventdata, handles)
+% hObject    handle to ListboxPair (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: contents = cellstr(get(hObject,'String')) returns listbox1 contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from listbox1
+% Hints: contents = cellstr(get(hObject,'String')) returns ListboxPair contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from ListboxPair
 
 handles.islist = 1;
 resetEdit(hObject, eventdata, handles)
 resetText(hObject, eventdata, handles)
 doc = funDoc();
-val = get(handles.listbox1, 'string'); % Determine the selected data set.
-str = get(handles.listbox1, 'Value');
+val = get(handles.ListboxPair, 'string'); % Determine the selected data set.
+str = get(handles.ListboxPair, 'Value');
 switch str;
     case 1
         set(handles.text_Information,'String',doc.Correlation);drawnow;
@@ -155,8 +155,8 @@ end
 guidata(hObject, handles)
 
 % --- Executes during object creation, after setting all properties.
-function listbox1_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to listbox1 (see GCBO)
+function ListboxPair_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ListboxPair (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -220,19 +220,19 @@ infoResults(hObject, eventdata, handles)
 guidata(hObject, handles)
 
 
-% --- Executes on selection change in listbox2.
-function listbox2_Callback(hObject, eventdata, handles)
-% hObject    handle to listbox2 (see GCBO)
+% --- Executes on selection change in ListboxSequence.
+function ListboxSequence_Callback(hObject, eventdata, handles)
+% hObject    handle to ListboxSequence (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: contents = cellstr(get(hObject,'String')) returns listbox2 contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from listbox2
+% Hints: contents = cellstr(get(hObject,'String')) returns ListboxSequence contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from ListboxSequence
 
 
 % --- Executes during object creation, after setting all properties.
-function listbox2_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to listbox2 (see GCBO)
+function ListboxSequence_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ListboxSequence (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -243,19 +243,19 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- Executes on selection change in listbox3.
-function listbox3_Callback(hObject, eventdata, handles)
-% hObject    handle to listbox3 (see GCBO)
+% --- Executes on selection change in ListboxVideo.
+function ListboxVideo_Callback(hObject, eventdata, handles)
+% hObject    handle to ListboxVideo (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: contents = cellstr(get(hObject,'String')) returns listbox3 contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from listbox3
+% Hints: contents = cellstr(get(hObject,'String')) returns ListboxVideo contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from ListboxVideo
 
 
 % --- Executes during object creation, after setting all properties.
-function listbox3_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to listbox3 (see GCBO)
+function ListboxVideo_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ListboxVideo (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -271,6 +271,10 @@ function PB_LoadPair_Callback(hObject, eventdata, handles)
 % hObject    handle to PB_LoadPair (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+if isfield(handles,'FolderName')==0
+    handles.FolderName = 'Temp'
+end
+
 [filename, pathname, filterindex] = uigetfile( ...
  {'*.jpg;*.bmp','Use Shift key'} ,'Pick two images, use shift button','Pick pair of images', 'MultiSelect', 'on');
 %Tip imcontrast()
@@ -294,6 +298,8 @@ handles.isvideo=0;
 set(handles.radiobutton1,'Value',1);
 set(handles.radiobutton2,'Value',0);
 set(handles.radiobutton3,'Value',0);
+set(handles.ListboxSequence,'Enable','off')
+set(handles.ListboxVideo,'Enable','off')
 guidata(hObject, handles)
 % set(handles.text_video,'BackgroundColor',[0.94 0.94 0.94]);
 % set(handles.text_images,'BackgroundColor','green');
@@ -718,4 +724,3 @@ if isfield(handles,'channelLength')==1  handles=rmfield(handles,{'channelLength'
 guidata(hObject, handles)
 handles
 clear all;
-
