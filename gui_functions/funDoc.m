@@ -1,14 +1,18 @@
 function doc = funDoc()
     
-str_Correlation = 'Inputs:  Wins = 64 or 64,64;64;64 . Method = ''single'',''multin''.  ';
-str_Mask = 'Polygon...';
-str_Filtering = 'Correlation Filtering';
+str_Correlation = 'Pair corelation. Inputs:  Wins = 64 or 64,64;64;64 . Method = ''single'',''multin'',''multinfft''. DeltaT = time gap. SizeFactor = Only change the apperent vector size.';
+str_Mask = 'Ceate Mask (Polygon) over the image part you wan''t need.';
+str_Filtering = 'Correlation Filtering: Choose The type and order of the filter (max 3) and run. This make gaps in the data, recommended running an interpolation.';
 str_Interpolate = 'Interpolation ''linear';
 str_Pixel2Unit = 'Pixel2Unit Calibration...';
 str_Magnitude = 'Magnitude';
 str_AvgVelocity = 'AvgVelocity';
-str_FlowRate = 'Flow Rate';
+str_FlowRate = 'Flow Rate: Only in y direction';
+str_Density = 'Density';
+str_Streamline = 'Streamline';
+
 doc =struct('Correlation' , str_Correlation,'Mask',str_Mask, 'Filtering' ,...
     str_Filtering , 'Interpolate' , str_Interpolate, 'Pixel2Unit' , str_Pixel2Unit, ...
-    'Magnitude' , str_Magnitude, 'AvgVelocity' , str_AvgVelocity, 'FlowRate' , str_FlowRate);
+    'Magnitude' , str_Magnitude, 'AvgVelocity' , str_AvgVelocity, 'FlowRate' , str_FlowRate,...
+    'Density' , str_Density, 'Streamline' , str_Streamline);
 end

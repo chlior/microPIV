@@ -9,11 +9,13 @@ function [handles] = FlowRate(hObject, eventdata, handles)
     hand = avgVelocityU(hObject, eventdata, handles)
     handles = hand;
     
-  Q=handles.uavg*handles.channelWidth*handles.channeHeight
-  1
+    avgV = handles.avgV;
+    Q=avgV.avg*handles.channelWidth*handles.channeHeight
+
 %   set(handles.flowRateUm,'String',num2str(Q,'%0.2f  um^3/sec  '));
 
-  Q=Q*5.999999999999989e-8
+    Ql=Q*5.999999999999989e-8
     2
 %   set(handles.flowRateUl,'String',num2str(Q,'%0.2f ul/min'));
+   handles.Q = struct('meter' , Q, 'liter' , Ql);
 end

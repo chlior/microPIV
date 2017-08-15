@@ -19,11 +19,12 @@ function varargout = microPIV(varargin)
 %      instance to run (singleton)".
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
-addpath('../functions')
+addpath('../functions_pair')
+addpath('../functions_sequence')
 addpath('../gui_functions')
 % Edit the above text to modify the response to help microPIV
 
-% Last Modified by GUIDE v2.5 14-Aug-2017 23:40:09
+% Last Modified by GUIDE v2.5 15-Aug-2017 16:28:51
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -63,6 +64,10 @@ guidata(hObject, handles);
 % UIWAIT makes microPIV wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 set(handles.text_Status,'String','Choose Saving Path First'); drawnow;
+set(handles.text_Information,'String','(1)Load file. (2)Choose function from the list. (3)Run. Note: for new anslys press ''Reset''. Default saving location is TEMP in the current folder otherwise location is given'); drawnow;
+set(handles.ListboxPair,'Enable','off'); 
+set(handles.ListboxSequence,'Enable','off');
+set(handles.ListboxVideo,'Enable','off');
 
 % --- Outputs from this function are returned to the command line.
 function varargout = microPIV_OutputFcn(hObject, eventdata, handles) 
@@ -106,7 +111,7 @@ switch str;
         set(handles.text_Information,'String',doc.Filtering);drawnow;
         if fieldCheck(hObject, eventdata, handles , 3)==1 return; end
         handles.functionDir = val(str)
-        SetText(hObject, eventdata, handles,'Choose Filter','Global Threshold','Local Threshold','Snr Threshold','SizeFactor')
+        SetText(hObject, eventdata, handles,'Choose Filter','Global Threshold(1)','Local Threshold(2)','Snr Threshold(3)','SizeFactor')
         updateEdit(hObject, eventdata, handles , 3);        
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 4
@@ -145,12 +150,20 @@ switch str;
         updateEdit(hObject, eventdata, handles , 8);
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 9
-%         set(handles.text_Information,'String',doc.Density);drawnow;
-%         if fieldCheck(hObject, eventdata, handles , 9)==1 return; end 
+        set(handles.text_Information,'String',doc.Density);drawnow;
+        if fieldCheck(hObject, eventdata, handles , 9)==1 return; end 
         handles.functionDir = val(str)
         SetText(hObject, eventdata, handles,'Window Width','Window Height')
         updateEdit(hObject, eventdata, handles , 9);
         set(handles.text_Status,'String','Choose Parameters'); drawnow;        
+    case 10
+        set(handles.text_Information,'String',doc.Streamline);drawnow;
+        if fieldCheck(hObject, eventdata, handles , 10)==1 return; end         
+        handles.functionDir = val(str)
+        SetText(hObject, eventdata, handles,'Streamline Gap')
+        updateEdit(hObject, eventdata, handles , 10);
+        set(handles.text_Status,'String','Choose Parameters'); drawnow; 
+        
 end
 guidata(hObject, handles)
 
@@ -213,6 +226,8 @@ elseif strcmp(handles.functionDir,'FlowRate')
     guidata(hObject , handles)
 elseif strcmp(handles.functionDir,'Density') 
     Density(hObject, eventdata, handles);
+elseif strcmp(handles.functionDir,'Streamline')
+    Streamline(hObject, eventdata, handles);
 end
 
 infoData(hObject, eventdata, handles)
@@ -228,6 +243,83 @@ function ListboxSequence_Callback(hObject, eventdata, handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns ListboxSequence contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from ListboxSequence
+handles.islist = 1;
+resetEdit(hObject, eventdata, handles)
+resetText(hObject, eventdata, handles)
+doc = funDoc();
+val = get(handles.ListboxPair, 'string'); % Determine the selected data set.
+str = get(handles.ListboxPair, 'Value');
+switch str;
+    case 1
+        set(handles.text_Information,'String',doc.Correlation);drawnow;
+%         if fieldCheck(hObject, eventdata, handles, 1)==1 return; end
+        handles.functionDir = val(str)
+        SetText(hObject, eventdata, handles,'Window Size','Time Gap','Overlap','Method','SizeFactor')
+        updateEdit(hObject, eventdata, handles , 1);
+        set(handles.text_Status,'String','Choose Parameters'); drawnow;
+    case 2 
+        set(handles.text_Information,'String',doc.Mask);drawnow;
+        if fieldCheck(hObject, eventdata, handles , 2)==1 return; end
+        handles.functionDir = val(str)
+    case 3
+        set(handles.text_Information,'String',doc.Filtering);drawnow;
+        if fieldCheck(hObject, eventdata, handles , 3)==1 return; end
+        handles.functionDir = val(str)
+        SetText(hObject, eventdata, handles,'Choose Filter','Global Threshold(1)','Local Threshold(2)','Snr Threshold(3)','SizeFactor')
+        updateEdit(hObject, eventdata, handles , 3);        
+        set(handles.text_Status,'String','Choose Parameters'); drawnow;
+    case 4
+        set(handles.text_Information,'String',doc.Interpolate);drawnow;
+        if fieldCheck(hObject, eventdata, handles , 4)==1 return; end        
+        handles.functionDir = val(str)
+        SetText(hObject, eventdata, handles,'SizeFactor')
+        updateEdit(hObject, eventdata, handles , 4);
+        set(handles.text_Status,'String','Choose Parameters'); drawnow;
+    case 5
+        set(handles.text_Information,'String',doc.Pixel2Unit);drawnow;
+        if fieldCheck(hObject, eventdata, handles , 5)==1 return; end 
+        handles.functionDir = val(str)
+        SetText(hObject, eventdata, handles,'Channel width [um]','Channel width [pixel]','Y Calibration distance [um]','Y Calibration distance','Choose Convert Data','sizeFactor')
+        SetEdit(hObject, eventdata, handles,600,1000,600,1000,'Interpolate',3)
+        set(handles.text_Status,'String','Choose Parameters'); drawnow;
+    case 6
+        set(handles.text_Information,'String',doc.Magnitude);drawnow;
+        if fieldCheck(hObject, eventdata, handles , 6)==1 return; end 
+        handles.functionDir = val(str)
+        SetText(hObject, eventdata, handles,'Velocity Component')
+        updateEdit(hObject, eventdata, handles , 6);
+        set(handles.text_Status,'String','Choose Parameters'); drawnow;
+    case 7
+        set(handles.text_Information,'String',doc.AvgVelocity);drawnow;
+        if fieldCheck(hObject, eventdata, handles , 7)==1 return; end 
+        handles.functionDir = val(str)
+        SetText(hObject, eventdata, handles,'Velocity Component','Average Direction' , 'Channel Width' , 'Channel Length')
+        updateEdit(hObject, eventdata, handles , 7);
+        set(handles.text_Status,'String','Choose Parameters'); drawnow;
+    case 8
+        set(handles.text_Information,'String',doc.FlowRate);drawnow;
+        if fieldCheck(hObject, eventdata, handles , 8)==1 return; end 
+        handles.functionDir = val(str)
+        SetText(hObject, eventdata, handles,'Channel Width','Channel Height')
+        updateEdit(hObject, eventdata, handles , 8);
+        set(handles.text_Status,'String','Choose Parameters'); drawnow;
+    case 9
+        set(handles.text_Information,'String',doc.Density);drawnow;
+        if fieldCheck(hObject, eventdata, handles , 9)==1 return; end 
+        handles.functionDir = val(str)
+        SetText(hObject, eventdata, handles,'Window Width','Window Height')
+        updateEdit(hObject, eventdata, handles , 9);
+        set(handles.text_Status,'String','Choose Parameters'); drawnow;        
+    case 10
+        set(handles.text_Information,'String',doc.Streamline);drawnow;
+        if fieldCheck(hObject, eventdata, handles , 10)==1 return; end         
+        handles.functionDir = val(str)
+        SetText(hObject, eventdata, handles,'Streamline Gap')
+        updateEdit(hObject, eventdata, handles , 10);
+        set(handles.text_Status,'String','Choose Parameters'); drawnow; 
+        
+end
+guidata(hObject, handles)
 
 
 % --- Executes during object creation, after setting all properties.
@@ -298,6 +390,7 @@ handles.isvideo=0;
 set(handles.radiobutton1,'Value',1);
 set(handles.radiobutton2,'Value',0);
 set(handles.radiobutton3,'Value',0);
+set(handles.ListboxPair,'Enable','on')
 set(handles.ListboxSequence,'Enable','off')
 set(handles.ListboxVideo,'Enable','off')
 guidata(hObject, handles)
@@ -306,18 +399,50 @@ guidata(hObject, handles)
 % set(handles.text15,'String','Pair loaded');drawnow;
 set(handles.text_Status,'String','Choose Command From The List'); drawnow;
 
-% --- Executes on button press in pushbutton5.
-function pushbutton5_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton5 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 
 
-% --- Executes on button press in pushbutton6.
-function pushbutton6_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton6 (see GCBO)
+% --- Executes on button press in PB_LoadSequence.
+function PB_LoadSequence_Callback(hObject, eventdata, handles)
+% hObject    handle to PB_LoadSequence (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+if isfield(handles,'FolderName')==0
+    handles.FolderName = 'Temp';
+end
+
+[filename, pathname, filterindex] = uigetfile( ...
+ {'*.jpg;*.bmp','Use Shift key'} ,'Pick two images, use shift button','Pick pair of images', 'MultiSelect', 'on');
+%Tip imcontrast()
+
+if isstr(filename)==1
+uiwait(msgbox('Sequence Is More Then One Images!'));
+return
+end
+
+
+NumberOfImages = size(filename,2);
+index = NumberOfImages-1;
+handles.seq = index;
+images = cell(index,1);
+
+
+  % load the images
+  for k = 1 : NumberOfImages  
+   imagefile = fullfile(char(pathname), char(filename(k)));
+   im = imread(imagefile);
+   if ndims(im) == 3, im = rgb2gray(im); end
+   images{k} = im;
+   imshow(im);
+   set(handles.text_Status,'String',k); drawnow;
+  end
+handles.images = images;
+set(handles.radiobutton1,'Value',0);
+set(handles.radiobutton2,'Value',1);
+set(handles.radiobutton3,'Value',0);
+set(handles.ListboxPair,'Enable','off')
+set(handles.ListboxSequence,'Enable','on')
+set(handles.ListboxVideo,'Enable','off')
+guidata(hObject, handles)
 
 
 % --- Executes on button press in radiobutton1.
@@ -629,6 +754,10 @@ function PB_SaveFolder_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 path_name = uigetdir;
+if path_name==0
+   uiwait(msgbox('Choose Saving Location!'))
+   return
+end
 datetime=datestr(now);
 datetime=strrep(datetime,':','_'); %Replace colon with underscore
 datetime=strrep(datetime,'-','_');%Replace minus sign with underscore
@@ -692,7 +821,7 @@ function PB_Reset_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 clc;
-set(handles.text_Status,'String','Choose Saving Path First');drawnow;
+
 cla(handles.axes1,'reset');
 
 if isfield(handles,'image')==1  handles=rmfield(handles,{'image'}); end
@@ -714,12 +843,20 @@ if isfield(handles,'sizeFactor')==1  handles=rmfield(handles,{'sizeFactor'}); en
 if isfield(handles,'channelLength')==1  handles=rmfield(handles,{'channelLength'}); end
 if isfield(handles,'channelLength')==1  handles=rmfield(handles,{'channelLength'}); end
 
+resetEdit(hObject, eventdata, handles)
+resetText(hObject, eventdata, handles)
+set(handles.radiobutton1,'Value',0);
+set(handles.radiobutton2,'Value',0);
+set(handles.radiobutton3,'Value',0);
+set(handles.ListboxPair,'Enable','off')
+set(handles.ListboxSequence,'Enable','off')
+set(handles.ListboxVideo,'Enable','off')
 
 %text
-% set(handles.velocityInfo,'String','');drawnow;
-% set(handles.flowRateUm,'String','');drawnow;
-% set(handles.flowRateUl,'String','');drawnow;
-% set(handles.text_frame,'String','');drawnow;
+set(handles.text_Status,'String','Choose Saving Path First');drawnow;
+set(handles.text_Information,'String','');drawnow;
+set(handles.text_Data,'String','');drawnow;
+set(handles.text_Results,'String','');drawnow;
 
 guidata(hObject, handles)
 handles

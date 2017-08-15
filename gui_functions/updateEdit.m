@@ -37,11 +37,17 @@ switch caseIndex
             else
                SetEdit(hObject, eventdata, handles, handles.channelWidth , handles.channelHeight)
             end
-        case 9 
+        case 9  %Density
             if isfield(handles,'densityWinW')~=1
-               SetEdit(hObject, eventdata, handles, 2 , 200)
+               SetEdit(hObject, eventdata, handles, 200 , 20)
             else
                SetEdit(hObject, eventdata, handles, handles.densityWinW , handles.densityWinH)
+            end
+        case 9  %Streamline
+            if isfield(handles,'streamlineGap')~=1
+               SetEdit(hObject, eventdata, handles, 2)
+            else
+               SetEdit(hObject, eventdata, handles, handles.streamlineGap)
             end
 end
 end

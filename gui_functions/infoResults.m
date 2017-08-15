@@ -7,15 +7,17 @@ strQ = '';
 
 if isfield(handles,'avgV')
     avgV = handles.avgV;
-    open = sprintf('//   Avrage Velocity Along ''');
-    direction = sprintf('%s'' ,', avgV.direction);
-    component = sprintf('for Componnet %s.   /', avgV.component);
-    maxInLine = sprintf('Maximum In Line = %.2f um/sec  and ', avgV.maxInLine);
-    avg = sprintf('Avrage Velocity = %.2f um/sec   //', avgV.avg);
-    strAvgVelocity = strcat(open,direction,component,maxInLine,avg);
+    open = sprintf('Avrage Velocity:');
+    avg = sprintf('%.2f um/sec', avgV.avg);
+    maxInLine = sprintf('\nMax avg velocity in line = %.2f um/sec.', avgV.maxInLine);
+    direction = sprintf('\nDirection: %s,', avgV.direction);
+    component = sprintf('Componnet: %s.', avgV.component);
+
+    strAvgVelocity = strcat(open,avg,maxInLine,direction,{'   '},component);
 end
 if isfield(handles,'Q')
-    strQ = sprintf('/   Flow Rate = %d   /',handles.Q)
+    Q = handles.Q;
+    strQ = sprintf('\nFlow Rate = %.2f ul/min,  %.2f um^3/sec',Q.liter , Q.meter);
 end
 
 str = strcat(strAvgVelocity,strQ)
