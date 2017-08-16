@@ -22,6 +22,7 @@ function varargout = microPIV(varargin)
 addpath('../functions_pair')
 addpath('../functions_sequence')
 addpath('../gui_functions')
+addpath('../gui_functions_sequence')
 % Edit the above text to modify the response to help microPIV
 
 % Last Modified by GUIDE v2.5 15-Aug-2017 16:28:51
@@ -64,7 +65,8 @@ guidata(hObject, handles);
 % UIWAIT makes microPIV wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 set(handles.text_Status,'String','Choose Saving Path First'); drawnow;
-set(handles.text_Information,'String','(1)Load file. (2)Choose function from the list. (3)Run. Note: for new anslys press ''Reset''. Default saving location is TEMP in the current folder otherwise location is given'); drawnow;
+doc = funDoc();
+set(handles.text_Information,'String',doc.Open); drawnow;
 set(handles.ListboxPair,'Enable','off'); 
 set(handles.ListboxSequence,'Enable','off');
 set(handles.ListboxVideo,'Enable','off');
@@ -187,53 +189,18 @@ function PB_Run_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 if  isfield(handles,'islist')==0  uiwait(msgbox('Choos Function to Execute!')); return; end
-
-if isfield(handles,'maskfile')==0
-handles.maskfile=[];
+switch handles.islist
+    case 1
+        hand = RunPair(hObject, eventdata, handles)
+        handles = hand;
+        guidata(hObject, handles);
+    case 2
+        hand = RunSequence(hObject, eventdata, handles)
+        handles = hand;
+        guidata(hObject, handles);
+    case 3
+        
 end
-
-if strcmp(handles.functionDir,'Correlation')
-    [hand] = Correlation(hObject, eventdata,handles);
-    handles = hand;
-    guidata(hObject , handles)    
-elseif strcmp(handles.functionDir,'Mask')
-    hand = CreateMask(hObject, eventdata, handles);
-    handles = hand;
-    guidata(hObject , handles) 
-elseif strcmp(handles.functionDir,'Filtering')  
-    [hand] = Filtering(hObject, eventdata, handles);
-    handles = hand;
-    guidata(hObject , handles)   
-elseif strcmp(handles.functionDir,'Interpolate') 
-    hand = Interpolate(hObject, eventdata, handles);
-    handles = hand;
-    guidata(hObject , handles)  
-elseif strcmp(handles.functionDir,'Pixel2Unit') 
-    hand = pix2unit(hObject, eventdata, handles);
-    handles = hand;
-    guidata(hObject , handles) 
-elseif strcmp(handles.functionDir,'Magnitude') 
-    hand = Magnitude(hObject, eventdata, handles);
-    handles = hand;
-    guidata(hObject , handles) 
-elseif strcmp(handles.functionDir,'AvgVelocity') 
-    hand = AvgVelocity(hObject, eventdata, handles);
-    handles = hand;
-    guidata(hObject , handles) 
-elseif strcmp(handles.functionDir,'FlowRate') 
-    hand = FlowRate(hObject, eventdata, handles);
-    handles = hand;
-    guidata(hObject , handles)
-elseif strcmp(handles.functionDir,'Density') 
-    Density(hObject, eventdata, handles);
-elseif strcmp(handles.functionDir,'Streamline')
-    Streamline(hObject, eventdata, handles);
-end
-
-infoData(hObject, eventdata, handles)
-infoResults(hObject, eventdata, handles)
-guidata(hObject, handles)
-
 
 % --- Executes on selection change in ListboxSequence.
 function ListboxSequence_Callback(hObject, eventdata, handles)
@@ -243,23 +210,23 @@ function ListboxSequence_Callback(hObject, eventdata, handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns ListboxSequence contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from ListboxSequence
-handles.islist = 1;
+handles.islist = 2;
 resetEdit(hObject, eventdata, handles)
 resetText(hObject, eventdata, handles)
 doc = funDoc();
-val = get(handles.ListboxPair, 'string'); % Determine the selected data set.
-str = get(handles.ListboxPair, 'Value');
+val = get(handles.ListboxSequence, 'string'); % Determine the selected data set.
+str = get(handles.ListboxSequence, 'Value');
 switch str;
     case 1
         set(handles.text_Information,'String',doc.Correlation);drawnow;
 %         if fieldCheck(hObject, eventdata, handles, 1)==1 return; end
         handles.functionDir = val(str)
-        SetText(hObject, eventdata, handles,'Window Size','Time Gap','Overlap','Method','SizeFactor')
-        updateEdit(hObject, eventdata, handles , 1);
+        SetText(hObject, eventdata, handles,'Window Size','Time Gap','Overlap','Method','SizeFactor','fps Hz')
+        updateEdit_Seq(hObject, eventdata, handles , 1);
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 2 
         set(handles.text_Information,'String',doc.Mask);drawnow;
-        if fieldCheck(hObject, eventdata, handles , 2)==1 return; end
+%         if fieldCheck(hObject, eventdata, handles , 2)==1 return; end
         handles.functionDir = val(str)
     case 3
         set(handles.text_Information,'String',doc.Filtering);drawnow;
@@ -368,7 +335,7 @@ if isfield(handles,'FolderName')==0
 end
 
 [filename, pathname, filterindex] = uigetfile( ...
- {'*.jpg;*.bmp','Use Shift key'} ,'Pick two images, use shift button','Pick pair of images', 'MultiSelect', 'on');
+ {'*.jpg;*.bmp;*.tif;*.png','Use Shift key'} ,'Pick two images, use shift button','Pick pair of images', 'MultiSelect', 'on');
 %Tip imcontrast()
 
 if size(filename,2)~=2
@@ -411,7 +378,7 @@ if isfield(handles,'FolderName')==0
 end
 
 [filename, pathname, filterindex] = uigetfile( ...
- {'*.jpg;*.bmp','Use Shift key'} ,'Pick two images, use shift button','Pick pair of images', 'MultiSelect', 'on');
+ {'*.jpg;*.bmp;*.tif;*.png','Use Shift key'} ,'Pick two images, use shift button','Pick pair of images', 'MultiSelect', 'on');
 %Tip imcontrast()
 
 if isstr(filename)==1

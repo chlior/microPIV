@@ -3,12 +3,12 @@ function [maske]=maskfunc(hObject, eventdata, handles)  %,x,y,u,v
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 % based on mask()
-if isfield(handles,'image')==0
-uiwait(msgbox('Load pair of images first!'));
+if isfield(handles,'images')==0
+uiwait(msgbox('Load pair of sequence first!'));
 return
 end
 
-ima=handles.image{1};
+ima=handles.images{1};
 
 if ischar(ima)
   [A,p1]=imread(ima);

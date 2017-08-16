@@ -7,7 +7,8 @@ function [handles] = Correlation_Seq(hObject, eventdata,handles)
     handles.overlap = str2double(get(handles.edit3,'String'))
     handles.method = get(handles.edit4,'String')
     handles.sizeFactor = str2double(get(handles.edit5,'String'))
-
+    handles.fps = str2double(get(handles.edit6,'String')) 
+    
        %Save
    folder  = fullfile(handles.FolderName,'Correlation_Seq');  
       if exist(folder)==0 mkdir(folder); end
@@ -23,11 +24,13 @@ function [handles] = Correlation_Seq(hObject, eventdata,handles)
    %.avi
    datetime_avi = strcat('video_',datetime,'.avi');
    outputVideo = VideoWriter(fullfile(folder,datetime_avi));
-   outputVideo.FrameRate = 4; %edit1!!!!! sec
+   handles.fps
+   outputVideo.FrameRate = 4;%handles.fps;
    open(outputVideo)
-    
+
     timerVal = tic  
     for i=1:handles.seq
+        size(handles.images{i,1})
     [x,y,u,v,snr,pkh] = matpiv(handles.images{i},handles.images{i+1},...
         transpose(handles.wins),handles.deltaT,handles.overlap,handles.method,[],handles.maskfile);
     FileNameSeq = fullfile(FileName,i);

@@ -25,7 +25,7 @@ switch choice
                str3 = 'Press <BACKSPACE> or <DELETE> to remove the previously selected vertex.';
                str = strcat(str1,str2,str3);
                uiwait(msgbox(str))
-               handles.maskfile = maskfunc(hObject, eventdata, handles)
+               handles.maskfile = maskfunc_Seq(hObject, eventdata, handles)
 %              handles.maskfile=maskGui(handles.image{1},'worldco.mat')
                set(handles.text_Status,'String','Maskfile is ready');drawnow;
             case 'no'
