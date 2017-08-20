@@ -25,7 +25,7 @@ addpath('../gui_functions')
 addpath('../gui_functions_sequence')
 % Edit the above text to modify the response to help microPIV
 
-% Last Modified by GUIDE v2.5 15-Aug-2017 16:28:51
+% Last Modified by GUIDE v2.5 20-Aug-2017 16:37:44
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -828,3 +828,46 @@ set(handles.text_Results,'String','');drawnow;
 guidata(hObject, handles)
 handles
 clear all;
+
+
+% --------------------------------------------------------------------
+function file_Callback(hObject, eventdata, handles)
+% hObject    handle to file (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function save_session_Callback(hObject, eventdata, handles)
+% hObject    handle to save_session (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+path_name = uiputfile;
+if path_name==0
+   uiwait(msgbox('Choose Saving Location!'))
+   return
+end
+save = fullfile(path_name,FileName);
+if exist(path_name)==0 mkdir(path_name); end
+guidata(hObject, handles)
+
+  m = matfile(save, 'Writable', true);
+    if isfiled(handles,'win') m.win = handles.win; end
+    if isfiled(handles,'overlap') m.overlap = handles.overlap; end
+    if isfiled(handles,'deltaT') m.deltaT = handles.deltaT; end
+    if isfiled(handles,'m') m.m = handles.m; end
+    if isfiled(handles,'mp') m.mp = handles.mp; end
+    if isfiled(handles,'image') m.mp = handles.image; end
+    if isfiled(handles,'images') m.mp = handles.images; end
+    if isfiled(handles,'islist') m.islist = handles.islist; end
+    clear m
+
+% set(handles.text_Status,'String','Load File'); drawnow;
+
+% --------------------------------------------------------------------
+function load_session_Callback(hObject, eventdata, handles)
+% hObject    handle to load_session (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+load(m);
+handles.win = m.win;
