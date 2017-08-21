@@ -842,7 +842,7 @@ function save_session_Callback(hObject, eventdata, handles)
 % hObject    handle to save_session (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-path_name = uiputfile;
+[FileName, path_name]= uiputfile({'*.mat'}, 'Save as');
 if path_name==0
    uiwait(msgbox('Choose Saving Location!'))
    return
@@ -852,14 +852,36 @@ if exist(path_name)==0 mkdir(path_name); end
 guidata(hObject, handles)
 
   m = matfile(save, 'Writable', true);
-    if isfiled(handles,'win') m.win = handles.win; end
-    if isfiled(handles,'overlap') m.overlap = handles.overlap; end
-    if isfiled(handles,'deltaT') m.deltaT = handles.deltaT; end
-    if isfiled(handles,'m') m.m = handles.m; end
-    if isfiled(handles,'mp') m.mp = handles.mp; end
-    if isfiled(handles,'image') m.mp = handles.image; end
-    if isfiled(handles,'images') m.mp = handles.images; end
-    if isfiled(handles,'islist') m.islist = handles.islist; end
+    if isfield(handles,'wins') m.wins = handles.wins; end
+    if isfield(handles,'overlap') m.overlap = handles.overlap; end
+    if isfield(handles,'deltaT') m.deltaT = handles.deltaT; end
+    if isfield(handles,'method') m.method = handles.method; end    
+    if isfield(handles,'m') m.m = handles.m; end
+    if isfield(handles,'mCorrelation') m.mCorrelation = handles.mCorrelation; end
+    if isfield(handles,'mFiltering') m.mFiltering = handles.mFiltering; end
+    if isfield(handles,'mInterpolate') m.mInterpolate = handles.mInterpolate; end
+    if isfield(handles,'channelWitdh') m.channelWitdh = handles.channelWitdh; end
+    if isfield(handles,'channelLength') m.channelLength = handles.channelLength; end
+    if isfield(handles,'cal') m.mInterpolate = handles.cal; end
+    if isfield(handles,'magitudeComponent') m.magitudeComponent = handles.magitudeComponent; end
+    if isfield(handles,'avgComponent') m.avgComponent = handles.avgComponent; end
+    if isfield(handles,'avgDirection') m.avgDirection = handles.avgDirection; end
+    if isfield(handles,'avgV') m.avgV = handles.avgV; end
+    if isfield(handles,'channeHeight') m.channeHeight = handles.channeHeight; end
+    if isfield(handles,'Q') m.Q = handles.Q; end    
+    if isfield(handles,'w') m.w = handles.w; end
+    if isfield(handles,'mphysical') m.mphysical = handles.mphysical; end
+    if isfield(handles,'mp') m.mp = handles.mp; end
+    if isfield(handles,'image') m.image = handles.image; end
+    if isfield(handles,'images') m.images = handles.images; end
+    if isfield(handles,'islist') m.islist = handles.islist; end
+    if isfield(handles,'functionDir') m.functionDir = handles.functionDir; end
+    if isfield(handles,'maskfile') m.maskfile = handles.maskfile; end
+    if isfield(handles,'sizeFactor') m.sizeFactor = handles.sizeFactor; end
+    if isfield(handles,'filterChoose') m.filterChoose = handles.filterChoose; end
+    if isfield(handles,'globtrld') m.globtrld = handles.globtrld; end
+    if isfield(handles,'loctrld') m.loctrld = handles.loctrld; end
+    if isfield(handles,'snrtrld') m.snrtrld = handles.snrtrld; end
     clear m
 
 % set(handles.text_Status,'String','Load File'); drawnow;
@@ -869,5 +891,60 @@ function load_session_Callback(hObject, eventdata, handles)
 % hObject    handle to load_session (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-load(m);
-handles.win = m.win;
+% uiopen('load')
+% uigetfile
+PB_Reset_Callback(hObject, eventdata, handles)
+[FileName, path_name, FilterIndex]= uigetfile({'*.mat'}, 'Load Session');
+if path_name==0
+   uiwait(msgbox('Choose Session mat file!'))
+   return
+end
+loadf = fullfile(path_name,FileName);
+m = load(loadf);
+    if isfield(m,'wins') handles.wins = m.wins; end
+    if isfield(m,'overlap') handles.overlap = m.overlap; end
+    if isfield(m,'deltaT') handles.deltaT = m.deltaT; end
+    if isfield(m,'method') handles.method = m.method; end    
+    if isfield(m,'m') handles.m = m.m; end
+    if isfield(m,'mCorrelation') handles.mCorrelation = m.mCorrelation; end
+    if isfield(m,'mFiltering') handles.mFiltering = m.mFiltering; end
+    if isfield(m,'mInterpolate') handles.mInterpolate = m.mInterpolate; end
+    if isfield(m,'channelWitdh') handles.channelWitdh = m.channelWitdh; end
+    if isfield(m,'channelLength') handles.channelLength = m.channelLength; end
+    if isfield(m,'cal') handles.mInterpolate = m.cal; end
+    if isfield(m,'magitudeComponent') handles.magitudeComponent = m.magitudeComponent; end
+    if isfield(m,'avgComponent') handles.avgComponent = m.avgComponent; end
+    if isfield(m,'avgDirection') handles.avgDirection = m.avgDirection; end
+    if isfield(m,'avgV') handles.avgV = m.avgV; end
+    if isfield(m,'channeHeight') handles.channeHeight = m.channeHeight; end
+    if isfield(m,'Q') handles.Q = m.Q; end    
+    if isfield(m,'w') handles.w = m.w; end
+    if isfield(m,'mphysical') m.mphysical = m.mphysical; end
+    if isfield(m,'mp') handles.mp = m.mp; end
+    if isfield(m,'image') handles.image = m.image; end
+    if isfield(m,'images') handles.images = m.images; end
+    if isfield(m,'islist') handles.islist = m.islist; end
+    if isfield(m,'functionDir') handles.functionDir = m.functionDir; end
+    if isfield(m,'maskfile') handles.maskfile = m.maskfile; end
+    if isfield(m,'sizeFactor') handles.sizeFactor = m.sizeFactor; end
+    if isfield(m,'filterChoose') handles.filterChoose = m.filterChoose; end
+    if isfield(m,'globtrld') handles.globtrld = m.globtrld; end
+    if isfield(m,'loctrld') handles.loctrld = m.loctrld; end
+    if isfield(m,'snrtrld') handles.snrtrld = m.snrtrld; end
+    
+    clear m;
+
+  if handles.islist==1
+    set(handles.radiobutton1,'Value',1);
+    set(handles.ListboxPair,'Enable','on')
+  end
+  if handles.islist==2
+    set(handles.radiobutton2,'Value',0);
+    set(handles.ListboxSequence,'Enable','on')
+  end
+  if handles.islist==3 
+    set(handles.radiobutton3,'Value',0);
+    set(handles.ListboxVideo,'Enable','on')
+  end
+
+
