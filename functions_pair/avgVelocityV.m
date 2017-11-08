@@ -4,8 +4,8 @@ m = handles.mp;
 x = m.x; y = m.y; u = m.u; v = m.v;
 
 
-uTempHor = zeros(1,size(x(1,:),2));
-uTempVer = zeros(size(y(:,1),1),1);
+uTempHor = zeros(1,size(y(:,1),1));
+uTempVer = zeros(size(x(1,:),2),1);
 row = zeros(size(y(:,1),1),size(x(1,:),2));
 colum = zeros(size(y(:,1),1),size(x(1,:),2));
 

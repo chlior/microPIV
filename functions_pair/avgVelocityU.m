@@ -19,10 +19,10 @@ channelLength = handles.channelLength;
 % 46.8 46.8 46.8 46.8
 
 
-uTempHor = zeros(1,size(x(1,:),2));    %        x
+uTempVer = zeros(1,size(y(:,1),1));    %        x
                                        % 0   0   0   0
-                                       
-uTempVer = zeros(size(y(:,1),1),1);    % 0      
+                   
+uTempHor = zeros(size(x(1,:),2),1);    % 0      
                                        % 0
                                        % 0   y
                                        % 0 
@@ -34,11 +34,14 @@ colum = zeros(size(x));
 switch handles.avgDirection;
     case 'x'      % Avarage line along x   
     for yi=1:(size(y,1))
+        size(y,1)
      for xi=1:(size(x,2))
        if isnan(u(yi,xi))==0 
         uTempHor(yi) = uTempHor(yi) + u(yi,xi);
        end
      end
+
+     size(y,1)
      row(yi,:)= ones(1,size(x(1,:),2)).*uTempHor(yi);
     end
     uLineAvg=row./size(x,2);   

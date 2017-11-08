@@ -11,9 +11,10 @@ str_AvgVelocity = 'AvgVelocity';
 str_FlowRate = 'Flow Rate: Only in y direction';
 str_Density = 'Density';
 str_Streamline = 'Streamline';
+str_Velocity_Profile = 'Velocity Profile';
 
 doc =struct('Open', str_Open, 'Correlation' , str_Correlation,'Mask',str_Mask, 'Filtering' ,...
     str_Filtering , 'Interpolate' , str_Interpolate, 'Pixel2Unit' , str_Pixel2Unit, ...
     'Magnitude' , str_Magnitude, 'AvgVelocity' , str_AvgVelocity, 'FlowRate' , str_FlowRate,...
-    'Density' , str_Density, 'Streamline' , str_Streamline);
+    'Density' , str_Density, 'Streamline' , str_Streamline,'Velocity_Profile', str_Velocity_Profile);
 end

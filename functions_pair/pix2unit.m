@@ -8,14 +8,20 @@ function [handles] = pix2unit(hObject, eventdata, handles)
 % x,u[um] , u,v[um/s]                                                                %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-x_cal = str2double(get(handles.edit1,'String'));
-xp_cal = str2double(get(handles.edit2,'String'));
-y_cal = str2double(get(handles.edit3,'String'));
-yp_cal = str2double(get(handles.edit4,'String'));
+y_cal = str2double(get(handles.edit1,'String'));
+yp_cal = str2double(get(handles.edit2,'String'));
+x_cal = str2double(get(handles.edit3,'String'));
+xp_cal = str2double(get(handles.edit4,'String'));
 ChooseConvert =  get(handles.edit5,'String');
 handles.sizeFactor = str2double(get(handles.edit6,'String'));
 
 handles.channelWitdh = y_cal; %for calculations
+
+% if xp_cal==0 || x_cal==0 
+%     x_cal = y_cal;
+%     xp_cal = yp_cal;
+% end
+
 
 switch ChooseConvert
     case 'Correlation'

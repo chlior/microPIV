@@ -25,7 +25,7 @@ addpath('../gui_functions')
 addpath('../gui_functions_sequence')
 % Edit the above text to modify the response to help microPIV
 
-% Last Modified by GUIDE v2.5 20-Aug-2017 16:37:44
+% Last Modified by GUIDE v2.5 08-Nov-2017 09:10:02
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -127,8 +127,8 @@ switch str;
         set(handles.text_Information,'String',doc.Pixel2Unit);drawnow;
         if fieldCheck(hObject, eventdata, handles , 5)==1 return; end 
         handles.functionDir = val(str)
-        SetText(hObject, eventdata, handles,'Channel width [um]','Channel width [pixel]','Y Calibration distance [um]','Y Calibration distance','Choose Convert Data','sizeFactor')
-        SetEdit(hObject, eventdata, handles,600,1000,600,1000,'Interpolate',3)
+        SetText(hObject, eventdata, handles,'Channel width [um]','Channel width [pixel]','X Calibration [um]','X Calibration [pixel]','Choose Convert Data','sizeFactor')
+        SetEdit(hObject, eventdata, handles,600,1000,'','','Interpolate',3)
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 6
         set(handles.text_Information,'String',doc.Magnitude);drawnow;
@@ -165,6 +165,14 @@ switch str;
         SetText(hObject, eventdata, handles,'Streamline Gap')
         updateEdit(hObject, eventdata, handles , 10);
         set(handles.text_Status,'String','Choose Parameters'); drawnow; 
+    case 11
+        set(handles.text_Information,'String',doc.Velocity_Profile);drawnow;
+        if fieldCheck(hObject, eventdata, handles , 11)==1 return; end         
+        handles.functionDir = val(str)
+        SetText(hObject, eventdata, handles,'Velocity Component','Average Direction' , 'Channel Width' , 'Profile position [um]')
+        updateEdit(hObject, eventdata, handles , 11);
+        set(handles.text_Status,'String','Choose Parameters'); drawnow; 
+        
         
 end
 guidata(hObject, handles)
@@ -946,5 +954,3 @@ m = load(loadf);
     set(handles.radiobutton3,'Value',0);
     set(handles.ListboxVideo,'Enable','on')
   end
-
-

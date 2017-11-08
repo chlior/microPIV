@@ -40,5 +40,10 @@ function [bol] = fieldCheck(hObject, eventdata, handles , caseIndex)
         case 10 %Streamline
             if image==0 bol=1; uiwait(msgbox('Load Image First!')); return; end
             if image==1 & correlation==0 bol = 1; uiwait(msgbox('Run Correlation First!')); return; end 
+        case 11 %Velocity_Profile
+            if image==0 bol=1; uiwait(msgbox('Load Image First!')); return; end
+            if image==1 & correlation==0 bol = 1; uiwait(msgbox('Run Correlation First!')); return; end 
+            if image==1 & correlation==1 & physical==0 bol = 1;  uiwait(msgbox('Run Pixel2Unit First!')); return; end 
+            
     end
 end

@@ -39,8 +39,12 @@ elseif strcmp(handles.functionDir,'Density')
     Density(hObject, eventdata, handles);
 elseif strcmp(handles.functionDir,'Streamline')
     Streamline(hObject, eventdata, handles);
-end
 
+elseif strcmp(handles.functionDir,'Velocity_Profile') 
+    hand = Velocity_Profile(hObject, eventdata, handles);
+    handles = hand;
+    guidata(hObject , handles) 
+end
 infoData(hObject, eventdata, handles)
 infoResults(hObject, eventdata, handles)
 guidata(hObject, handles)
