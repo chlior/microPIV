@@ -23,9 +23,11 @@ addpath('../functions_pair')
 addpath('../functions_sequence')
 addpath('../gui_functions')
 addpath('../gui_functions_sequence')
+addpath('../additional_functions')
+addpath('../additional_functions/altmany-export_fig-f13ef82')
 % Edit the above text to modify the response to help microPIV
 
-% Last Modified by GUIDE v2.5 08-Nov-2017 09:10:02
+% Last Modified by GUIDE v2.5 09-Nov-2017 12:10:51
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -950,3 +952,13 @@ m = load(loadf);
     set(handles.radiobutton3,'Value',0);
     set(handles.ListboxVideo,'Enable','on')
   end
+
+
+% --- Executes on key press with focus on PB_Run and none of its controls.
+function PB_Run_KeyPressFcn(hObject, eventdata, handles)
+% hObject    handle to PB_Run (see GCBO)
+% eventdata  structure with the following fields (see MATLAB.UI.CONTROL.UICONTROL)
+%	Key: name of the key that was pressed, in lower case
+%	Character: character interpretation of the key(s) that was pressed
+%	Modifier: name(s) of the modifier key(s) (i.e., control, shift) pressed
+% handles    structure with handles and user data (see GUIDATA)

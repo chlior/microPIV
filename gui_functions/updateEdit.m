@@ -18,7 +18,7 @@ switch caseIndex
             else
                SetEdit(hObject, eventdata, handles,handles.filterChoose,handles.globtrld,handles.loctrld,handles.snrtrld,handles.sizeFactor)
             end
-        case 'Interpolation'
+        case 'Interpolate'
         if isfield(handles,'filterChoose')~=1
            SetEdit(hObject, eventdata, handles,5)
         else

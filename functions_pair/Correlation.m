@@ -7,9 +7,6 @@ function [handles] = Correlation(hObject, eventdata,handles)
     handles.overlap = str2double(get(handles.edit3,'String'))
     handles.method = get(handles.edit4,'String')
     handles.sizeFactor = str2double(get(handles.edit5,'String'))
-
-     transpose(handles.wins)
-    handles.wins
     
     timerVal = tic  
     [x,y,u,v,snr,pkh] = matpiv(handles.image{1},handles.image{2},...
@@ -21,10 +18,10 @@ function [handles] = Correlation(hObject, eventdata,handles)
    datetime=strrep(datetime,':','_'); %Replace colon with underscore
    datetime=strrep(datetime,'-','_');%Replace minus sign with underscore
    datetime=strrep(datetime,' ','_');%Replace space with underscore 
-   datetime = strcat(datetime,'.mat');
+   datetimef = strcat(datetime,'.mat');
    folder  = fullfile(handles.FolderName,'Correlation');   
    if exist(folder)==0 mkdir(folder); end
-   FileName = fullfile(folder,datetime)
+   FileName = fullfile(folder,datetimef)
     m = matfile(FileName, 'Writable', true);
     m.x = x;
     m.y = y;
@@ -56,12 +53,21 @@ function [handles] = Correlation(hObject, eventdata,handles)
 %     imwrite(IM,'gfd.png')
 
     %save to image   
-    datetime = strcat(datetime,'.png');
-    FileName = fullfile(folder,datetime)
-    a = getframe(gca)
-    imwrite(a.cdata,FileName)
+    datetimef = strcat(datetime,'.png');
+    FileName = fullfile(folder,datetimef)
+    a = getframe(gca);
+    imwrite(a.cdata,FileName);
 
- 
+    %screen capture
+%     screencapture(gcf,[],'myFigure.png');
+%     saveas(handles.figure1,'myFigureA' , 'png');
+%     saveas(gcf, 'test.png');
+%     set(gcf, 'Color', 'w');
+   FileName = fullfile(folder,datetimef)
+%    hand = handles.axes1; %.figure1
+%    set(gcf, 'Position', hand.Position);
+%    set(gca, 'Color', 'none'); % Sets axes background
+    export_fig(FileName,  '-png', '-q101');% -q101% FileName -q101 %-transparent %-painters %-native %-m4  %https://github.com/altmany/export_fig/blob/master/README.md
  %%%%%%%%%%%%%%%%%%%%%%%%%%
     
     str = sprintf('Finished Correlation , %.2fsec',elapsedTime)
