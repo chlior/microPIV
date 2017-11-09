@@ -1,4 +1,4 @@
-function [bol] = fieldCheck(hObject, eventdata, handles , caseIndex)
+ function [bol] = fieldCheck(hObject, eventdata, handles , caseIndex)
     
     bol = 0; image = 0; correlation = 0; filtering = 0; physical = 0; 
     
@@ -9,38 +9,38 @@ function [bol] = fieldCheck(hObject, eventdata, handles , caseIndex)
 
 
     switch caseIndex
-        case 1
+        case 'Correlation'
             if image==0 bol=1; uiwait(msgbox('Load Image First!')); return; end
-        case 2
+        case 'Mask'
             if image==0 bol=1; uiwait(msgbox('Load Image First!')); return; end
-        case 3
+        case 'Filtering'
             if image==0 bol=1; uiwait(msgbox('Load Image First!')); return; end
             if image==1 & correlation==0 bol = 1; uiwait(msgbox('Run Correlation First!')); return; end
-        case 4
+        case 'Interpolate'
             if image==0 bol=1; uiwait(msgbox('Load Image First!')); return; end
             if image==1 & correlation==0 bol = 1; uiwait(msgbox('Run Correlation First!')); return; end
             if image==1 & correlation==1 & filtering==0 bol = 1; uiwait(msgbox('Run Filtering First!')); return; end
-        case 5 
+        case 'Pixel2Unit' 
             if image==0 bol=1; uiwait(msgbox('Load Image First!')); return; end
             if image==1 & correlation==0 bol = 1; uiwait(msgbox('Run Correlation First!')); return; end
-        case 6 
+        case 'Magnitude' 
             if image==0 bol=1; uiwait(msgbox('Load Image First!')); return; end
             if image==1 & correlation==0 bol = 1; uiwait(msgbox('Run Correlation First!')); return; end 
             if image==1 & correlation==1 & physical==0 bol = 1;  uiwait(msgbox('Run Pixel2Unit First!')); return; end 
-        case 7 
+        case 'AvgVelocity' 
             if image==0 bol=1; uiwait(msgbox('Load Image First!')); return; end
             if image==1 & correlation==0 bol = 1; uiwait(msgbox('Run Correlation First!')); return; end 
             if image==1 & correlation==1 & physical==0 bol = 1;  uiwait(msgbox('Run Pixel2Unit First!')); return; end 
-        case 8 %FlowRate
+        case 'FlowRate' %FlowRate
             if image==0 bol=1; uiwait(msgbox('Load Image First!')); return; end
             if image==1 & correlation==0 bol = 1; uiwait(msgbox('Run Correlation First!')); return; end 
             if image==1 & correlation==1 & physical==0 bol = 1;  uiwait(msgbox('Run Pixel2Unit First!')); return; end 
-        case 9 %Density
+        case 'Density' %Density
             if image==0 bol=1; uiwait(msgbox('Load Image First!')); return; end
-        case 10 %Streamline
+        case 'Streamline' %Streamline
             if image==0 bol=1; uiwait(msgbox('Load Image First!')); return; end
             if image==1 & correlation==0 bol = 1; uiwait(msgbox('Run Correlation First!')); return; end 
-        case 11 %Velocity_Profile
+        case 'Velocity_Profile' %Velocity_Profile
             if image==0 bol=1; uiwait(msgbox('Load Image First!')); return; end
             if image==1 & correlation==0 bol = 1; uiwait(msgbox('Run Correlation First!')); return; end 
             if image==1 & correlation==1 & physical==0 bol = 1;  uiwait(msgbox('Run Pixel2Unit First!')); return; end 
