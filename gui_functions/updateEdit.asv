@@ -1,16 +1,13 @@
 function updateEdit(hObject, eventdata, handles , caseIndex)      
 
 switch caseIndex
-        case 'Correlation' 
+        case 'Correlation'
+          handles,handles.wins  
           if isfield(handles,'wins')~=1
               SetEdit(hObject, eventdata, handles,64,1,0.5,'single',5)        
           else
-                strWins = []
-                for a = transpose(handles.wins)
-                    b = cat(2,num2str(transpose(a)),';')
-                    strWins = cat(2,strWins,b)
-                end
-              SetEdit(hObject, eventdata, handles,strWins,handles.deltaT,handles.overlap,handles.method,handles.sizeFactor)
+              handles.wins = 
+              SetEdit(hObject, eventdata, handles,handles.wins,handles.deltaT,handles.overlap,handles.method,handles.sizeFactor)
           end
         case 'Filtering'
             if isfield(handles,'filterChoose')~=1

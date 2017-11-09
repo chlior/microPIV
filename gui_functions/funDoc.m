@@ -1,7 +1,7 @@
 function doc = funDoc()
 
 str_Open = '(1)Load file. (2)Choose function from the list. (3)Run. Note: for new anslys press ''Reset''. Default saving location is TEMP in the current folder otherwise location is given. Recommended sequence: Mask:Correlation:Filtering:Interpolate:Pix2Unit:...'
-str_Correlation = 'Pair corelation. Inputs:  Wins = 64 or 64,64;64;64 . Method = ''single'',''multin'',''multinfft''. DeltaT = time gap. SizeFactor = Only change the apperent vector size.';
+str_Correlation = 'Pair corelation. Inputs:  Wins = 64 or 64 64;32 32 . Method = ''single'',''multin'',''multinfft''. DeltaT = time gap. SizeFactor = Only change the apperent vector size.';
 str_Mask = 'Ceate Mask (Polygon) over the image part you wan''t need.';
 str_Filtering = 'Correlation Filtering: Choose The type and order of the filter (max 3) and run. This make gaps in the data, recommended running an interpolation.';
 str_Interpolate = 'Interpolation ''linear';

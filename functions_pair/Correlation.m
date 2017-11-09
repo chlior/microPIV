@@ -8,9 +8,12 @@ function [handles] = Correlation(hObject, eventdata,handles)
     handles.method = get(handles.edit4,'String')
     handles.sizeFactor = str2double(get(handles.edit5,'String'))
 
+     transpose(handles.wins)
+    handles.wins
+    
     timerVal = tic  
     [x,y,u,v,snr,pkh] = matpiv(handles.image{1},handles.image{2},...
-        transpose(handles.wins),handles.deltaT,handles.overlap,handles.method,[],handles.maskfile);
+        handles.wins,handles.deltaT,handles.overlap,handles.method,[],handles.maskfile);
     elapsedTime = toc(timerVal)
   
    %Save

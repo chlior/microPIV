@@ -7,7 +7,12 @@ function SetEdit(hObject, eventdata, handles,str1,str2,str3,str4,str5,str6,str7,
 %     str_i = eval(str);
 %     set(str_edit,'String',str_i);drawnow;
 % end 
-
+b = []
+for a = transpose(handles.wins)
+    b = cat(2,b,num2srt(transpose(a)))
+end
+ b = strjoin(b,';')
+str1 = num2str(transpose(handles.wins))
 if nargin>=4 set(handles.edit1,'String',str1);drawnow; else set(handles.edit1,'String','');drawnow;end
 if nargin>=5 set(handles.edit2,'String',str2);drawnow; else set(handles.edit2,'String','');drawnow;end
 if nargin>=6 set(handles.edit3,'String',str3);drawnow; else set(handles.edit3,'String','');drawnow;end
