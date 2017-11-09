@@ -49,9 +49,9 @@ switch caseIndex
             else
                SetEdit(hObject, eventdata, handles, handles.streamlineGap)
             end
-        case 'Velocity_Profile'
-            if isfield(handles,'velocity_profile')~=1
-               SetEdit(hObject, eventdata, handles, 'u','x' , handles.channelWitdh , 30)
+        case 'VelocityProfile'
+            if isfield(handles,'profilePos')~=1
+               SetEdit(hObject, eventdata, handles, 'u','x' , handles.channelWitdh , 50)
             else
                SetEdit(hObject, eventdata, handles, handles.vComponent , handles.vDirection , handles.channelWitdh, handles.profilePos)
             end

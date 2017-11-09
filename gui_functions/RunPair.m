@@ -40,8 +40,8 @@ elseif strcmp(handles.functionDir,'Density')
 elseif strcmp(handles.functionDir,'Streamline')
     Streamline(hObject, eventdata, handles);
 
-elseif strcmp(handles.functionDir,'Velocity_Profile') 
-    hand = Velocity_Profile(hObject, eventdata, handles);
+elseif strcmp(handles.functionDir,'VelocityProfile') 
+    hand = VelocityProfile(hObject, eventdata, handles);
     handles = hand;
     guidata(hObject , handles) 
 end
