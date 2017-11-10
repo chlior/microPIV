@@ -111,6 +111,7 @@ switch char(val(str))
     case 'Mask' 
         set(handles.text_Information,'String',doc.Mask);drawnow;
         if fieldCheck(hObject, eventdata, handles , char(val(str)))==1 return; end
+        set(handles.text_Status,'String','Wait: Create mask'); drawnow; 
     case 'Filtering'
         set(handles.text_Information,'String',doc.Filtering);drawnow;
         if fieldCheck(hObject, eventdata, handles , char(val(str)))==1 return; end
@@ -126,7 +127,7 @@ switch char(val(str))
     case 'Pixel2Unit'
         set(handles.text_Information,'String',doc.Pixel2Unit);drawnow;
         if fieldCheck(hObject, eventdata, handles , char(val(str)))==1 return; end 
-        SetText(hObject, eventdata, handles,'Channel width [um]','Channel width [pixel]','X Calibration [um]','X Calibration [pixel]','Choose Convert Data','sizeFactor')
+        SetText(hObject, eventdata, handles,'Y Channel width [um]','Y Channel width [pixel]','X Calibration [um]','X Calibration [pixel]','Choose Convert Data','sizeFactor')
         SetEdit(hObject, eventdata, handles,600,1000,'','','Interpolate',3)
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 'Magnitude'

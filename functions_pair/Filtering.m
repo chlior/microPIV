@@ -36,9 +36,8 @@ imshow(handles.image{1});   hold on;
  
 
  handles.fig=quiver(x,y,u,v,handles.sizeFactor); 
- xlabel('pixel');  ylabel('pixel');
+ xlabel('x [pixel]');  ylabel('y [pixel]');
  title('Filtered Correlation'); 
-
  axis on
  zoom on
  
@@ -47,10 +46,10 @@ imshow(handles.image{1});   hold on;
    datetime=strrep(datetime,':','_'); %Replace colon with underscore
    datetime=strrep(datetime,'-','_');%Replace minus sign with underscore
    datetime=strrep(datetime,' ','_');%Replace space with underscore 
-   datetime = strcat(datetime,'.mat');
+   datetimef = strcat(datetime,'.mat');
    folder  = fullfile(handles.FolderName,'Filtered_Correlation');   
    if exist(folder)==0 mkdir(folder); end
-   FileName = fullfile(folder,datetime)
+   FileName = fullfile(folder,datetimef)
     m = matfile(FileName, 'Writable', true);
     m.x = x;
     m.y = y;
@@ -60,12 +59,18 @@ imshow(handles.image{1});   hold on;
     m.pkh = mCorrelation.pkh;
     handles.mFiltering = m;
     handles.m = m; %Global use;
-            
+     
+    
     %save to image
-    datetime = strcat(datetime,'.png');
-    FileName = fullfile(folder,datetime)
+    datetimef = strcat(datetime,'_filter.png');
+    FileName = fullfile(folder,datetimef)
     a = getframe(gca)
     imwrite(a.cdata,FileName)
+    %screen capture
+    datetimef = strcat(datetime,'filter_screen.png');
+    FileName = fullfile(folder,datetimef)
+    export_fig(FileName,  '-png', '-q101');
+ %%%%%%%%%%%%%%%%%%%%%%%%%%
     
  set(handles.text_Status,'String','Finished');drawnow;
  guidata(hObject, handles)

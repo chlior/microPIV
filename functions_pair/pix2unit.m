@@ -15,7 +15,7 @@ xp_cal = str2double(get(handles.edit4,'String'));
 ChooseConvert =  get(handles.edit5,'String');
 handles.sizeFactor = str2double(get(handles.edit6,'String'));
 
-handles.channelWitdh = y_cal; %for calculations
+handles.channelWitdh = y_cal; %for calculations 
 
 % if xp_cal==0 || x_cal==0 
 %     x_cal = y_cal;
@@ -71,10 +71,10 @@ v=vp/cal.y;
    datetime=strrep(datetime,':','_'); %Replace colon with underscore
    datetime=strrep(datetime,'-','_');%Replace minus sign with underscore
    datetime=strrep(datetime,' ','_');%Replace space with underscore 
-   datetime = strcat(datetime,'.mat');
+   datetimef = strcat(datetime,'_pix2unit.mat');
    folder  = fullfile(handles.FolderName,'Converted Data');   
    if exist(folder)==0 mkdir(folder); end
-   FileName = fullfile(folder,datetime)
+   FileName = fullfile(folder,datetimef)
     m = matfile(FileName, 'Writable', true);
     m.x = x;
     m.y = y;
@@ -84,10 +84,27 @@ v=vp/cal.y;
     handles.mphysical = m;
     handles.mp = m;
         cla(handles.axes1);
+        a = handles.axes1;
+        a.YDir = 'reverse';
+%        set(gca,'Ydir','reverse')
+       
     handles.fig=quiver(m.x,m.y,m.u,m.v,handles.sizeFactor);
-    xlabel('um'); ylabel('um');
-    title('um/sec');
+    xlabel('x [um]'); ylabel('y [um]');
+    title('Velocity field [um/sec]');
     axis tight
     axis on
     zoom on
+    set(handles.text_Status,'String','Wait: Finished'); drawnow; 
+    
+    %save to image
+    datetimef = strcat(datetime,'_pix2unit.png');
+    FileName = fullfile(folder,datetimef)
+    a = getframe(gca)
+    imwrite(a.cdata,FileName)
+    %screen capture
+    datetimef = strcat(datetime,'_pix2unit_screen.png');
+    FileName = fullfile(folder,datetimef)
+    export_fig(FileName,  '-png', '-q101');
+ %%%%%%%%%%%%%%%%%%%%%%%%%%
+    
     end

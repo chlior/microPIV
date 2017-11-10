@@ -37,8 +37,9 @@ function [handles] = Correlation(hObject, eventdata,handles)
     set(handles.text_Status,'String','Wait: Plot Data'); drawnow;
     imshow(handles.image{1});   hold on;
     handles.fig=quiver(x,y,u,v,handles.sizeFactor);
-    xlabel('pixel'); ylabel('pixel');
+    xlabel('x [pixel]'); ylabel('y [pixel]');
     title('Raw Data Correlation');
+
     axis on
     zoom on
     
@@ -59,13 +60,11 @@ function [handles] = Correlation(hObject, eventdata,handles)
     imwrite(a.cdata,FileName);
 
     %screen capture
-%     screencapture(gcf,[],'myFigure.png');
-%     saveas(handles.figure1,'myFigureA' , 'png');
-%     saveas(gcf, 'test.png');
-%     set(gcf, 'Color', 'w');
-   FileName = fullfile(folder,datetimef)
-%    hand = handles.axes1; %.figure1
-%    set(gcf, 'Position', hand.Position);
+%     saveas(handles.figure1,'myFigureA' , 'png'); %     saveas(gcf, 'test.png');
+    datetimef = strcat(datetime,'_screen.png');
+    FileName = fullfile(folder,datetimef)
+%    set(gcf, 'Color', 'w');
+%    set(gcf, 'Position', hand.Position);  %    hand = handles.axes1; %.figure1
 %    set(gca, 'Color', 'none'); % Sets axes background
     export_fig(FileName,  '-png', '-q101');% -q101% FileName -q101 %-transparent %-painters %-native %-m4  %https://github.com/altmany/export_fig/blob/master/README.md
  %%%%%%%%%%%%%%%%%%%%%%%%%%

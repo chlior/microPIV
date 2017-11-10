@@ -47,8 +47,8 @@ switch handles.avgDirection;
     uLineAvg=row./size(x,2);   
     handles.fig=plot(uLineAvg(:,1),y(:,1));  
     uavg = trapz(y(:,1),uLineAvg(:,1))/handles.channelWidth; % u  avrage
-     xlabel('Velocity average [um/sec]');
-     ylabel('Position [um]');
+     xlabel('y Velocity average [um/sec]');
+     ylabel('x [um]');
 %      str = sprintf('Avarage Velocity along x.''u'' direction , Uavg= %0.2f [um/sec]' , handles.uavg)
 %      title(str); 
      umaxLineAvg= max(max(uLineAvg));

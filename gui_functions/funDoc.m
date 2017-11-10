@@ -4,12 +4,12 @@ str_Open = '(1)Load file. (2)Choose function from the list. (3)Run. Note: for ne
 str_Correlation = 'Pair corelation. Inputs:  Wins = 64 or 64 64;32 32 . Method = ''single'',''multin'',''multinfft''. DeltaT = time gap. SizeFactor = Only change the apperent vector size.';
 str_Mask = 'Ceate Mask (Polygon) over the image part you wan''t need.';
 str_Filtering = 'Correlation Filtering: Choose The type and order of the filter (max 3) and run. This make gaps in the data, recommended running an interpolation.';
-str_Interpolate = 'Interpolation ''linear';
-str_Pixel2Unit = 'Pixel2Unit Calibration...';
-str_Magnitude = 'Velocity Magnitude; ''m'' sqrt(u^2+v^2), ''u'' u componnent , ''v'' v component';
-str_AvgVelocity = 'AvgVelocity';
+str_Interpolate = 'Interpolation ''linear'', filing the empty vector with interpolating vector.' ;
+str_Pixel2Unit = 'Pixel2Unit Calibration. Input: channel width (y) with ''um'' and ''pixels'' output: converting the data to real world unit [um] [um/s]; choose data to convert ''Correlation'' ''Filtering'' ''Interpolate''; If empty X parameters Y calibration will valid to X ';
+str_Magnitude = 'Velocity Magnitude; ''m'': magnitude sqrt(u^2+v^2), ''u'': u componnent , ''v'': v component';
+str_AvgVelocity = 'AvgVelocity. calculating by deafult the the average velocity of each lentgh line, the plot the avage velocity profile along the width. note: the raw data may be uneven along the image! ';
 str_FlowRate = 'Flow Rate: Only in y direction';
-str_Density = 'Density';
+str_Density = 'Density. averaging pixel intensity of sub-windows in the image. note: light issues and fluid formation may appear.';
 str_Streamline = 'Streamline';
 str_VelocityProfile = 'Velocity Profile at position 1- 100%';
 

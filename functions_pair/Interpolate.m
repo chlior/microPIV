@@ -8,12 +8,13 @@ m = handles.mFiltering;
 [m.u,m.v] = naninterp(m.u,m.v,'linear',handles.maskfile,m.x,m.y);
  set(handles.text_Status,'String','Finished');
  
- cla(handles.axes1);
+%  cla(handles.axes1);
+ 
  imshow(handles.image{1});   hold on; 
  handles.fig=quiver(m.x,m.y,m.u,m.v,handles.sizeFactor); 
- xlabel('pixel'); ylabel('pixel');
+ xlabel('x [pixel]'); ylabel('y [pixel]');
  title('Filtered And Interpolated Correlation');
- axis tight
+%  axis tight
  axis on
  zoom on
  
@@ -22,10 +23,10 @@ m = handles.mFiltering;
    datetime=strrep(datetime,':','_'); %Replace colon with underscore
    datetime=strrep(datetime,'-','_');%Replace minus sign with underscore
    datetime=strrep(datetime,' ','_');%Replace space with underscore 
-   datetime = strcat(datetime,'.mat');
+   datetimef = strcat(datetime,'_interpolate.mat');
    folder  = fullfile(handles.FolderName,'Interpolated');   
    if exist(folder)==0 mkdir(folder); end
-   FileName = fullfile(folder,datetime);
+   FileName = fullfile(folder,datetimef);
     mn = matfile(FileName, 'Writable', true);
     mn.x = m.x;
     mn.y = m.y;
@@ -35,12 +36,17 @@ m = handles.mFiltering;
     mn.pkh = m.pkh;
     handles.mInterpolate = mn;
     handles.m = m; %Global use;
-        
+         
     %save to image
-    datetime = strcat(datetime,'.png');
-    FileName = fullfile(folder,datetime)
+    datetimef = strcat(datetime,'_interpolate.png');
+    FileName = fullfile(folder,datetimef)
     a = getframe(gca)
     imwrite(a.cdata,FileName)
+    %screen capture
+    datetimef = strcat(datetime,'_interpolate_screen.png');
+    FileName = fullfile(folder,datetimef)
+    export_fig(FileName,  '-png', '-q101');
+ %%%%%%%%%%%%%%%%%%%%%%%%%%
     
     guidata(hObject, handles)
 end
