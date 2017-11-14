@@ -2,6 +2,7 @@ function [handles] = Magnitude(hObject, eventdata,handles)
     set(handles.text_Status,'String','Wait: Calculating...'); drawnow;
     
     handles.magitudeComponent = get(handles.edit1,'string')
+    handles.display = get(handles.edit2,'string')
     m = handles.mp;
     
 hold off
@@ -23,9 +24,26 @@ hold off
 %  handles.w = flipud(handles.w); %Note: magnitude function mirror about horizontal axis!
 %  m.y = flipud(m.y);
 %     m = handles.mp;
-handles.fig = pcolor(m.x,m.y,handles.w);% drawnow;%, shading flat, colorbar
+% handles.fig = pcolor(m.x,m.y,handles.w);% drawnow;%, shading flat, colorbar
 
-  set(handles.fig,'edgecolor','none');
+     switch handles.display
+        case 'magnitude'
+            handles.fig = pcolor(m.x,m.y,handles.w);% drawnow;%, shading flat, colorbar
+            set(handles.fig,'edgecolor','none');  
+        case 'contour fill'
+             handles.fig = contourf(m.x,m.y,m.v);
+        case 'gradient contour'
+            dw = gradient(handles.w)
+            handles.fig = contour(m.x,m.y,dw);
+        case 'gradient contour fill'
+            dw = gradient(handles.w)
+            handles.fig = contourf(m.x,m.y,dw);
+     end
+
+
+
+
+
   colormap(jet);
   ylabel(colorbar,'Velocity magnitude [um/sec]');
   shading flat %shading interp/flat/faceted 

@@ -3,7 +3,7 @@ function infoResults(hObject, eventdata, handles)
 strAvgVelocity =  '';
 strQ = '';
 strVelocityProfile = '';
-
+strMaxVelocity = '';
 
 if isfield(handles,'avgV')
     avgV = handles.avgV;
@@ -30,8 +30,14 @@ if isfield(handles,'Profile')
     strVelocityProfile = strcat(open,avg,maxInLine,direction,{'   '},component);
 end
 
+if isfield(handles,'mp')
+m = handles.mp;
+umax =max( max(m.u));
+vmax =max( max(m.v));
+strMaxVelocity = sprintf('Umax = %.0f, Vmax = %.0f',umax , vmax);
+end
 
-str = strcat(strAvgVelocity,strQ,strVelocityProfile)
+str = strcat(strAvgVelocity,strQ,strVelocityProfile,strMaxVelocity)
 set(handles.text_Results,'String',str);drawnow;   
 end
 

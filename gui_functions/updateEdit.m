@@ -26,9 +26,9 @@ switch caseIndex
         end
         case 'Magnitude'
             if isfield(handles,'magitudeComponent')~=1
-               SetEdit(hObject, eventdata, handles,'m')
+               SetEdit(hObject, eventdata, handles,'m','gradient contour')
             else
-               SetEdit(hObject, eventdata, handles,handles.magitudeComponent)
+               SetEdit(hObject, eventdata, handles,handles.magitudeComponent, handles.display)
             end
         case 'AvgVelocity'
             if isfield(handles,'AvgVelocity')~=1

@@ -133,7 +133,7 @@ switch char(val(str))
     case 'Magnitude'
         set(handles.text_Information,'String',doc.Magnitude);drawnow;
         if fieldCheck(hObject, eventdata, handles , char(val(str)))==1 return; end 
-        SetText(hObject, eventdata, handles,'Velocity Component')
+        SetText(hObject, eventdata, handles,'Velocity Component','Display')
         updateEdit(hObject, eventdata, handles , char(val(str)));
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 'AvgVelocity'
@@ -163,7 +163,7 @@ switch char(val(str))
     case 'VelocityProfile'
         set(handles.text_Information,'String',doc.VelocityProfile);drawnow;
         if fieldCheck(hObject, eventdata, handles , char(val(str)))==1 return; end         
-        SetText(hObject, eventdata, handles,'Velocity Component','Average Direction' , 'Channel Width' , 'Profile position [um]')
+        SetText(hObject, eventdata, handles,'Velocity Component','Line axis' , 'Channel Width' , 'Section position [%]')
         updateEdit(hObject, eventdata, handles , char(val(str)));
         set(handles.text_Status,'String','Choose Parameters'); drawnow; 
 % %     case 'function_name'

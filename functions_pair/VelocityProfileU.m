@@ -1,11 +1,11 @@
-function [handles]=VelocityProfile(hObject, eventdata, handles)
+function [handles]=VelocityProfileU(hObject, eventdata, handles)
 hold off
     set(handles.text_Status,'String','Wait: Calculating...'); drawnow;
     
-    handles.vComponent = get(handles.edit1,'string')
-    handles.vDirection = get(handles.edit2,'string')
-    handles.channelWidth = str2num(get(handles.edit3,'string'))
-    handles.profilePos = str2num(get(handles.edit4,'string'))
+%     handles.vComponent = get(handles.edit1,'string')
+%     handles.vDirection = get(handles.edit2,'string')
+%     handles.channelWidth = str2num(get(handles.edit3,'string'))
+%     handles.profilePos = str2num(get(handles.edit4,'string'))
 
 m = handles.mp;
 x = m.x; y = m.y; u = m.u; v = m.v;
@@ -21,14 +21,7 @@ switch handles.vComponent;
     ylabel('y [um]');
     umax= max(uProfile);
     handles.Profile = struct('cValues', y(:,1), 'uProfile' , uProfile , 'component' , 'u' ,'direction' , handles.vDirection , 'maxInLine' , umax , 'avg' , uavg, 'pos' , xi);
-   
-    
-    Profile = handles.Profile;
-    Q=Profile.avg*handles.channelWidth*handles.channeHeight
-    Ql=Q*5.999999999999989e-8;
-    handles.Q = struct('meter' , Q, 'liter' , Ql);
-    
-    guidata(hObject , handles)
+    guidata(hObject , handles)  
     case 'v'
     vProfile=v(:,xi);   
     handles.fig=plot(vProfile(:,1),y(:,1));  
@@ -40,4 +33,3 @@ switch handles.vComponent;
     guidata(hObject , handles)         
 end
     set(handles.text_Status,'String','Wait: Finish'); drawnow;
-    
