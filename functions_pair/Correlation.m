@@ -36,11 +36,9 @@ function [handles] = Correlation(hObject, eventdata,handles)
     cla(handles.axes1);
     set(handles.text_Status,'String','Wait: Plot Data'); drawnow;
     imshow(handles.image{1});   hold on;
+    
     handles.fig=quiver(x,y,u,v,handles.sizeFactor);
-
-% colormap(jet)
-%     w = magnitude(x,y,u,v)
-%     contourf(x,y,w)
+%      handles.fig=quiverc2wcmap(x,y,u,v);
 
     xlabel('x [pixel]'); ylabel('y [pixel]');
     title('Raw Data Correlation');

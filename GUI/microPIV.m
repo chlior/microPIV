@@ -163,7 +163,7 @@ switch char(val(str))
     case 'VelocityProfile'
         set(handles.text_Information,'String',doc.VelocityProfile);drawnow;
         if fieldCheck(hObject, eventdata, handles , char(val(str)))==1 return; end         
-        SetText(hObject, eventdata, handles,'Velocity Component','Line axis' , 'Channel Width' , 'Section position [%]')
+        SetText(hObject, eventdata, handles,'Velocity Component','Line axis' , 'Channel Width' ,'Area Length', 'nan factor', 'Section position [%]', 'Analysis')
         updateEdit(hObject, eventdata, handles , char(val(str)));
         set(handles.text_Status,'String','Choose Parameters'); drawnow; 
 % %     case 'function_name'

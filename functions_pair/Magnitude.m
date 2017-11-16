@@ -38,6 +38,8 @@ hold off
         case 'gradient contour fill'
             dw = gradient(handles.w)
             handles.fig = contourf(m.x,m.y,dw);
+         case 'vorticity'
+            vor = vorticity(m.x,m.y,m.u,m.v);  pcolor(m.x(3:end-2,3:end-2),m.y(3:end-2,3:end-2),vor);
      end
 
 

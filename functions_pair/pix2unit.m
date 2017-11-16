@@ -16,7 +16,7 @@ ChooseConvert =  get(handles.edit5,'String');
 handles.sizeFactor = str2double(get(handles.edit6,'String'));
 
 handles.channelWitdh = y_cal; %for calculations 
-
+handles.areaLength = x_cal;
 % if xp_cal==0 || x_cal==0 
 %     x_cal = y_cal;
 %     xp_cal = yp_cal;

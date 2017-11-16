@@ -19,6 +19,7 @@ function [handles] = AvgVelocity(hObject, eventdata, handles)
             hand = avgVelocityV(hObject, eventdata, handles)
             handles = hand;
             guidata(hObject , handles)
-    end  
+    end
+    
       set(handles.text_Status,'String','Finished'); drawnow;
 end
