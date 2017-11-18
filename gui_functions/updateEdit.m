@@ -24,11 +24,11 @@ switch caseIndex
         else
            SetEdit(hObject, eventdata, handles,handles.sizeFactor)
         end
-        case 'Magnitude'
+        case 'ColorMap'
             if isfield(handles,'magitudeComponent')~=1
-               SetEdit(hObject, eventdata, handles,'m','gradient contour')
+               SetEdit(hObject, eventdata, handles,'m','magnitude','no', handles.sizeFactor)
             else
-               SetEdit(hObject, eventdata, handles,handles.magitudeComponent, handles.display)
+               SetEdit(hObject, eventdata, handles,handles.magitudeComponent, handles.display,  handles.displayVector, handles.sizeFactor)
             end
         case 'AvgVelocity'
             if isfield(handles,'AvgVelocity')~=1
@@ -37,10 +37,10 @@ switch caseIndex
                SetEdit(hObject, eventdata, handles, handles.avgComponent , handles.avgDirection , handles.channelWitdh, handles.channelLength)
             end
         case 'FlowRate'
-            if isfield(handles,'channelHeight')~=1
-               SetEdit(hObject, eventdata, handles, handles.channelWitdh ,'200')
+            if isfield(handles,'flowrateChoose')~=1
+               SetEdit(hObject, eventdata, handles, handles.channelWitdh ,'200' , handles.analysis)
             else
-               SetEdit(hObject, eventdata, handles, handles.channelWidth , handles.channelHeight)
+               SetEdit(hObject, eventdata, handles, handles.channelWidth , handles.channelHeight, handles.flowrateChoose)
             end
         case 'Density'
             if isfield(handles,'densityWinW')~=1
@@ -56,10 +56,10 @@ switch caseIndex
             end
         case 'VelocityProfile'
             if isfield(handles,'profilePos')~=1
-               SetEdit(hObject, eventdata, handles, 'u','x' , handles.channelWitdh , handles.areaLength, 0.5 , 50, 'multi section' , 4)
+               SetEdit(hObject, eventdata, handles, 'u','y' , handles.channelWitdh , handles.areaLength, 0.5 , 50, 'multi section' , 4, 1)
             else
                SetEdit(hObject, eventdata, handles, handles.vComponent , handles.vDirection , handles.channelWitdh,...
-                   handles.areaLength, handles.nantrld, handles.section, handles.analysis, handles.span)
+                   handles.areaLength, handles.nantrld, handles.section, handles.analysis, handles.span,handles.channelHeight)
             end
 end
 end

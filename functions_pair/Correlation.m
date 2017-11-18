@@ -37,7 +37,7 @@ function [handles] = Correlation(hObject, eventdata,handles)
     set(handles.text_Status,'String','Wait: Plot Data'); drawnow;
     imshow(handles.image{1});   hold on;
     
-    handles.fig=quiver(x,y,u,v,handles.sizeFactor);
+    handles.fig=quiver(x,y,u,v,handles.sizeFactor); %axis tight;
 %      handles.fig=quiverc2wcmap(x,y,u,v);
 
     xlabel('x [pixel]'); ylabel('y [pixel]');

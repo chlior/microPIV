@@ -3,9 +3,12 @@ function [handles] = ColorMap(hObject, eventdata,handles)
     
     handles.magitudeComponent = get(handles.edit1,'string')
     handles.display = get(handles.edit2,'string')
+    handles.displayVector = get(handles.edit3,'string')    
+    handles.sizeFactor = str2double(get(handles.edit4,'String'))   
     m = handles.mp;
     
 hold off
+      colormap(jet);
 %  m.y = flipud(m.y);
      switch handles.magitudeComponent
         case 'm'
@@ -30,25 +33,32 @@ hold off
         case 'magnitude'
             handles.fig = pcolor(m.x,m.y,handles.w);% drawnow;%, shading flat, colorbar
             set(handles.fig,'edgecolor','none');  
+            strTitle = 'magnitude';
         case 'contour fill'
              handles.fig = contourf(m.x,m.y,m.v);
+             strTitle = 'contour fill';
         case 'gradient contour'
             dw = gradient(handles.w)
             handles.fig = contour(m.x,m.y,dw);
-        case 'gradient contour fill'
+            strTitle = 'gradient contour';
+        case 'gradient contour fill'      
             dw = gradient(handles.w)
-            handles.fig = contourf(m.x,m.y,dw);
-         case 'vorticity'
+            contourf(m.x,m.y,dw);
+            strTitle = 'gradient contour fill';
+        case 'gradient fill'           
+            dw = gradient(handles.w)
+            handles.fig =  pcolor(m.x,m.y,dw); %contourf(m.x,m.y,dw);
+        case 'vorticity'
+            strTitle = 'Vorticity';
             vor = vorticity(m.x,m.y,m.u,m.v);  pcolor(m.x(3:end-2,3:end-2),m.y(3:end-2,3:end-2),vor);
+            
+         otherwise
+          uiwait(msgbox('Write Correctly Which Analysis!')); return;            
      end
 
 
 
-
-
-  colormap(jet);
-  ylabel(colorbar,'Velocity magnitude [um/sec]');
-  shading flat %shading interp/flat/faceted 
+  shading interp %shading interp/flat/faceted 
   %// get axes handle
   ax = gca;
   %// set labels
@@ -57,8 +67,20 @@ hold off
    set(ax,'YTickLabel');
    xlabel('x [um]'); ylabel('y [um]');
    title(strTitle);
-  set(handles.text_Status,'String','Magnitude: Finish'); drawnow;
-  
+   
+if strcmp(handles.display,'vorticity')   
+      ylabel(colorbar,'Vorticity [1/sec]');
+%       title('Vorticity');
+else
+
+      ylabel(colorbar,'Velocity magnitude [um/sec]');      
+end
+
+  switch handles.displayVector
+      case 'yes'
+         hold on; quiver( m.x,m.y,m.u,m.v,handles.sizeFactor,'color',[0 0 0]);
+      case 'no'
+  end
    %Save
    datetime=datestr(now);
    datetime=strrep(datetime,':','_'); %Replace colon with underscore
@@ -80,4 +102,5 @@ hold off
     FileName = fullfile(folder,datetimef)
     export_fig(FileName,  '-png', '-q101');
  %%%%%%%%%%%%%%%%%%%%%%%%%%
+   set(handles.text_Status,'String','ColorMap: Finish'); drawnow;
  end

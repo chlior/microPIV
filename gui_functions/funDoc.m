@@ -6,7 +6,7 @@ str_Mask = 'Ceate Mask (Polygon) over the image part you wan''t need.';
 str_Filtering = 'Correlation Filtering: Choose The type and order of the filter (max 3) and run. This make gaps in the data, recommended running an interpolation.';
 str_Interpolate = 'Interpolation ''linear'', filing the empty vector with interpolating vector.' ;
 str_Pixel2Unit = 'Pixel2Unit Calibration. Input: channel width (y) with ''um'' and ''pixels'' output: converting the data to real world unit [um] [um/s]; choose data to convert ''Correlation'' ''Filtering'' ''Interpolate''; If empty X parameters Y calibration will valid to X ';
-str_Magnitude = 'Velocity Magnitude; ''m'': magnitude sqrt(u^2+v^2), ''u'': u componnent , ''v'': v component';
+str_ColorMap = ' Display>> ''magnitude''__''contour fill''__''gradient contour''__''gradient contour fill''__''vorticity''__ .Velocity>> Magnitude: ''m'',component: ''u'', ''v''__  ';
 str_AvgVelocity = 'AvgVelocity. calculating by deafult the the average velocity of each lentgh line, the plot the avage velocity profile along the width. note: the raw data may be uneven along the image! ';
 str_FlowRate = 'Flow Rate: Only in y direction';
 str_Density = 'Density. averaging pixel intensity of sub-windows in the image. note: light issues and fluid formation may appear.';
@@ -15,6 +15,6 @@ str_VelocityProfile = 'Analysis: ''section'' ''multi scection'' ''avg line'' .Ve
 
 doc =struct('Open', str_Open, 'Correlation' , str_Correlation,'Mask',str_Mask, 'Filtering' ,...
     str_Filtering , 'Interpolate' , str_Interpolate, 'Pixel2Unit' , str_Pixel2Unit, ...
-    'Magnitude' , str_Magnitude, 'AvgVelocity' , str_AvgVelocity, 'FlowRate' , str_FlowRate,...
+    'ColorMap' , str_ColorMap, 'AvgVelocity' , str_AvgVelocity, 'FlowRate' , str_FlowRate,...
     'Density' , str_Density, 'Streamline' , str_Streamline,'VelocityProfile', str_VelocityProfile);
 end

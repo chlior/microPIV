@@ -27,7 +27,7 @@ addpath('../additional_functions')
 addpath('../additional_functions/altmany-export_fig-f13ef82')
 % Edit the above text to modify the response to help microPIV
 
-% Last Modified by GUIDE v2.5 09-Nov-2017 12:10:51
+% Last Modified by GUIDE v2.5 18-Nov-2017 14:49:32
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -60,7 +60,6 @@ function microPIV_OpeningFcn(hObject, eventdata, handles, varargin)
 % Choose default command line output for microPIV
 handles.output = hObject;
 
-
 % Update handles structure
 guidata(hObject, handles);
 
@@ -72,6 +71,9 @@ set(handles.text_Information,'String',doc.Open); drawnow;
 set(handles.ListboxPair,'Enable','off'); 
 set(handles.ListboxSequence,'Enable','off');
 set(handles.ListboxVideo,'Enable','off');
+% handlesReset = handles;
+handles.reset = handles;
+guidata(hObject, handles);
 
 % --- Outputs from this function are returned to the command line.
 function varargout = microPIV_OutputFcn(hObject, eventdata, handles) 
@@ -130,22 +132,22 @@ switch char(val(str))
         SetText(hObject, eventdata, handles,'Y Channel width [um]','Y Channel width [pixel]','X Calibration [um]','X Calibration [pixel]','Choose Convert Data','sizeFactor')
         SetEdit(hObject, eventdata, handles,600,1000,'','','Interpolate',3)
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
-    case 'Magnitude'
-        set(handles.text_Information,'String',doc.Magnitude);drawnow;
+    case 'ColorMap'
+        set(handles.text_Information,'String',doc.ColorMap);drawnow;
         if fieldCheck(hObject, eventdata, handles , char(val(str)))==1 return; end 
-        SetText(hObject, eventdata, handles,'Velocity Component','Display')
+        SetText(hObject, eventdata, handles,'Velocity Component','Display','Vector Display','SizeFactor')
         updateEdit(hObject, eventdata, handles , char(val(str)));
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
-    case 'AvgVelocity'
-        set(handles.text_Information,'String',doc.AvgVelocity);drawnow;
-        if fieldCheck(hObject, eventdata, handles , char(val(str)))==1 return; end 
-        SetText(hObject, eventdata, handles,'Velocity Component','Average Direction' , 'Channel Width' , 'Channel Length')
-        updateEdit(hObject, eventdata, handles , char(val(str)));
-        set(handles.text_Status,'String','Choose Parameters'); drawnow;
+%     case 'AvgVelocity'
+%         set(handles.text_Information,'String',doc.AvgVelocity);drawnow;
+%         if fieldCheck(hObject, eventdata, handles , char(val(str)))==1 return; end 
+%         SetText(hObject, eventdata, handles,'Velocity Component','Average Direction' , 'Channel Width' , 'Channel Length')
+%         updateEdit(hObject, eventdata, handles , char(val(str)));
+%         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 'FlowRate'
         set(handles.text_Information,'String',doc.FlowRate);drawnow;
         if fieldCheck(hObject, eventdata, handles , char(val(str)))==1 return; end 
-        SetText(hObject, eventdata, handles,'Channel Width','Channel Height')
+        SetText(hObject, eventdata, handles,'Channel Width','Channel Height','Flowrate Analysis')
         updateEdit(hObject, eventdata, handles , char(val(str)));
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 'Density'
@@ -163,7 +165,7 @@ switch char(val(str))
     case 'VelocityProfile'
         set(handles.text_Information,'String',doc.VelocityProfile);drawnow;
         if fieldCheck(hObject, eventdata, handles , char(val(str)))==1 return; end         
-        SetText(hObject, eventdata, handles,'Velocity Component','Line axis' , 'Channel Width' ,'Area Length', 'nan factor', 'Section position [%]', 'Analysis')
+        SetText(hObject, eventdata, handles,'Velocity Component','Line axis' , 'Channel Width' ,'Area Length', 'nan factor', 'Section position [%]', 'Analysis', '#sections', 'Channel Height')
         updateEdit(hObject, eventdata, handles , char(val(str)));
         set(handles.text_Status,'String','Choose Parameters'); drawnow; 
 % %     case 'function_name'
@@ -795,28 +797,31 @@ function PB_Reset_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 clc;
-
 cla(handles.axes1,'reset');
+resetTemp = handles.reset;
+ handles = handles.reset;
+handles.reset = resetTemp;
 
-if isfield(handles,'image')==1  handles=rmfield(handles,{'image'}); end
-if isfield(handles,'FolderName')==1  handles=rmfield(handles,{'FolderName'}); end
-if isfield(handles,'mCorrelation')==1  handles=rmfield(handles,{'mCorrelation'}); end
-if isfield(handles,'islist')==1  handles=rmfield(handles,{'islist'}); end
-if isfield(handles,'m')==1  handles=rmfield(handles,{'m'}); end
-if isfield(handles,'mp')==1  handles=rmfield(handles,{'mp'}); end
-if isfield(handles,'w')==1  handles=rmfield(handles,{'w'}); end
-if isfield(handles,'maskfile')==1  handles=rmfield(handles,{'maskfile'}); end
-if isfield(handles,'isvideo')==1  handles=rmfield(handles,{'isvideo'}); end
-if isfield(handles,'videObj')==1  handles=rmfield(handles,{'videObj'}); end
-if isfield(handles,'functionDir')==1  handles=rmfield(handles,{'functionDir'}); end
-if isfield(handles,'wins')==1  handles=rmfield(handles,{'wins'}); end
-if isfield(handles,'deltaT')==1  handles=rmfield(handles,{'deltaT'}); end
-if isfield(handles,'overlap')==1  handles=rmfield(handles,{'overlap'}); end
-if isfield(handles,'method')==1  handles=rmfield(handles,{'method'}); end
-if isfield(handles,'sizeFactor')==1  handles=rmfield(handles,{'sizeFactor'}); end
-if isfield(handles,'channelLength')==1  handles=rmfield(handles,{'channelLength'}); end
-if isfield(handles,'channelLength')==1  handles=rmfield(handles,{'channelLength'}); end
 
+% if isfield(handles,'image')==1  handles=rmfield(handles,{'image'}); end
+% if isfield(handles,'FolderName')==1  handles=rmfield(handles,{'FolderName'}); end
+% if isfield(handles,'mCorrelation')==1  handles=rmfield(handles,{'mCorrelation'}); end
+% if isfield(handles,'islist')==1  handles=rmfield(handles,{'islist'}); end
+% if isfield(handles,'m')==1  handles=rmfield(handles,{'m'}); end
+% if isfield(handles,'mp')==1  handles=rmfield(handles,{'mp'}); end
+% if isfield(handles,'w')==1  handles=rmfield(handles,{'w'}); end
+% if isfield(handles,'maskfile')==1  handles=rmfield(handles,{'maskfile'}); end
+% if isfield(handles,'isvideo')==1  handles=rmfield(handles,{'isvideo'}); end
+% if isfield(handles,'videObj')==1  handles=rmfield(handles,{'videObj'}); end
+% if isfield(handles,'functionDir')==1  handles=rmfield(handles,{'functionDir'}); end
+% if isfield(handles,'wins')==1  handles=rmfield(handles,{'wins'}); end
+% if isfield(handles,'deltaT')==1  handles=rmfield(handles,{'deltaT'}); end
+% if isfield(handles,'overlap')==1  handles=rmfield(handles,{'overlap'}); end
+% if isfield(handles,'method')==1  handles=rmfield(handles,{'method'}); end
+% if isfield(handles,'sizeFactor')==1  handles=rmfield(handles,{'sizeFactor'}); end
+% if isfield(handles,'channelLength')==1  handles=rmfield(handles,{'channelLength'}); end
+% if isfield(handles,'channelLength')==1  handles=rmfield(handles,{'channelLength'}); end
+% 
 resetEdit(hObject, eventdata, handles)
 resetText(hObject, eventdata, handles)
 set(handles.radiobutton1,'Value',0);
@@ -834,7 +839,7 @@ set(handles.text_Results,'String','');drawnow;
 
 guidata(hObject, handles)
 handles
-clear all;
+% clear all;
 
 
 % --------------------------------------------------------------------
@@ -856,39 +861,43 @@ if path_name==0
 end
 save = fullfile(path_name,FileName);
 if exist(path_name)==0 mkdir(path_name); end
-guidata(hObject, handles)
+% guidata(hObject, handles)
 
-  m = matfile(save, 'Writable', true);
-    if isfield(handles,'wins') m.wins = handles.wins; end
-    if isfield(handles,'overlap') m.overlap = handles.overlap; end
-    if isfield(handles,'deltaT') m.deltaT = handles.deltaT; end
-    if isfield(handles,'method') m.method = handles.method; end    
-    if isfield(handles,'m') m.m = handles.m; end
-    if isfield(handles,'mCorrelation') m.mCorrelation = handles.mCorrelation; end
-    if isfield(handles,'mFiltering') m.mFiltering = handles.mFiltering; end
-    if isfield(handles,'mInterpolate') m.mInterpolate = handles.mInterpolate; end
-    if isfield(handles,'channelWitdh') m.channelWitdh = handles.channelWitdh; end
-    if isfield(handles,'channelLength') m.channelLength = handles.channelLength; end
-    if isfield(handles,'cal') m.mInterpolate = handles.cal; end
-    if isfield(handles,'magitudeComponent') m.magitudeComponent = handles.magitudeComponent; end
-    if isfield(handles,'avgComponent') m.avgComponent = handles.avgComponent; end
-    if isfield(handles,'avgDirection') m.avgDirection = handles.avgDirection; end
-    if isfield(handles,'avgV') m.avgV = handles.avgV; end
-    if isfield(handles,'channeHeight') m.channeHeight = handles.channeHeight; end
-    if isfield(handles,'Q') m.Q = handles.Q; end    
-    if isfield(handles,'w') m.w = handles.w; end
-    if isfield(handles,'mphysical') m.mphysical = handles.mphysical; end
-    if isfield(handles,'mp') m.mp = handles.mp; end
-    if isfield(handles,'image') m.image = handles.image; end
-    if isfield(handles,'images') m.images = handles.images; end
-    if isfield(handles,'islist') m.islist = handles.islist; end
-    if isfield(handles,'functionDir') m.functionDir = handles.functionDir; end
-    if isfield(handles,'maskfile') m.maskfile = handles.maskfile; end
-    if isfield(handles,'sizeFactor') m.sizeFactor = handles.sizeFactor; end
-    if isfield(handles,'filterChoose') m.filterChoose = handles.filterChoose; end
-    if isfield(handles,'globtrld') m.globtrld = handles.globtrld; end
-    if isfield(handles,'loctrld') m.loctrld = handles.loctrld; end
-    if isfield(handles,'snrtrld') m.snrtrld = handles.snrtrld; end
+ m = matfile(save, 'Writable', true);
+ m.handles = handles;
+ set(handles.text_Status,'String','Saved session'); drawnow;
+% 
+%   m = matfile(save, 'Writable', true);
+%     if isfield(handles,'wins') m.wins = handles.wins; end
+%     if isfield(handles,'overlap') m.overlap = handles.overlap; end
+%     if isfield(handles,'deltaT') m.deltaT = handles.deltaT; end
+%     if isfield(handles,'method') m.method = handles.method; end    
+%     if isfield(handles,'m') m.m = handles.m; end
+%     if isfield(handles,'mCorrelation') m.mCorrelation = handles.mCorrelation; end
+%     if isfield(handles,'mFiltering') m.mFiltering = handles.mFiltering; end
+%     if isfield(handles,'mInterpolate') m.mInterpolate = handles.mInterpolate; end
+%     if isfield(handles,'channelWitdh') m.channelWitdh = handles.channelWitdh; end
+%     if isfield(handles,'channelLength') m.channelLength = handles.channelLength; end
+%     if isfield(handles,'cal') m.mInterpolate = handles.cal; end
+%     if isfield(handles,'magitudeComponent') m.magitudeComponent = handles.magitudeComponent; end
+%     if isfield(handles,'avgComponent') m.avgComponent = handles.avgComponent; end
+%     if isfield(handles,'avgDirection') m.avgDirection = handles.avgDirection; end
+%     if isfield(handles,'avgV') m.avgV = handles.avgV; end
+%     if isfield(handles,'channeHeight') m.channeHeight = handles.channeHeight; end
+%     if isfield(handles,'Q') m.Q = handles.Q; end    
+%     if isfield(handles,'w') m.w = handles.w; end
+%     if isfield(handles,'mphysical') m.mphysical = handles.mphysical; end
+%     if isfield(handles,'mp') m.mp = handles.mp; end
+%     if isfield(handles,'image') m.image = handles.image; end
+%     if isfield(handles,'images') m.images = handles.images; end
+%     if isfield(handles,'islist') m.islist = handles.islist; end
+%     if isfield(handles,'functionDir') m.functionDir = handles.functionDir; end
+%     if isfield(handles,'maskfile') m.maskfile = handles.maskfile; end
+%     if isfield(handles,'sizeFactor') m.sizeFactor = handles.sizeFactor; end
+%     if isfield(handles,'filterChoose') m.filterChoose = handles.filterChoose; end
+%     if isfield(handles,'globtrld') m.globtrld = handles.globtrld; end
+%     if isfield(handles,'loctrld') m.loctrld = handles.loctrld; end
+%     if isfield(handles,'snrtrld') m.snrtrld = handles.snrtrld; end
     clear m
 
 % set(handles.text_Status,'String','Load File'); drawnow;
@@ -900,59 +909,71 @@ function load_session_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 % uiopen('load')
 % uigetfile
-PB_Reset_Callback(hObject, eventdata, handles)
+
+% close;
+
 [FileName, path_name, FilterIndex]= uigetfile({'*.mat'}, 'Load Session');
 if path_name==0
    uiwait(msgbox('Choose Session mat file!'))
    return
 end
+ set(handles.text_Status,'String','Waite: Load and refreshing'); drawnow;
 loadf = fullfile(path_name,FileName);
 m = load(loadf);
-    if isfield(m,'wins') handles.wins = m.wins; end
-    if isfield(m,'overlap') handles.overlap = m.overlap; end
-    if isfield(m,'deltaT') handles.deltaT = m.deltaT; end
-    if isfield(m,'method') handles.method = m.method; end    
-    if isfield(m,'m') handles.m = m.m; end
-    if isfield(m,'mCorrelation') handles.mCorrelation = m.mCorrelation; end
-    if isfield(m,'mFiltering') handles.mFiltering = m.mFiltering; end
-    if isfield(m,'mInterpolate') handles.mInterpolate = m.mInterpolate; end
-    if isfield(m,'channelWitdh') handles.channelWitdh = m.channelWitdh; end
-    if isfield(m,'channelLength') handles.channelLength = m.channelLength; end
-    if isfield(m,'cal') handles.mInterpolate = m.cal; end
-    if isfield(m,'magitudeComponent') handles.magitudeComponent = m.magitudeComponent; end
-    if isfield(m,'avgComponent') handles.avgComponent = m.avgComponent; end
-    if isfield(m,'avgDirection') handles.avgDirection = m.avgDirection; end
-    if isfield(m,'avgV') handles.avgV = m.avgV; end
-    if isfield(m,'channeHeight') handles.channeHeight = m.channeHeight; end
-    if isfield(m,'Q') handles.Q = m.Q; end    
-    if isfield(m,'w') handles.w = m.w; end
-    if isfield(m,'mphysical') m.mphysical = m.mphysical; end
-    if isfield(m,'mp') handles.mp = m.mp; end
-    if isfield(m,'image') handles.image = m.image; end
-    if isfield(m,'images') handles.images = m.images; end
-    if isfield(m,'islist') handles.islist = m.islist; end
-    if isfield(m,'functionDir') handles.functionDir = m.functionDir; end
-    if isfield(m,'maskfile') handles.maskfile = m.maskfile; end
-    if isfield(m,'sizeFactor') handles.sizeFactor = m.sizeFactor; end
-    if isfield(m,'filterChoose') handles.filterChoose = m.filterChoose; end
-    if isfield(m,'globtrld') handles.globtrld = m.globtrld; end
-    if isfield(m,'loctrld') handles.loctrld = m.loctrld; end
-    if isfield(m,'snrtrld') handles.snrtrld = m.snrtrld; end
-    
-    clear m;
+% PB_Reset_Callback(hObject, eventdata, handles)
+% waitbar(0,'Waite: Load and refreshing')
+%  uiwait(msgbox('The software will open in few minutes, press ok'))
+handles = m.handles;
+refresh;
+% close
 
-  if handles.islist==1
-    set(handles.radiobutton1,'Value',1);
-    set(handles.ListboxPair,'Enable','on')
-  end
-  if handles.islist==2
-    set(handles.radiobutton2,'Value',0);
-    set(handles.ListboxSequence,'Enable','on')
-  end
-  if handles.islist==3 
-    set(handles.radiobutton3,'Value',0);
-    set(handles.ListboxVideo,'Enable','on')
-  end
+
+% m = load(loadf);
+%     if isfield(m,'wins') handles.wins = m.wins; end
+%     if isfield(m,'overlap') handles.overlap = m.overlap; end
+%     if isfield(m,'deltaT') handles.deltaT = m.deltaT; end
+%     if isfield(m,'method') handles.method = m.method; end    
+%     if isfield(m,'m') handles.m = m.m; end
+%     if isfield(m,'mCorrelation') handles.mCorrelation = m.mCorrelation; end
+%     if isfield(m,'mFiltering') handles.mFiltering = m.mFiltering; end
+%     if isfield(m,'mInterpolate') handles.mInterpolate = m.mInterpolate; end
+%     if isfield(m,'channelWitdh') handles.channelWitdh = m.channelWitdh; end
+%     if isfield(m,'channelLength') handles.channelLength = m.channelLength; end
+%     if isfield(m,'cal') handles.mInterpolate = m.cal; end
+%     if isfield(m,'magitudeComponent') handles.magitudeComponent = m.magitudeComponent; end
+%     if isfield(m,'avgComponent') handles.avgComponent = m.avgComponent; end
+%     if isfield(m,'avgDirection') handles.avgDirection = m.avgDirection; end
+%     if isfield(m,'avgV') handles.avgV = m.avgV; end
+%     if isfield(m,'channeHeight') handles.channeHeight = m.channeHeight; end
+%     if isfield(m,'Q') handles.Q = m.Q; end    
+%     if isfield(m,'w') handles.w = m.w; end
+%     if isfield(m,'mphysical') m.mphysical = m.mphysical; end
+%     if isfield(m,'mp') handles.mp = m.mp; end
+%     if isfield(m,'image') handles.image = m.image; end
+%     if isfield(m,'images') handles.images = m.images; end
+%     if isfield(m,'islist') handles.islist = m.islist; end
+%     if isfield(m,'functionDir') handles.functionDir = m.functionDir; end
+%     if isfield(m,'maskfile') handles.maskfile = m.maskfile; end
+%     if isfield(m,'sizeFactor') handles.sizeFactor = m.sizeFactor; end
+%     if isfield(m,'filterChoose') handles.filterChoose = m.filterChoose; end
+%     if isfield(m,'globtrld') handles.globtrld = m.globtrld; end
+%     if isfield(m,'loctrld') handles.loctrld = m.loctrld; end
+%     if isfield(m,'snrtrld') handles.snrtrld = m.snrtrld; end
+%     
+%     clear m;
+% 
+%   if handles.islist==1
+%     set(handles.radiobutton1,'Value',1);
+%     set(handles.ListboxPair,'Enable','on')
+%   end
+%   if handles.islist==2
+%     set(handles.radiobutton2,'Value',0);
+%     set(handles.ListboxSequence,'Enable','on')
+%   end
+%   if handles.islist==3 
+%     set(handles.radiobutton3,'Value',0);
+%     set(handles.ListboxVideo,'Enable','on')
+%   end
 
 
 % --- Executes on key press with focus on PB_Run and none of its controls.
@@ -963,3 +984,38 @@ function PB_Run_KeyPressFcn(hObject, eventdata, handles)
 %	Character: character interpretation of the key(s) that was pressed
 %	Modifier: name(s) of the modifier key(s) (i.e., control, shift) pressed
 % handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function PrintScreen_Callback(hObject, eventdata, handles)
+% hObject    handle to PrintScreen (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+if isfield(handles,'FolderName')==0
+    handles.FolderName = 'Temp'
+end
+   %Save
+   datetime=datestr(now);
+   datetime=strrep(datetime,':','_'); %Replace colon with underscore
+   datetime=strrep(datetime,'-','_');%Replace minus sign with underscore
+   datetime=strrep(datetime,' ','_');%Replace space with underscore 
+   folderf  = fullfile(handles.FolderName,'Print Screen');   
+   if exist(folderf)==0 mkdir(folderf); end
+  
+
+      %save to image
+   folder  = fullfile(folderf,'Screen');   
+   if exist(folder)==0 mkdir(folder); end
+    datetimef = strcat(datetime,'_PrintScreen.png');
+    FileName = fullfile(folder,datetimef)
+    a = getframe(gca)
+    imwrite(a.cdata,FileName)
+    
+    %screen capture
+      folder  = fullfile(folderf,'Plot');   
+   if exist(folder)==0 mkdir(folder); end
+   
+    datetimef = strcat(datetime,'_Plot.png');
+    FileName = fullfile(folder,datetimef)
+    export_fig(FileName,  '-png', '-q101');
+ %%%%%%%%%%%%%%%%%%%%%%%%%%

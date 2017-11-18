@@ -23,8 +23,8 @@ elseif strcmp(handles.functionDir,'Pixel2Unit')
     hand = pix2unit(hObject, eventdata, handles);
     handles = hand;
     guidata(hObject , handles) 
-elseif strcmp(handles.functionDir,'Magnitude') 
-    hand = Magnitude(hObject, eventdata, handles);
+elseif strcmp(handles.functionDir,'ColorMap') 
+    hand = ColorMap(hObject, eventdata, handles);
     handles = hand;
     guidata(hObject , handles) 
 elseif strcmp(handles.functionDir,'AvgVelocity') 
