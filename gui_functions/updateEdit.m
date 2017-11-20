@@ -56,7 +56,7 @@ switch caseIndex
             end
         case 'VelocityProfile'
             if isfield(handles,'profilePos')~=1
-               SetEdit(hObject, eventdata, handles, 'u','y' , handles.channelWitdh , handles.areaLength, 0.5 , 50, 'multi section' , 4, 1)
+               SetEdit(hObject, eventdata, handles, 'u','y' , handles.channelWitdh , handles.areaLength, 'nan' , 50, 'multi section' , 4, 1)
             else
                SetEdit(hObject, eventdata, handles, handles.vComponent , handles.vDirection , handles.channelWitdh,...
                    handles.areaLength, handles.nantrld, handles.section, handles.analysis, handles.span,handles.channelHeight)

@@ -6,20 +6,20 @@ function [handles] = ColorMap(hObject, eventdata,handles)
     handles.displayVector = get(handles.edit3,'string')    
     handles.sizeFactor = str2double(get(handles.edit4,'String'))   
     m = handles.mp;
-    
+
 hold off
       colormap(jet);
 %  m.y = flipud(m.y);
      switch handles.magitudeComponent
         case 'm'
-        handles.w=magnitude(m.x,m.y,m.u,m.v);
-        strTitle = 'Velocity magnitude';
+        handles.w= magnitude(m.x,m.y,m.u,m.v);
+        strTitle = ' Velocity Magnitude';
         case 'u'
         handles.w=magnitude(m.x,m.y,m.u,m.v.*0);
-        strTitle = 'Velocity x component';
+        strTitle = ' Velocity x component';
         case 'v'
         handles.w=magnitude(m.x,m.y,m.u.*0,m.v);
-        strTitle = 'Velocity y component';
+        strTitle = ' Velocity y component';
          otherwise
             set(handles.text_Status,'String','Magnitude: fix and run again'); drawnow;
             uiwait(msgbox('Choose correct component')); return;
@@ -33,18 +33,18 @@ hold off
         case 'magnitude'
             handles.fig = pcolor(m.x,m.y,handles.w);% drawnow;%, shading flat, colorbar
             set(handles.fig,'edgecolor','none');  
-            strTitle = 'magnitude';
+            strTitle = strcat('Magnitude  -',strTitle);
         case 'contour fill'
              handles.fig = contourf(m.x,m.y,m.v);
-             strTitle = 'contour fill';
+             strTitle = strcat('Contour fill  -',strTitle);
         case 'gradient contour'
             dw = gradient(handles.w)
             handles.fig = contour(m.x,m.y,dw);
-            strTitle = 'gradient contour';
+            strTitle = strcat('Gradient contour  -',strTitle);
         case 'gradient contour fill'      
             dw = gradient(handles.w)
             contourf(m.x,m.y,dw);
-            strTitle = 'gradient contour fill';
+            strTitle = strcat('Gradient contour fill -',strTitle);
         case 'gradient fill'           
             dw = gradient(handles.w)
             handles.fig =  pcolor(m.x,m.y,dw); %contourf(m.x,m.y,dw);
@@ -71,8 +71,9 @@ hold off
 if strcmp(handles.display,'vorticity')   
       ylabel(colorbar,'Vorticity [1/sec]');
 %       title('Vorticity');
+elseif strcmp(handles.display,'gradient contour fill') ||  strcmp(handles.display,'gradient contour') 
+      ylabel(colorbar,'Acceleration magnitude [um^2/sec]');
 else
-
       ylabel(colorbar,'Velocity magnitude [um/sec]');      
 end
 
@@ -95,8 +96,16 @@ end
       %save to image
     datetimef = strcat(datetime,'Magnitude.png');
     FileName = fullfile(folder,datetimef)
-    a = getframe(gca)
-    imwrite(a.cdata,FileName)
+% %     a = axes(handles.axes1);    
+% %     a = getframe(gca)
+% %     imwrite(a.cdata,FileName)
+% set(gcf, 'Color', 'none'); %'w'
+set(gcf, 'Color', 'w');
+a = handles.axes1;
+% % set(a, 'Color', 'none'); %'w'
+b = a.Children;
+     export_fig(a,FileName,  '-png', '-q101');
+     set(gcf, 'Color', [0.94 0.94 0.94]);
     %screen capture
     datetimef = strcat(datetime,'_magnitude.png');
     FileName = fullfile(folder,datetimef)

@@ -1004,15 +1004,21 @@ end
   
 
       %save to image
-   folder  = fullfile(folderf,'Screen');   
+   folder  = fullfile(folderf,'Plot');   
    if exist(folder)==0 mkdir(folder); end
     datetimef = strcat(datetime,'_PrintScreen.png');
     FileName = fullfile(folder,datetimef)
-    a = getframe(gca)
-    imwrite(a.cdata,FileName)
+% %     a = getframe(gca)
+% %     imwrite(a.cdata,FileName)
+    set(gcf, 'Color', 'w');
+a = handles.axes1;
+b = a.Children;
+     export_fig(a,FileName,  '-png', '-q101');
+     set(gcf, 'Color', [0.94 0.94 0.94]);
+    
     
     %screen capture
-      folder  = fullfile(folderf,'Plot');   
+      folder  = fullfile(folderf,'Screen');   
    if exist(folder)==0 mkdir(folder); end
    
     datetimef = strcat(datetime,'_Plot.png');

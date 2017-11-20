@@ -6,23 +6,39 @@ function [handles] = FlowRate(hObject, eventdata, handles)
     handles.channeHeight = str2num(get(handles.edit2,'string'))
     handles.flowrateChoose = get(handles.edit3,'string')
  hold off   
+    vp =handles.vp;
     
 switch handles.flowrateChoose
-    case 'section'   
-   
-   
+    case 'section'           
+        if isfield(handles.vp,'uavgS')   
+            Q = vp.uavgS.*handles.channelWidth*handles.channelHeight; % Q [um^3/sec]
+            QL = Q*60*10e-9; % Q [ul/min]
+            plot(vp.section,QL,'-o','MarkerSize',3,'LineWidth',3);% set(gca, 'ydir', 'reverse');
+            title(sprintf('Flowrate (component %s)[ul/min]',handles.Component)); xlabel('x [um]'); ylabel('[ul/min]');
+        else
+            uiwait(msgbox('Run VelocityProfile on section analysis first!'));
+        end
     case 'multi section'
-        vp =handles.vp;
+       if isfield(handles.vp,'uavgMS')
         Q = vp.uavgMS.*handles.channelWidth*handles.channelHeight; % Q [um^3/sec]
         QL = Q*60*10e-9; % Q [ul/min]
         plot(vp.runx,QL,'-o','MarkerSize',3,'LineWidth',3);% set(gca, 'ydir', 'reverse');
         title(sprintf('Flowrate (component %s)[ul/min]',handles.Component)); xlabel('x [um]'); ylabel('[ul/min]');
+        else
+            uiwait(msgbox('Run VelocityProfile on section analysis first!'));
+       end
     case 'avg line'
-        
+        Q = vp.uavgAVG.*handles.channelWidth*handles.channelHeight; % Q [um^3/sec]
+        QL = Q*60*10e-9; % Q [ul/min]
+        plot(vp.runx,QL,'-o','MarkerSize',3,'LineWidth',3);% set(gca, 'ydir', 'reverse');
+        title(sprintf('Flowrate (component %s)[ul/min]',handles.Component)); xlabel('x [um]'); ylabel('[ul/min]');
     otherwise
-       
+                uiwait(msgbox('Write Correctly Which Analysis!')); return;   
 end
-    
+   
+
+
+
 % switch handles.flowrateChoose
 %     case 'section'
 %         

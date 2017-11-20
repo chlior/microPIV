@@ -13,7 +13,7 @@ function [handles]=VelocityProfile(hObject, eventdata, handles)
     handles.analysis = get(handles.edit7,'string')
     handles.span = str2num(get(handles.edit8,'string'))
     handles.channelHeight = str2num(get(handles.edit9,'string'))
-
+    
     m = handles.mp;
     x = m.x; y = m.y; u = m.u; v = m.v;
  if isfield(handles,'profile')==0  
@@ -78,8 +78,8 @@ profile = Vnan(:,i)+ zeroProfile;
 umax(k) = max(Vnan(:,i));
 uavg(k) = nanmean(Vnan(:,i)); 
 vp.runx(k) = x(round(size(y,1)/2),i);
-plot(profile,y(:,i),'-o','MarkerSize',3,'LineWidth',3); set(gca, 'ydir', 'reverse'); hold on
-plot(zeroProfile,y(:,i),'-r'); hold on
+plot(profile,y(:,i),'-ob','MarkerSize',1,'LineWidth',2); set(gca, 'ydir', 'reverse'); hold on
+plot(zeroProfile,y(:,i),'-k'); hold on
 xlabel(sprintf('Velocity trend %s[um/sec]',handles.Component)); ylabel('y [um]');
 j = 1;k = k+1;
 end
@@ -108,8 +108,8 @@ umax(k) = max(Vnan(i,:));
 uavg(k) = nanmean(Vnan(i,:));  
 vp.runy(k) = y(i,round(size(x,2)/2));
 
-plot(x(i,:),profile,'-o','MarkerSize',3);  hold on;
-plot(x(i,:),zeroProfile,'-r'); hold on
+plot(x(i,:),profile,'-ob','MarkerSize',1,'LineWidth',2);  hold on;
+plot(x(i,:),zeroProfile,'-k'); hold on
 ylabel(sprintf('Velocity trend %s[um/sec]',handles.Component)); xlabel('x [um]');
 j = 1;k = k+1;
 end

@@ -12,7 +12,8 @@ function [handles] = Correlation(hObject, eventdata,handles)
     [x,y,u,v,snr,pkh] = matpiv(handles.image{1},handles.image{2},...
         handles.wins,handles.deltaT,handles.overlap,handles.method,[],handles.maskfile);
     elapsedTime = toc(timerVal)
-  
+  if y(end,:) == 0; y(end,:) = []; x(end,:) = []; v(end,:) = []; u(end,:) = [];  end
+    if x(:,end) == 0; x(:,end) = []; y(:,end) = []; v(:,end) = []; u(:,end) = []; end
    %Save
    datetime=datestr(now);
    datetime=strrep(datetime,':','_'); %Replace colon with underscore
@@ -59,9 +60,14 @@ function [handles] = Correlation(hObject, eventdata,handles)
     %save to image   
     datetimef = strcat(datetime,'.png');
     FileName = fullfile(folder,datetimef)
-    a = getframe(gca);
-    imwrite(a.cdata,FileName);
-
+% %     a = getframe(gca);
+% %     imwrite(a.cdata,FileName);
+    set(gcf, 'Color', 'w');
+a = handles.axes1;
+b = a.Children;
+     export_fig(a,FileName,  '-png', '-q101');
+     set(gcf, 'Color', [0.94 0.94 0.94]);
+    
     %screen capture
 %     saveas(handles.figure1,'myFigureA' , 'png'); %     saveas(gcf, 'test.png');
     datetimef = strcat(datetime,'_screen.png');
