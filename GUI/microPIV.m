@@ -225,73 +225,75 @@ resetText(hObject, eventdata, handles)
 doc = funDoc();
 val = get(handles.ListboxSequence, 'string'); % Determine the selected data set.
 str = get(handles.ListboxSequence, 'Value');
-switch str;
-    case 1
+handles.functionDir = char(val(str));
+
+switch char(val(str))
+    case 'Correlation'
         set(handles.text_Information,'String',doc.Correlation);drawnow;
 %         if fieldCheck(hObject, eventdata, handles, 1)==1 return; end
         handles.functionDir = val(str)
         SetText(hObject, eventdata, handles,'Window Size','Time Gap','Overlap','Method','SizeFactor','fps Hz')
-        updateEdit_Seq(hObject, eventdata, handles , 1);
+        updateEdit_Seq(hObject, eventdata, handles , 'Correlation');
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
-    case 2 
+    case 'Mask' 
         set(handles.text_Information,'String',doc.Mask);drawnow;
 %         if fieldCheck(hObject, eventdata, handles , 2)==1 return; end
         handles.functionDir = val(str)
-    case 3
+    case 'Filtering'
         set(handles.text_Information,'String',doc.Filtering);drawnow;
         if fieldCheck(hObject, eventdata, handles , 3)==1 return; end
         handles.functionDir = val(str)
         SetText(hObject, eventdata, handles,'Choose Filter','Global Threshold(1)','Local Threshold(2)','Snr Threshold(3)','SizeFactor')
-        updateEdit(hObject, eventdata, handles , 3);        
+        updateEdit_Seq(hObject, eventdata, handles , 'Filtering');        
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
-    case 4
+    case 'Interpolate'
         set(handles.text_Information,'String',doc.Interpolate);drawnow;
         if fieldCheck(hObject, eventdata, handles , 4)==1 return; end        
         handles.functionDir = val(str)
         SetText(hObject, eventdata, handles,'SizeFactor')
-        updateEdit(hObject, eventdata, handles , 4);
+        updateEdit_Seq(hObject, eventdata, handles , 'Interpolate');
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
-    case 5
+    case 'Pixel2Unit'
         set(handles.text_Information,'String',doc.Pixel2Unit);drawnow;
         if fieldCheck(hObject, eventdata, handles , 5)==1 return; end 
         handles.functionDir = val(str)
         SetText(hObject, eventdata, handles,'Channel width [um]','Channel width [pixel]','Y Calibration distance [um]','Y Calibration distance','Choose Convert Data','sizeFactor')
         SetEdit(hObject, eventdata, handles,600,1000,600,1000,'Interpolate',3)
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
-    case 6
-        set(handles.text_Information,'String',doc.Magnitude);drawnow;
+    case 'ColorMap'
+        set(handles.text_Information,'String',doc.ColorMap);drawnow;
         if fieldCheck(hObject, eventdata, handles , 6)==1 return; end 
         handles.functionDir = val(str)
         SetText(hObject, eventdata, handles,'Velocity Component')
-        updateEdit(hObject, eventdata, handles , 6);
+        updateEdit_Seq(hObject, eventdata, handles , 'ColorMap');
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
-    case 7
-        set(handles.text_Information,'String',doc.AvgVelocity);drawnow;
+    case 'VelocityProfile'
+        set(handles.text_Information,'String',doc.VelocityProfile);drawnow;
         if fieldCheck(hObject, eventdata, handles , 7)==1 return; end 
         handles.functionDir = val(str)
         SetText(hObject, eventdata, handles,'Velocity Component','Average Direction' , 'Channel Width' , 'Channel Length')
-        updateEdit(hObject, eventdata, handles , 7);
+        updateEdit_Seq(hObject, eventdata, handles , 'VelocityProfile');
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
-    case 8
+    case 'FlowRate'
         set(handles.text_Information,'String',doc.FlowRate);drawnow;
         if fieldCheck(hObject, eventdata, handles , 8)==1 return; end 
         handles.functionDir = val(str)
         SetText(hObject, eventdata, handles,'Channel Width','Channel Height')
-        updateEdit(hObject, eventdata, handles , 8);
+        updateEdit_Seq(hObject, eventdata, handles , 'FlowRate');
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
-    case 9
+    case 'Density'
         set(handles.text_Information,'String',doc.Density);drawnow;
         if fieldCheck(hObject, eventdata, handles , 9)==1 return; end 
         handles.functionDir = val(str)
         SetText(hObject, eventdata, handles,'Window Width','Window Height')
-        updateEdit(hObject, eventdata, handles , 9);
+        updateEdit_Seq(hObject, eventdata, handles , 'Density');
         set(handles.text_Status,'String','Choose Parameters'); drawnow;        
-    case 10
+    case 'Streamline'
         set(handles.text_Information,'String',doc.Streamline);drawnow;
         if fieldCheck(hObject, eventdata, handles , 10)==1 return; end         
         handles.functionDir = val(str)
         SetText(hObject, eventdata, handles,'Streamline Gap')
-        updateEdit(hObject, eventdata, handles , 10);
+        updateEdit_Seq(hObject, eventdata, handles , 'Streamline');
         set(handles.text_Status,'String','Choose Parameters'); drawnow; 
         
 end

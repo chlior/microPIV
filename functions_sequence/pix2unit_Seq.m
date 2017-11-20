@@ -19,14 +19,14 @@ handles.channelWitdh = y_cal; %for calculations
 
 switch ChooseConvert
     case 'Correlation'
-        mpix = handles.mCorrelation;
+        mpix = handles.mSeq;
         1
     case 'Filtering'
         if isfield(handles,'mFiltering')
             mpix = handles.mFiltering;
             2
         else
-            mpix = handles.mCorrelation;
+            mpix = handles.mSeq;
             1
         end
     case 'Interpolate'
@@ -37,7 +37,7 @@ switch ChooseConvert
             mpix = handles.mFiltering;
             2
         else
-            mpix = handles.mCorrelation;
+            mpix = handles.mSeq;
             1
         end
     otherwise
@@ -46,10 +46,10 @@ switch ChooseConvert
 end
 
 
-xp = mpix.x;
-yp = mpix.y;
-up = mpix.u;
-vp = mpix.v;
+xp = mpix{1,1}.x;
+yp = mpix{1,1}.y;
+up = mpix{1,1}.u;
+vp = mpix{1,1}.v;
 
 
 cal = Calibration(x_cal, xp_cal, y_cal,  yp_cal);
