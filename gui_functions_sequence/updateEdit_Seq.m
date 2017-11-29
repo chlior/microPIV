@@ -1,12 +1,18 @@
-function updateEdit(hObject, eventdata, handles , caseIndex)      
+function updateEdit_Seq(hObject, eventdata, handles , caseIndex)      
 
 switch caseIndex
         case 'Correlation'
           if isfield(handles,'wins')~=1
-              SetEdit(hObject, eventdata, handles,64,1,0.5,'single',5,4)        
+              SetEdit(hObject, eventdata, handles,64,1,0.5,'single',1,0.5,'yes')        
           else
-              SetEdit(hObject, eventdata, handles,handles.wins,handles.deltaT,handles.overlap,handles.method,handles.sizeFactor,handles.fps)
+              SetEdit(hObject, eventdata, handles,handles.wins,handles.deltaT,handles.overlap,handles.method,handles.sizeFactor,handles.fps,handles.display)
           end
+        case 'Pixel2Unit'
+          if isfield(handles,'mpSeq')~=1
+              SetEdit(hObject, eventdata, handles,handles.fps)        
+          else
+              SetEdit(hObject, eventdata, handles,handles.fps)
+          end  
         case 'Filtering'
             if isfield(handles,'filterChoose')~=1
                SetEdit(hObject, eventdata, handles,'1,2,3',2.4,1.3,1.2,5)
@@ -21,9 +27,9 @@ switch caseIndex
         end
         case 'ColorMap'
             if isfield(handles,'magitudeComponent')~=1
-               SetEdit(hObject, eventdata, handles,'m')
+               SetEdit(hObject, eventdata, handles,'m','magnitude','no', handles.sizeFactor,handles.fps)
             else
-               SetEdit(hObject, eventdata, handles,handles.magitudeComponent)
+               SetEdit(hObject, eventdata, handles,handles.magitudeComponent, handles.display,  handles.displayVector, handles.sizeFactor,handles.fps)
             end
         case 'VelocityProfile'
             if isfield(handles,'AvgVelocity')~=1
@@ -49,5 +55,12 @@ switch caseIndex
             else
                SetEdit(hObject, eventdata, handles, handles.streamlineGap)
             end
+        case 'TimeFunction'
+            if isfield(handles,'TimeFunction')~=1
+               SetEdit(hObject, eventdata, handles, 'u','x' , handles.channelWitdh , 100,'nan',50,'section',4,1,100)
+            else
+               SetEdit(hObject, eventdata, handles, 'u','x' , handles.channelWitdh , 100,'nan',50,'section',4,1,100)
+            end
+            
 end
 end

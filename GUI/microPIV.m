@@ -25,6 +25,7 @@ addpath('../gui_functions')
 addpath('../gui_functions_sequence')
 addpath('../additional_functions')
 addpath('../additional_functions/altmany-export_fig-f13ef82')
+addpath('../MatPIV')    
 % Edit the above text to modify the response to help microPIV
 
 % Last Modified by GUIDE v2.5 18-Nov-2017 14:49:32
@@ -130,7 +131,7 @@ switch char(val(str))
         set(handles.text_Information,'String',doc.Pixel2Unit);drawnow;
         if fieldCheck(hObject, eventdata, handles , char(val(str)))==1 return; end 
         SetText(hObject, eventdata, handles,'Y Channel width [um]','Y Channel width [pixel]','X Calibration [um]','X Calibration [pixel]','Choose Convert Data','sizeFactor')
-        SetEdit(hObject, eventdata, handles,600,1000,'','','Interpolate',3)
+        updateEdit(hObject, eventdata, handles , char(val(str)));
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 'ColorMap'
         set(handles.text_Information,'String',doc.ColorMap);drawnow;
@@ -147,7 +148,7 @@ switch char(val(str))
     case 'FlowRate'
         set(handles.text_Information,'String',doc.FlowRate);drawnow;
         if fieldCheck(hObject, eventdata, handles , char(val(str)))==1 return; end 
-        SetText(hObject, eventdata, handles,'Channel Width','Channel Height','Flowrate Analysis')
+        SetText(hObject, eventdata, handles,'Channel Width','Channel Height','Flowrate Analysis','Velocity Component','Line axis')
         updateEdit(hObject, eventdata, handles , char(val(str)));
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 'Density'
@@ -232,7 +233,7 @@ switch char(val(str))
         set(handles.text_Information,'String',doc.Correlation);drawnow;
 %         if fieldCheck(hObject, eventdata, handles, 1)==1 return; end
         handles.functionDir = val(str)
-        SetText(hObject, eventdata, handles,'Window Size','Time Gap','Overlap','Method','SizeFactor','fps Hz')
+        SetText(hObject, eventdata, handles,'Window Size','Time Gap','Overlap','Method','SizeFactor','fps')
         updateEdit_Seq(hObject, eventdata, handles , 'Correlation');
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 'Mask' 
@@ -257,14 +258,14 @@ switch char(val(str))
         set(handles.text_Information,'String',doc.Pixel2Unit);drawnow;
         if fieldCheck(hObject, eventdata, handles , 5)==1 return; end 
         handles.functionDir = val(str)
-        SetText(hObject, eventdata, handles,'Channel width [um]','Channel width [pixel]','Y Calibration distance [um]','Y Calibration distance','Choose Convert Data','sizeFactor')
+        SetText(hObject, eventdata, handles,'Channel width [um]','Channel width [pixel]','Y Calibration distance [um]','Y Calibration distance','Choose Convert Data','sizeFactor','fps')
         SetEdit(hObject, eventdata, handles,600,1000,600,1000,'Interpolate',3)
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 'ColorMap'
         set(handles.text_Information,'String',doc.ColorMap);drawnow;
         if fieldCheck(hObject, eventdata, handles , 6)==1 return; end 
         handles.functionDir = val(str)
-        SetText(hObject, eventdata, handles,'Velocity Component')
+        SetText(hObject, eventdata, handles,'Velocity Component','fps')
         updateEdit_Seq(hObject, eventdata, handles , 'ColorMap');
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 'VelocityProfile'
@@ -295,6 +296,13 @@ switch char(val(str))
         SetText(hObject, eventdata, handles,'Streamline Gap')
         updateEdit_Seq(hObject, eventdata, handles , 'Streamline');
         set(handles.text_Status,'String','Choose Parameters'); drawnow; 
+    case 'TimeFunction'
+%         set(handles.text_Information,'String',doc.TimeFunction);drawnow;
+        if fieldCheck(hObject, eventdata, handles , 10)==1 return; end         
+        handles.functionDir = val(str)
+        SetText(hObject, eventdata, handles,'Velocity Component','Average Direction' , 'Channel Width' , 'Channel Length', 'nan', 'section','analysis','span','height','fps')
+        updateEdit_Seq(hObject, eventdata, handles , 'Streamline');
+        set(handles.text_Status,'String','Choose Parameters'); drawnow;       
         
 end
 guidata(hObject, handles)
@@ -542,6 +550,74 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
+function edit5_Callback(hObject, eventdata, handles)
+% hObject    handle to edit5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit5 as text
+%        str2double(get(hObject,'String')) returns contents of edit5 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit5_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit6_Callback(hObject, eventdata, handles)
+% hObject    handle to edit6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit6 as text
+%        str2double(get(hObject,'String')) returns contents of edit6 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit6_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit7_Callback(hObject, eventdata, handles)
+% hObject    handle to edit7 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit7 as text
+%        str2double(get(hObject,'String')) returns contents of edit7 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit7_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit7 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
 
 function edit8_Callback(hObject, eventdata, handles)
 % hObject    handle to edit8 (see GCBO)
@@ -634,30 +710,6 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-
-function edit5_Callback(hObject, eventdata, handles)
-% hObject    handle to edit5 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of edit5 as text
-%        str2double(get(hObject,'String')) returns contents of edit5 as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function edit5_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit5 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
 function edit12_Callback(hObject, eventdata, handles)
 % hObject    handle to edit12 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -670,52 +722,6 @@ function edit12_Callback(hObject, eventdata, handles)
 % --- Executes during object creation, after setting all properties.
 function edit12_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to edit12 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function edit6_Callback(hObject, eventdata, handles)
-% hObject    handle to edit6 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of edit6 as text
-%        str2double(get(hObject,'String')) returns contents of edit6 as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function edit6_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit6 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function edit7_Callback(hObject, eventdata, handles)
-% hObject    handle to edit7 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of edit7 as text
-%        str2double(get(hObject,'String')) returns contents of edit7 as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function edit7_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit7 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 

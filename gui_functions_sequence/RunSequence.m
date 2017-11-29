@@ -41,9 +41,14 @@ elseif strcmp(handles.functionDir,'Streamline')
     Streamline(hObject, eventdata, handles);
 
 elseif strcmp(handles.functionDir,'VelocityProfile') 
-    hand = VelocityProfile(hObject, eventdata, handles);
+    hand = VelocityProfile_Seq(hObject, eventdata, handles);
     handles = hand;
     guidata(hObject , handles) 
+elseif strcmp(handles.functionDir,'TimeFunction') 
+    hand = TimeFunction_Seq(hObject, eventdata, handles);
+    handles = hand;
+    guidata(hObject , handles)     
+    
 end
 infoData(hObject, eventdata, handles)
 infoResults(hObject, eventdata, handles)

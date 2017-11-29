@@ -30,7 +30,7 @@ switch choice
 %              handles.maskfile=maskGui(handles.image{1},'worldco.mat')
                set(handles.text_Status,'String','Maskfile is ready');drawnow;
             case 'no'
-               handles.maskfile=[]; 
+               handles.maskfile=[];
                set(handles.text_Status,'String','Empty mask');
         end
     case 'What is Maskfile'

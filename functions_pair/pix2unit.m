@@ -8,22 +8,22 @@ function [handles] = pix2unit(hObject, eventdata, handles)
 % x,u[um] , u,v[um/s]                                                                %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-y_cal = str2double(get(handles.edit1,'String'));
+handles.y_cal = str2double(get(handles.edit1,'String'));
 yp_cal = str2double(get(handles.edit2,'String'));
-x_cal = str2double(get(handles.edit3,'String'));
+handles.x_cal = str2double(get(handles.edit3,'String'));
 xp_cal = str2double(get(handles.edit4,'String'));
-ChooseConvert =  get(handles.edit5,'String');
+handles.ChooseConvert =  get(handles.edit5,'String');
 handles.sizeFactor = str2double(get(handles.edit6,'String'));
 
-handles.channelWitdh = y_cal; %for calculations 
-handles.areaLength = x_cal;
+handles.channelWitdh = yp_cal; %for calculations 
+handles.areaLength = xp_cal;
 % if xp_cal==0 || x_cal==0 
 %     x_cal = y_cal;
 %     xp_cal = yp_cal;
 % end
 
 
-switch ChooseConvert
+switch handles.ChooseConvert
     case 'Correlation'
         mpix = handles.mCorrelation;
         1
@@ -58,7 +58,7 @@ up = mpix.u;
 vp = mpix.v;
 
 
-cal = Calibration(x_cal, xp_cal, y_cal,  yp_cal);
+cal = Calibration(handles.x_cal, xp_cal, handles.y_cal,  yp_cal);
 handles.cal = cal;
 
 x=xp/cal.x;

@@ -5,21 +5,25 @@ strMask = '';
 strFiltering = '';
 strInterpolate = '';
 strPixel2Unit ='';
-
+strVelocityProfile ='';
+strFlowrate = '';
 
 if isfield(handles,'wins')
-    wins = sprintf('Wins = %d',handles.wins);
-    deltaT = sprintf('DeltaT = %d',handles.deltaT);
-    overlap = sprintf('Overlap = %.2f',handles.overlap);
-    method = sprintf('Method = %s',handles.method);
-    sizeFactor = sprintf('sizeFactor = %d',handles.sizeFactor);
+    wins = ['>>[Wins = ', sprintf('%d, ',handles.wins),']'];
+    deltaT = sprintf('[DeltaT = %d]',handles.deltaT);
+    overlap = sprintf('[Overlap = %.2f]',handles.overlap);
+    method = sprintf('[Method = %s]',handles.method);
+    sizeFactor = sprintf('[sizeFactor = %d]',handles.sizeFactor);
     strCorrelation = strcat(wins,{'   '},deltaT,{'   '},overlap,{'   '},method,{'   '},sizeFactor);
+%     strCorrelation = strcat(wins,deltaT,overlap,method,sizeFactor);
 end
 if isfield(handles,'maskfile')
-    strMask = sprintf('\nMask = Yes');
+    if isempty(handles.maskfile)~=1
+    strMask = sprintf('\n>>Mask = Yes');
+    end
 end
 if isfield(handles,'filterChoose')
-    filterChoose0 = sprintf('\nFilters Choosed = ');
+    filterChoose0 = sprintf('\n>>Filters Choosed = ');
     filterChoose1 = sprintf('%s   ',handles.filterChoose);
     filterChoose2 = sprintf('.');
     filterChoose = strcat(filterChoose0,filterChoose1,filterChoose2);
@@ -29,12 +33,18 @@ if isfield(handles,'filterChoose')
     strFiltering = strcat(filterChoose,globtrld,loctrld,snrtrld);
 end
 if isfield(handles,'mInterpolate')
-    strInterpolate = sprintf('\nInterpolate = Yes');
+    strInterpolate = sprintf('\n>>Interpolate = Yes');
 end
-if isfield(handles,'mPhysical')
-    strInterpolate = sprintf('\nmPhysical = Yes');
+if isfield(handles,'mphysical')
+    strPixel2Unit = sprintf('\n>>mPhysical = Yes');
 end
-str = strcat(strCorrelation,strMask,strFiltering,strInterpolate,strPixel2Unit)
+if isfield(handles,'vp')
+    strVelocityProfile = sprintf('\n>>Vprofile = Yes');
+end
+if isfield(handles,'flowrateChoose')
+    strFlowrate = sprintf('\n>>Flowrate = Yes');
+end
+str = strcat(strCorrelation,strMask,strFiltering,strInterpolate,strPixel2Unit,strFlowrate)
 set(handles.text_Data,'String',str);drawnow;   
 end
 

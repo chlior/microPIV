@@ -8,6 +8,7 @@ function [handles] = Correlation_Seq(hObject, eventdata,handles)
     handles.method = get(handles.edit4,'String')
     handles.sizeFactor = str2double(get(handles.edit5,'String'))
     handles.fps = str2double(get(handles.edit6,'String')) 
+    handles.display = get(handles.edit7,'String')
     
        %Save
    folder  = fullfile(handles.FolderName,'Correlation_Seq');  
@@ -16,29 +17,38 @@ function [handles] = Correlation_Seq(hObject, eventdata,handles)
    datetime=strrep(datetime,':','_'); %Replace colon with underscore
    datetime=strrep(datetime,'-','_');%Replace minus sign with underscore
    datetime=strrep(datetime,' ','_');%Replace space with underscore 
-   %.mat   
-   datetime_mat = strcat(datetime,'.mat'); 
-   FileName = fullfile(folder,datetime_mat)
-   %.png
-%    FileNameIm = fullfile(folder,datetime)
+
+
    %.avi
-   datetime_avi = strcat('video_',datetime,'.avi');
-   outputVideo = VideoWriter(fullfile(folder,datetime_avi));
-   handles.fps
-   outputVideo.FrameRate = 1;%handles.fps;
+   if handles.display~='no'
+   datetimef = strcat('video_',datetime,'.avi');
+   folder_vid = fullfile(folder,'video');   
+   if exist(folder_vid)==0 mkdir(folder_vid); end
+   FileName_vid = fullfile(folder_vid,datetimef)
+
+   outputVideo = VideoWriter(FileName_vid);
+   outputVideo.FrameRate = handles.fps;
    outputVideo.Quality=100;
    open(outputVideo)
-
+    end   
+   
     timerVal = tic  
     for i=1:handles.seq
+      set(handles.text_Status,'String',sprintf('Wait: Correlate %d / %d',i,handles.seq)); drawnow;
         size(handles.images{i,1})
     [x,y,u,v,snr,pkh] = matpiv(handles.images{i},handles.images{i+1},...
         handles.wins,handles.deltaT,handles.overlap,handles.method,[],handles.maskfile);
     
       if y(end,:) == 0; y(end,:) = []; x(end,:) = []; v(end,:) = []; u(end,:) = [];  end %%%Temporary 'multin' fix
     if x(:,end) == 0; x(:,end) = []; y(:,end) = []; v(:,end) = []; u(:,end) = []; end
+ 
     
-    FileNameSeq = fullfile(FileName,i);
+       %.mat  
+   datetimef = strcat(datetime,sprintf('#%d-%d.mat',i,i+1));
+   folder_mat  = fullfile(folder,'m-file');   
+   if exist(folder_mat)==0 mkdir(folder_mat); end
+   FileName = fullfile(folder_mat,datetimef)
+%     FileNameSeq = fullfile(FileName,i);
     m = matfile(FileName, 'Writable', true);
     m.x = x;
     m.y = y;
@@ -48,31 +58,32 @@ function [handles] = Correlation_Seq(hObject, eventdata,handles)
     m.pkh = pkh;
     mSeqCorrelation{i} = m;
     clear m 
-    
+ 
+    if handles.display~='no'
     cla(handles.axes1);
-    set(handles.text_Status,'String','Wait: Plot Data'); drawnow;
+%     set(handles.text_Status,'String','Wait: Plot Data'); drawnow;
     imshow(handles.images{i});   hold on;
     handles.fig=quiver(x,y,u,v,handles.sizeFactor);
     xlabel('x [pixel]'); ylabel('y [pixel]');
     title(sprintf('Raw Data Correlation # %d-%d ',i ,i+1 ));
+    if i==1 axis tight; lim = axis ; end
     axis on
-    
+    axis(lim)
         %save to image   
    folder_seq = fullfile(folder,'seq');  
       if exist(folder_seq)==0 mkdir(folder_seq); end    
     s = sprintf('___%d-%d',i,i+1);
     FileNameSeqIm = strcat(fullfile(folder_seq,datetime),s);
-%     FileNameSeqIm = fullfile(FileNameIm,datetime_seq);
    
 %     imwrite(a.cdata,FileNameSeqIm)
     a = handles.axes1;
-    b = a.Children;
-%      d = getframe(gca)
-     d = export_fig(a,FileNameSeqIm,  '-png', '-q101');
-    
+%      a = getframe(gca)
+     d = export_fig(a,FileNameSeqIm,  '-png', '-q101');    
     writeVideo(outputVideo,d); %a.cdata)
+ end    
     end
-    close(outputVideo)   
+     if handles.display~='no'  
+    close(outputVideo); end
     elapsedTime = toc(timerVal)
   
     handles.mSeqCorrelation = mSeqCorrelation;
@@ -84,5 +95,5 @@ function [handles] = Correlation_Seq(hObject, eventdata,handles)
     
     str = sprintf('Finished Correlation , %.2fsec',elapsedTime)
     set(handles.text_Status,'String',str); drawnow;
-%     guidata(hObject, handles)
+
 end
