@@ -16,7 +16,7 @@ end
 % if isfield(handles,'maskfile')==0
 % handles.maskfile=[];
 % end
-
+timerVal = tic 
 mCorrelation = handles.mCorrelation;
 x = mCorrelation.x; y = mCorrelation.y; u = mCorrelation.u; v = mCorrelation.v; snr = mCorrelation.snr; pkh = mCorrelation.pkh;
 
@@ -60,18 +60,22 @@ imshow(handles.image{1});   hold on;
     handles.mFiltering = m;
     handles.m = m; %Global use;
      
-    
+
     %save to image
     datetimef = strcat(datetime,'_filter.png');
     FileName = fullfile(folder,datetimef)
-    a = getframe(gca)
-    imwrite(a.cdata,FileName)
+%      set(gcf, 'Color', 'w');
+     a = handles.axes1;
+     export_fig(a,FileName,  '-png', '-q101');
+%      set(gcf, 'Color', [0.94 0.94 0.94]);
+
     %screen capture
     datetimef = strcat(datetime,'filter_screen.png');
     FileName = fullfile(folder,datetimef)
     export_fig(FileName,  '-png', '-q101');
  %%%%%%%%%%%%%%%%%%%%%%%%%%
-    
- set(handles.text_Status,'String','Finished');drawnow;
+ elapsedTime = toc(timerVal)    
+str = sprintf('Finished, %.2fsec',elapsedTime)
+set(handles.text_Status,'String',str); drawnow;  
  guidata(hObject, handles)
 end

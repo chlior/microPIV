@@ -41,7 +41,7 @@ end
 if isfield(handles,'vp')
     strVelocityProfile = sprintf('\n>>Vprofile = Yes');
 end
-if isfield(handles,'flowrateChoose')
+if isfield(handles,'fr')
     strFlowrate = sprintf('\n>>Flowrate = Yes');
 end
 str = strcat(strCorrelation,strMask,strFiltering,strInterpolate,strPixel2Unit,strFlowrate)

@@ -96,15 +96,21 @@ v=vp/cal.y;
     zoom on
     set(handles.text_Status,'String','Wait: Finished'); drawnow; 
     
+    
+    
     %save to image
     datetimef = strcat(datetime,'_pix2unit.png');
     FileName = fullfile(folder,datetimef)
-    a = getframe(gca)
-    imwrite(a.cdata,FileName)
-    %screen capture
+    
+%      set(gcf, 'Color', 'w');
+     a = handles.axes1;
+     export_fig(a,FileName,  '-png', '-q101');
+%      set(gcf, 'Color', [0.94 0.94 0.94]);
+     
+         %screen capture
     datetimef = strcat(datetime,'_pix2unit_screen.png');
     FileName = fullfile(folder,datetimef)
-    export_fig(FileName,  '-png', '-q101');
+    export_fig(FileName,  '-png', '-q101');%
  %%%%%%%%%%%%%%%%%%%%%%%%%%
     
     end

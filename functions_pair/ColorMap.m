@@ -7,6 +7,7 @@ function [handles] = ColorMap(hObject, eventdata,handles)
     handles.sizeFactor = str2double(get(handles.edit4,'String'))   
     m = handles.mp;
 
+timerVal = tic 
 hold off
       colormap(jet);
 %  m.y = flipud(m.y);
@@ -45,9 +46,10 @@ hold off
             dw = gradient(handles.w)
             contourf(m.x,m.y,dw);
             strTitle = strcat('Gradient contour fill -',strTitle);
-        case 'gradient fill'           
+        case 'gradient'           
             dw = gradient(handles.w)
             handles.fig =  pcolor(m.x,m.y,dw); %contourf(m.x,m.y,dw);
+            strTitle = strcat('Gradient -',strTitle);
         case 'vorticity'
             strTitle = 'Vorticity';
             vor = vorticity(m.x,m.y,m.u,m.v);  pcolor(m.x(3:end-2,3:end-2),m.y(3:end-2,3:end-2),vor);
@@ -71,7 +73,8 @@ hold off
 if strcmp(handles.display,'vorticity')   
       ylabel(colorbar,'Vorticity [1/sec]');
 %       title('Vorticity');
-elseif strcmp(handles.display,'gradient contour fill') ||  strcmp(handles.display,'gradient contour') 
+elseif strcmp(handles.display,'gradient contour fill') ||  strcmp(handles.display,'gradient contour')...
+         ||  strcmp(handles.display,'gradient') 
       ylabel(colorbar,'Acceleration magnitude [um^2/sec]');
 else
       ylabel(colorbar,'Velocity magnitude [um/sec]');      
@@ -82,6 +85,10 @@ end
          hold on; quiver( m.x,m.y,m.u,m.v,handles.sizeFactor,'color',[0 0 0]);
       case 'no'
   end
+  
+elapsedTime = toc(timerVal)
+str = sprintf('Finished, %.2fsec,saving...',elapsedTime)
+set(handles.text_Status,'String',str); drawnow;  
    %Save
    datetime=datestr(now);
    datetime=strrep(datetime,':','_'); %Replace colon with underscore
@@ -111,5 +118,6 @@ b = a.Children;
     FileName = fullfile(folder,datetimef)
     export_fig(FileName,  '-png', '-q101');
  %%%%%%%%%%%%%%%%%%%%%%%%%%
-   set(handles.text_Status,'String','ColorMap: Finish'); drawnow;
+str = sprintf('Finished, %.2fsec',elapsedTime)
+set(handles.text_Status,'String',str); drawnow;  
  end

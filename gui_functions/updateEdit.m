@@ -43,11 +43,7 @@ switch caseIndex
 %                SetEdit(hObject, eventdata, handles, handles.avgComponent , handles.avgDirection , handles.channelWitdh, handles.channelLength)
 %             end
         case 'FlowRate'
-            if isfield(handles,'flowrateChoose')~=1
-               SetEdit(hObject, eventdata, handles, handles.channelWitdh ,'200',  handles.analysis, handles.Component , handles.Direction)
-            else
-               SetEdit(hObject, eventdata, handles, handles.channelWidth , handles.channelHeight, handles.flowrateChoose, handles.Component , handles.Direction)
-            end
+               SetEdit(hObject, eventdata, handles, handles.channelWitdh ,handles.channelHeight,  handles.analysis, handles.Component , handles.Direction)
         case 'Density'
             if isfield(handles,'densityWinW')~=1
                SetEdit(hObject, eventdata, handles, 20 , 20)

@@ -992,6 +992,14 @@ function PB_Run_KeyPressFcn(hObject, eventdata, handles)
 %	Character: character interpretation of the key(s) that was pressed
 %	Modifier: name(s) of the modifier key(s) (i.e., control, shift) pressed
 % handles    structure with handles and user data (see GUIDATA)
+% % keyPressed = eventdata.Key;
+% %  if strcmpi(keyPressed,'r')
+% %      PB_Run_Callback(hObject, eventdata, handles)
+% % %      % set focus to the button
+% % %      uicontrol(handles.pushbutton1);% 
+% % %      % call the callback
+% % %     PB_Run_Callback(handles.pushbutton1,[],handles);%   pushbutton1_Callback(handles.pushbutton1,[],handles);
+% %  end
 
 
 % --------------------------------------------------------------------

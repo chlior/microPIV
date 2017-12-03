@@ -11,7 +11,7 @@ str_AvgVelocity = 'AvgVelocity. calculating by deafult the the average velocity 
 str_FlowRate = 'Flow Rate: Only in y direction';
 str_Density = 'Density. averaging pixel intensity of sub-windows in the image. note: light issues and fluid formation may appear.';
 str_Streamline = 'Streamline';
-str_VelocityProfile = 'Analysis: ''section'' ''multi scection'' ''avg line'' .Velocity Profile at position 1- 100%';
+str_VelocityProfile = sprintf('Analysis: \nsection \nmulti scection\navg line. \nVelocity Profile at position 1- 100%');
 
 doc =struct('Open', str_Open, 'Correlation' , str_Correlation,'Mask',str_Mask, 'Filtering' ,...
     str_Filtering , 'Interpolate' , str_Interpolate, 'Pixel2Unit' , str_Pixel2Unit, ...

@@ -19,10 +19,23 @@ function [handles]=VelocityProfile(hObject, eventdata, handles)
  if isfield(handles,'vp')==0  
  vp = struct('component' ,  handles.Component ,'direction',...
     handles.Direction , 'nantrld',handles.nantrld,'section',handles.section);
-%      'uavgS' , 999, 'uavgMS' , 999,'uavgAVG' , 999);
  else
     vp = handles.vp;
  end
+ 
+    %Save
+   datetime=datestr(now);
+   datetime=strrep(datetime,':','_'); %Replace colon with underscore
+   datetime=strrep(datetime,'-','_');%Replace minus sign with underscore
+   datetime=strrep(datetime,' ','_');%Replace space with underscore 
+   datetimef = strcat(datetime,'VelocityProfile.mat');
+   folder  = fullfile(handles.FolderName,'Converted Data');   
+   if exist(folder)==0 mkdir(folder); end
+   FileName = fullfile(folder,datetimef);    
+    m = matfile(FileName, 'Writable', true);
+ 
+%%%%%%%%%%%%%%%function%%%%%%%%%%%
+timerVal = tic  
 switch handles.Component
     case 'u'
         Vnan = u;
@@ -56,39 +69,22 @@ end
 
 if handles.Component=='u' && handles.Direction=='x'
     vp.x_umaxS = umax; vp.x_uavgS = uavg;
+    m.xuAVG = profile;
+    m.xxAVG = x(i,:);
 elseif handles.Component=='v' && handles.Direction=='x'
     vp.x_vmaxS = umax; vp.x_vavgS = uavg;
+    m.xvAVG = profile;
+    m.xxAVG = x(i,:);
 elseif handles.Component=='u' && handles.Direction=='y'
     vp.y_umaxS = umax; vp.y_uavgS = uavg;
+    m.yuAVG = profile;
+    m.yyAVG = y(:,i);
 elseif handles.Component=='v' && handles.Direction=='y'
     vp.y_maxS = umax; vp.y_avgS = uavg;
+    m.yvAVG = profile;
+    m.yyAVG = y(:,i);
 end
-
-% % % % %     case 'section'
-% % % % %  
-% % % % % Vnan(Vnan == nan) = 0;
-% % % % % switch handles.Direction
-% % % % %     case 'y'
-% % % % % i = round(size(x,2)*handles.section/100); if i==0 i=1; end        
-% % % % % profile = Vnan(:,i);
-% % % % % umax = max(profile);
-% % % % % uavg = nanmean(profile);  
-% % % % % plot(profile,y(:,i),'-o','MarkerSize',3); set(gca, 'ydir', 'reverse');
-% % % % % xlabel(sprintf('Velocity %s[um/sec]',handles.Component)); ylabel('y [um]');
-% % % % %     case 'x'
-% % % % % i = round(size(y,1)*handles.section/100); if i==0 i=1; end        
-% % % % % profile = Vnan(i,:);
-% % % % % umax = max(profile);
-% % % % % uavg = nanmean(profile);   
-% % % % % plot(x(i,:),profile,'-o','MarkerSize',3); set(gca, 'ydir', 'reverse');
-% % % % % ylabel(sprintf('Velocity %s[um/sec]',handles.Component)); xlabel('x [um]');
-% % % % % end
-% % % % % 
-% % % % % if handles.Component=='u' &&  
-% % % % %     vp.umaxS = umax; vp.uavgS = uavg;
-% % % % % else
-% % % % %     vp.vmaxS = umax; vp.vavgS = uavg; end    
-
+ 
 % % % % % % % % % % % % % % % % %         
     case 'multi section'
  
@@ -115,12 +111,12 @@ xlabel(sprintf('Velocity trend %s[um/sec]',handles.Component)); ylabel('y [um]')
 j = 1;k = k+1;
 end
 
-% surf(u,x,y)
-% plot3(profile,x(:,i),y(:,i),'-o','MarkerSize',3,'LineWidth',3);
-% set(gca, 'zdir', 'reverse'); hold all;  grid on
-% set(gca, 'ydir', 'reverse');
-% xlabel(sprintf('Velocity %s[um/sec]',handles.Component)); ylabel('x [um]'); zlabel('y [um]');
-% legendInfo{j} =[' ' num2str(round(100*i/size(x,2)))]; 
+% % surf(u,x,y)
+% % plot3(profile,x(:,i),y(:,i),'-o','MarkerSize',3,'LineWidth',3);
+% % set(gca, 'zdir', 'reverse'); hold all;  grid on
+% % set(gca, 'ydir', 'reverse');
+% % xlabel(sprintf('Velocity %s[um/sec]',handles.Component)); ylabel('x [um]'); zlabel('y [um]');
+% % legendInfo{j} =[' ' num2str(round(100*i/size(x,2)))]; 
 
     case 'x'
 jump = round(size(y,1)/handles.span);  
@@ -154,12 +150,20 @@ end
 
 if handles.Component=='u' && handles.Direction=='x'
     vp.x_umaxMS = umax; vp.x_uavgMS = uavg;
+    m.XxMS = vp.runy;
+    m.xuMS = profile;
 elseif handles.Component=='v' && handles.Direction=='x'
     vp.x_vmaxMS = umax; vp.x_vavgMS = uavg;
+    m.XxMS = vp.runy;
+    m.xvMS = profile;
 elseif handles.Component=='u' && handles.Direction=='y'
     vp.y_umaxMS = umax; vp.y_uavgMS = uavg;
+    m.YyMS = vp.runx;
+    m.yuMS = profile;    
 elseif handles.Component=='v' && handles.Direction=='y'
     vp.y_maxMS = umax; vp.y_avgMS = uavg;
+    m.YyMS = vp.runx;
+    m.yvMS = profile;  
 end
 
 % legend(legendInfo)
@@ -181,7 +185,8 @@ for i = 1:size(Vnan,1)
     vectoravg(i) = nanmean(Vnan(i,:));
 end
 umax_avg = max(vectoravg);
-uavg = nanmean(vectoravg);   
+uavg = nanmean(vectoravg);
+m.analysis = 'avg line yu';
 plot(vectoravg,y(:,1),'-o','MarkerSize',3); set(gca, 'ydir', 'reverse');
 xlabel(sprintf('avg Velocity %s[um/sec]',handles.Component)); ylabel('y [um]');
     case 'x'
@@ -202,12 +207,20 @@ else
 
 if handles.Component=='u' && handles.Direction=='x'
     vp.x_umaxAVG = umax_avg; vp.x_uavgAVG = uavg;
+    m.yuAVG = vectoravg;
+    m.xxAVG = x(1,:);
 elseif handles.Component=='v' && handles.Direction=='x'
     vp.x_vmaxAVG = umax_avg; vp.x_vavgAVG = uavg;
+    m.yvAVG = vectoravg;
+    m.xxAVG = x(1,:);
 elseif handles.Component=='u' && handles.Direction=='y'
-    vp.y_umaxAVG = umax_avg; vp.y_uavgAVG = uavg;
+    vp.y_umaxAVG = umax_avg; vp.y_uavgAVG = uavg; 
+    m.yuAVG = vectoravg;
+    m.yyAVG = y(:,1);
 elseif handles.Component=='v' && handles.Direction=='y'
     vp.y_maxAVG = umax_avg; vp.y_avgAVG = uavg;
+    m.yvAVG = vectoravg;
+    m.yyAVG = y(:,1);
 end
 % % % % % % % % % % % % % 
   otherwise
@@ -220,33 +233,31 @@ vp.QL = vp.Q*60*10e-9; % Q [ul/min]
  
 handles.vp = vp;
 % guidata(hObject , handles) 
-% Plot
+    elapsedTime = toc(timerVal)
 title(sprintf('Analysis: %s. Direction: %s. Component: %s.', handles.analysis, handles.Direction, handles.Component))
 grid on
-set(handles.text_Status,'String','Finished'); drawnow;
 
-   %Save
-   datetime=datestr(now);
-   datetime=strrep(datetime,':','_'); %Replace colon with underscore
-   datetime=strrep(datetime,'-','_');%Replace minus sign with underscore
-   datetime=strrep(datetime,' ','_');%Replace space with underscore 
-   datetimef = strcat(datetime,'VelocityProfile.mat');
-   folder  = fullfile(handles.FolderName,'Converted Data');   
-   if exist(folder)==0 mkdir(folder); end
-   FileName = fullfile(folder,datetimef);    
-    m = matfile(FileName, 'Writable', true);
+
     m.x = x;
     m.y = y;
     m.u = repmat(u,1,1,1);
     m.v = repmat(v,1,1,1);
     
       %save to image
-    datetimef = strcat(datetime,'Magnitude.png');
+    datetimef = strcat(datetime,'VelocityProfile.png');
     FileName = fullfile(folder,datetimef)
-    a = getframe(gca)
-    imwrite(a.cdata,FileName)
+%      set(gcf, 'Color', 'w');
+     a = handles.axes1;
+     b = a.Children;
+     export_fig(a,FileName,  '-png', '-q101');
+%      set(gcf, 'Color', [0.94 0.94 0.94]);
+    
     %screen capture
-    datetimef = strcat(datetime,'_velocityProfile.png');
+     elapsedTime = toc(timerVal)
+    datetimef = strcat(datetime,'_VelocityProfile_screen.png');
     FileName = fullfile(folder,datetimef)
-    export_fig(FileName,  '-png', '-q101');
+    export_fig(FileName,  '-png', '-q101');%
+    
  %%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+ 

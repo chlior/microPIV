@@ -3,10 +3,11 @@ function [handles] = Interpolate(hObject, eventdata, handles)
 handles.sizeFactor = str2num(get(handles.edit1,'string'));
 set(handles.text_Status,'String','Wait: Interpolating');drawnow;
 
+timerVal = tic 
 m = handles.mFiltering;
 
 [m.u,m.v] = naninterp(m.u,m.v,'linear',handles.maskfile,m.x,m.y);
- set(handles.text_Status,'String','Finished');
+%  set(handles.text_Status,'String','Finished');
  
 %  cla(handles.axes1);
  
@@ -40,13 +41,17 @@ m = handles.mFiltering;
     %save to image
     datetimef = strcat(datetime,'_interpolate.png');
     FileName = fullfile(folder,datetimef)
-    a = getframe(gca)
-    imwrite(a.cdata,FileName)
+%      set(gcf, 'Color', 'w');
+     a = handles.axes1;
+     export_fig(a,FileName,  '-png', '-q101');
+%      set(gcf, 'Color', [0.94 0.94 0.94]);
     %screen capture
     datetimef = strcat(datetime,'_interpolate_screen.png');
     FileName = fullfile(folder,datetimef)
     export_fig(FileName,  '-png', '-q101');
  %%%%%%%%%%%%%%%%%%%%%%%%%%
-    
+  elapsedTime = toc(timerVal)
+    str = sprintf('Finished, %.2fsec',elapsedTime)
+    set(handles.text_Status,'String',str); drawnow;  
     guidata(hObject, handles)
 end
