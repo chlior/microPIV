@@ -38,8 +38,11 @@ function [handles] = Correlation(hObject, eventdata,handles)
     set(handles.text_Status,'String','Wait: Plot Data'); drawnow;
     imshow(handles.image{1});   hold on;
     
-    handles.fig=quiver(x,y,u,v,handles.sizeFactor); %axis tight;
+
+    
+    fig=quiver(x,y,u,v,handles.sizeFactor,'Color','red'); %,'MaxHeadSize',0.2); u./sqrt(u.^2+v.^2),v./sqrt(u.^2+v.^2) %axis tight; 'AutoScale','off',
 %      handles.fig=quiverc2wcmap(x,y,u,v);
+
 
     xlabel('x [pixel]'); ylabel('y [pixel]');
     title('Raw Data Correlation');

@@ -1,4 +1,4 @@
-function [handles] = RunPair(hObject, eventdata, handles)
+function [handles] = RunSequence(hObject, eventdata, handles)
 if isfield(handles,'maskfile')==0
 handles.maskfile=[];
 end
@@ -12,11 +12,11 @@ elseif strcmp(handles.functionDir,'Mask')
     handles = hand;
     guidata(hObject , handles) 
 elseif strcmp(handles.functionDir,'Filtering')  
-    [hand] = Filtering(hObject, eventdata, handles);
+    [hand] = Filtering_Seq(hObject, eventdata, handles);
     handles = hand;
     guidata(hObject , handles)   
 elseif strcmp(handles.functionDir,'Interpolate') 
-    hand = Interpolate(hObject, eventdata, handles);
+    hand = Interpolate_Seq(hObject, eventdata, handles);
     handles = hand;
     guidata(hObject , handles)  
 elseif strcmp(handles.functionDir,'Pixel2Unit') 
@@ -27,18 +27,18 @@ elseif strcmp(handles.functionDir,'ColorMap')
     hand = ColorMap_Seq(hObject, eventdata, handles);
     handles = hand;
     guidata(hObject , handles) 
-elseif strcmp(handles.functionDir,'AvgVelocity') 
-    hand = AvgVelocity(hObject, eventdata, handles);
-    handles = hand;
-    guidata(hObject , handles) 
+% elseif strcmp(handles.functionDir,'AvgVelocity') 
+%     hand = AvgVelocity(hObject, eventdata, handles);
+%     handles = hand;
+%     guidata(hObject , handles) 
 elseif strcmp(handles.functionDir,'FlowRate') 
-    hand = FlowRate(hObject, eventdata, handles);
+    hand = FlowRate_Seq(hObject, eventdata, handles);
     handles = hand;
     guidata(hObject , handles)
 elseif strcmp(handles.functionDir,'Density') 
-    Density(hObject, eventdata, handles);
+    Density_Seq(hObject, eventdata, handles);
 elseif strcmp(handles.functionDir,'Streamline')
-    Streamline(hObject, eventdata, handles);
+    Streamline_Seq(hObject, eventdata, handles);
 
 elseif strcmp(handles.functionDir,'VelocityProfile') 
     hand = VelocityProfile_Seq(hObject, eventdata, handles);

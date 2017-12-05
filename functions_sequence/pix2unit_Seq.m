@@ -14,6 +14,8 @@ y_cal = str2double(get(handles.edit3,'String'));
 yp_cal = str2double(get(handles.edit4,'String'));
 ChooseConvert =  get(handles.edit5,'String');
 handles.sizeFactor = str2double(get(handles.edit6,'String'));
+handles.fps = str2double(get(handles.edit7,'String'))
+handles.display = get(handles.edit8,'String')
 
 handles.channelWitdh = y_cal; %for calculations
 
@@ -23,7 +25,7 @@ switch ChooseConvert
         1
     case 'Filtering'
         if isfield(handles,'mFiltering')
-            mpix = handles.mFiltering;
+            mpix = handles.mSeqFiltering;
             2
         else
             mpix = handles.mSeqCorrelation;
@@ -31,10 +33,10 @@ switch ChooseConvert
         end
     case 'Interpolate'
         if isfield(handles,'mInterpolate')
-            mpix = handles.mInterpolate;
+            mpix = handles.mSeqInterpolate;
             3
         elseif isfield(handles,'mFiltering')
-            mpix = handles.mFiltering;
+            mpix = handles.mSeqFiltering;
             2
         else
             mpix = handles.mSeqCorrelation;
@@ -52,7 +54,7 @@ end
 % vp = mpix{1,1}.v;
 
 
-cal = Calibration(x_cal, xp_cal, y_cal,  yp_cal);
+cal = Calibration_Seq(x_cal, xp_cal, y_cal,  yp_cal);
 handles.cal = cal;
 
 
@@ -103,15 +105,18 @@ v{i}=mpix{1,i}.v/cal.y;
     mSeqPix2unit{i} = m;
 %     clear m 
     
+ if strcmp(handles.display,'yes')
     cla(handles.axes1);
     set(handles.text_Status,'String','Wait: Plot Data'); drawnow;
-    handles.fig=quiver(m.x,m.y,m.u,m.v,handles.sizeFactor);
+    handles.fig = quiver(m.x,m.y,m.u,m.v,handles.sizeFactor);
     xlabel('x [um]'); ylabel('y [um]');
     title(sprintf('Velocity field [um/sec] # %d-%d ',i ,i+1 ));
     if i==1 axis tight; lim = axis ; end
     axis on
     axis(lim)
-        %save to image   
+     
+    
+           %save to image   
    folder_seq = fullfile(folder,'seq');  
       if exist(folder_seq)==0 mkdir(folder_seq); end    
     s = sprintf('___%d-%d',i,i+1);
@@ -119,11 +124,22 @@ v{i}=mpix{1,i}.v/cal.y;
    
     a = handles.axes1;
     d = export_fig(a,FileNameSeqIm,  '-png', '-q101');    
+    writeVideo(outputVideo,d); %a.cdata) 
+   
+    a = handles.axes1;
+    d = export_fig(a,FileNameSeqIm,  '-png', '-q101');    
     writeVideo(outputVideo,d); %a.cdata)
-    
     end
-    close(outputVideo)   
+    end
+     if strcmp(handles.display,'yes')  
+    close(outputVideo);
+     else   
+    handles.fig=quiver(m.x,m.y,m.u,m.v,handles.sizeFactor);
+    title(sprintf('Velocity field [um/sec] example '));    
+     end
     elapsedTime = toc(timerVal)
+
+
     clear m
     handles.mSeqPix2unit = mSeqPix2unit;
     handles.mpSeq = mSeqPix2unit; %Global use;

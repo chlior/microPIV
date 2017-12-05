@@ -233,7 +233,7 @@ switch char(val(str))
         set(handles.text_Information,'String',doc.Correlation);drawnow;
 %         if fieldCheck(hObject, eventdata, handles, 1)==1 return; end
         handles.functionDir = val(str)
-        SetText(hObject, eventdata, handles,'Window Size','Time Gap','Overlap','Method','SizeFactor','fps')
+        SetText(hObject, eventdata, handles,'Window Size','Time Gap','Overlap','Method','SizeFactor','fps','Display')
         updateEdit_Seq(hObject, eventdata, handles , 'Correlation');
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 'Mask' 
@@ -244,63 +244,65 @@ switch char(val(str))
         set(handles.text_Information,'String',doc.Filtering);drawnow;
         if fieldCheck(hObject, eventdata, handles , 3)==1 return; end
         handles.functionDir = val(str)
-        SetText(hObject, eventdata, handles,'Choose Filter','Global Threshold(1)','Local Threshold(2)','Snr Threshold(3)','SizeFactor')
+        SetText(hObject, eventdata, handles,'Choose Filter','Global Threshold(1)','Local Threshold(2)','Snr Threshold(3)','SizeFactor','fps','Display')
         updateEdit_Seq(hObject, eventdata, handles , 'Filtering');        
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 'Interpolate'
         set(handles.text_Information,'String',doc.Interpolate);drawnow;
         if fieldCheck(hObject, eventdata, handles , 4)==1 return; end        
         handles.functionDir = val(str)
-        SetText(hObject, eventdata, handles,'SizeFactor')
+        SetText(hObject, eventdata, handles,'SizeFactor','fps','Display')
         updateEdit_Seq(hObject, eventdata, handles , 'Interpolate');
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 'Pixel2Unit'
         set(handles.text_Information,'String',doc.Pixel2Unit);drawnow;
         if fieldCheck(hObject, eventdata, handles , 5)==1 return; end 
         handles.functionDir = val(str)
-        SetText(hObject, eventdata, handles,'Channel width [um]','Channel width [pixel]','Y Calibration distance [um]','Y Calibration distance','Choose Convert Data','sizeFactor','fps')
-        SetEdit(hObject, eventdata, handles,600,1000,600,1000,'Interpolate',3)
+        SetText(hObject, eventdata, handles,'Channel width [um]','Channel width [pixel]',...
+            'Y Calibration distance [um]','Y Calibration distance',...
+            'Choose Convert Data','sizeFactor','fps','Display')
+        updateEdit_Seq(hObject, eventdata, handles ,'Pixel2Unit');
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 'ColorMap'
         set(handles.text_Information,'String',doc.ColorMap);drawnow;
         if fieldCheck(hObject, eventdata, handles , 6)==1 return; end 
         handles.functionDir = val(str)
-        SetText(hObject, eventdata, handles,'Velocity Component','fps')
+        SetText(hObject, eventdata, handles,'Velocity Component','no scale vector','fps','Display')
         updateEdit_Seq(hObject, eventdata, handles , 'ColorMap');
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 'VelocityProfile'
         set(handles.text_Information,'String',doc.VelocityProfile);drawnow;
         if fieldCheck(hObject, eventdata, handles , 7)==1 return; end 
         handles.functionDir = val(str)
-        SetText(hObject, eventdata, handles,'Velocity Component','Average Direction' , 'Channel Width' , 'Channel Length')
+        SetText(hObject, eventdata, handles,'Velocity Component','Average Direction' , 'Channel Width' , 'Channel Length','fps','Display')
         updateEdit_Seq(hObject, eventdata, handles , 'VelocityProfile');
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 'FlowRate'
         set(handles.text_Information,'String',doc.FlowRate);drawnow;
         if fieldCheck(hObject, eventdata, handles , 8)==1 return; end 
         handles.functionDir = val(str)
-        SetText(hObject, eventdata, handles,'Channel Width','Channel Height')
+        SetText(hObject, eventdata, handles,'Channel Width','Channel Height','fps','Display')
         updateEdit_Seq(hObject, eventdata, handles , 'FlowRate');
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 'Density'
         set(handles.text_Information,'String',doc.Density);drawnow;
         if fieldCheck(hObject, eventdata, handles , 9)==1 return; end 
         handles.functionDir = val(str)
-        SetText(hObject, eventdata, handles,'Window Width','Window Height')
+        SetText(hObject, eventdata, handles,'Window Width','Window Height','fps','Display')
         updateEdit_Seq(hObject, eventdata, handles , 'Density');
         set(handles.text_Status,'String','Choose Parameters'); drawnow;        
     case 'Streamline'
         set(handles.text_Information,'String',doc.Streamline);drawnow;
         if fieldCheck(hObject, eventdata, handles , 10)==1 return; end         
         handles.functionDir = val(str)
-        SetText(hObject, eventdata, handles,'Streamline Gap')
+        SetText(hObject, eventdata, handles,'Streamline Gap','fps','Display')
         updateEdit_Seq(hObject, eventdata, handles , 'Streamline');
         set(handles.text_Status,'String','Choose Parameters'); drawnow; 
     case 'TimeFunction'
 %         set(handles.text_Information,'String',doc.TimeFunction);drawnow;
         if fieldCheck(hObject, eventdata, handles , 10)==1 return; end         
         handles.functionDir = val(str)
-        SetText(hObject, eventdata, handles,'Velocity Component','Average Direction' , 'Channel Width' , 'Channel Length', 'nan', 'section','analysis','span','height','fps')
+        SetText(hObject, eventdata, handles,'Velocity Component','Average Direction' , 'Channel Width' , 'Channel Length', 'nan', 'section','analysis','span','height','fps','Display')
         updateEdit_Seq(hObject, eventdata, handles , 'Streamline');
         set(handles.text_Status,'String','Choose Parameters'); drawnow;       
         
@@ -419,7 +421,8 @@ images = cell(index,1);
    if ndims(im) == 3, im = rgb2gray(im); end
    images{k} = im;
    imshow(im);
-   set(handles.text_Status,'String',k); drawnow;
+%    set(handles.text_Status,'String',k); drawnow;     
+   set(handles.text_Status,'String',sprintf('Wait: Correlate %d / %d',k,NumberOfImages)); drawnow;
   end
 handles.images = images;
 set(handles.radiobutton1,'Value',0);

@@ -20,7 +20,7 @@ function [handles] = Correlation_Seq(hObject, eventdata,handles)
 
 
    %.avi
-   if handles.display~='no'
+   if strcmp(handles.display,'yes')
    datetimef = strcat('video_',datetime,'.avi');
    folder_vid = fullfile(folder,'video');   
    if exist(folder_vid)==0 mkdir(folder_vid); end
@@ -59,11 +59,12 @@ function [handles] = Correlation_Seq(hObject, eventdata,handles)
     mSeqCorrelation{i} = m;
     clear m 
  
-    if handles.display~='no'
+
+    if strcmp(handles.display,'yes')
     cla(handles.axes1);
 %     set(handles.text_Status,'String','Wait: Plot Data'); drawnow;
     imshow(handles.images{i});   hold on;
-    handles.fig=quiver(x,y,u,v,handles.sizeFactor);
+    handles.fig=quiver(x,y,u,v,handles.sizeFactor,'Color','red');
     xlabel('x [pixel]'); ylabel('y [pixel]');
     title(sprintf('Raw Data Correlation # %d-%d ',i ,i+1 ));
     if i==1 axis tight; lim = axis ; end
@@ -80,10 +81,15 @@ function [handles] = Correlation_Seq(hObject, eventdata,handles)
 %      a = getframe(gca)
      d = export_fig(a,FileNameSeqIm,  '-png', '-q101');    
     writeVideo(outputVideo,d); %a.cdata)
- end    
     end
-     if handles.display~='no'  
-    close(outputVideo); end
+    end
+     if  strcmp(handles.display,'yes')
+    close(outputVideo);
+     else 
+      imshow(handles.images{i});   hold on;   
+      handles.fig=quiver(x,y,u,v,handles.sizeFactor,'Color','red');
+      title(sprintf('Raw Data Correlation example'));     
+     end
     elapsedTime = toc(timerVal)
   
     handles.mSeqCorrelation = mSeqCorrelation;
