@@ -1,7 +1,7 @@
 function [handles] = Correlation(hObject, eventdata,handles)
 
     set(handles.text_Status,'String','Wait: Correlation...'); drawnow;
-    
+    hold off
     handles.wins = str2num(get(handles.edit1,'String'))
     handles.deltaT = str2double(get(handles.edit2,'String'))
     handles.overlap = str2double(get(handles.edit3,'String'))
@@ -26,8 +26,8 @@ function [handles] = Correlation(hObject, eventdata,handles)
     m = matfile(FileName, 'Writable', true);
     m.x = x;
     m.y = y;
-    m.u = repmat(u,1,1,1);
-    m.v = repmat(v,1,1,1);
+    m.u = repmat(real(u),1,1,1);
+    m.v = repmat(real(v),1,1,1);
     m.snr = snr;
     m.pkh = pkh;
 %     clear m

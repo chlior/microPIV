@@ -1,6 +1,7 @@
 function [handles] = Filtering(hObject, eventdata, handles)
 
 set(handles.text_Status,'String','Wait: Loading parameters'); drawnow;
+    hold off
 
 handles.filterChoose = (get(handles.edit1,'string'));
 handles.globtrld = str2num(get(handles.edit2,'string'));

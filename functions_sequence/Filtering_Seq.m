@@ -12,7 +12,7 @@ handles.display = (get(handles.edit7,'string'));
 
 
      %Save
-   folder  = fullfile(handles.FolderName,'Filtered_Correlation_Seq');  
+   folder  = fullfile(handles.FolderName,'Correlation_Seq','Filtered');  
       if exist(folder)==0 mkdir(folder); end
    datetime=datestr(now);
    datetime=strrep(datetime,':','_'); %Replace colon with underscore
@@ -45,7 +45,7 @@ mCorrelation = handles.mSeqCorrelation;
  x = mCorrelation{1,i}.x; y = mCorrelation{1,i}.y; u = mCorrelation{1,i}.u; v = mCorrelation{1,i}.v; snr = mCorrelation{1,i}.snr; pkh = mCorrelation{1,i}.pkh;
  
 imshow(handles.images{i});   hold on;
- set(handles.text_Status,'String','Wait: Filtering');drawnow;
+%  set(handles.text_Status,'String','Wait: Filtering');drawnow;
  for choice=str2num(handles.filterChoose)  
      switch choice
         case 1
@@ -64,7 +64,7 @@ imshow(handles.images{i});   hold on;
    if exist(folder_mat)==0 mkdir(folder_mat); end
    FileName = fullfile(folder_mat,datetimef)
 %     FileNameSeq = fullfile(FileName,i);
-    m = matfile(FileName, 'Writable', true);
+%     m = matfile(FileName, 'Writable', true);
     m.x = x;
     m.y = y;
     m.u = repmat(u,1,1,1);
@@ -110,7 +110,9 @@ imshow(handles.images{i});   hold on;
 
     handles.mSeqFiltering = mSeqFiltering;
     handles.mSeq = mSeqFiltering; %Global use;
- 
+    
+  mc = matfile(FileName, 'Writable', true);
+  mc.cell = mSeqFiltering;
   %%%%%%%%%%%%%%%%%%%%%%%%%%
     
     str = sprintf('Finished Filtering , %.2fsec',elapsedTime)

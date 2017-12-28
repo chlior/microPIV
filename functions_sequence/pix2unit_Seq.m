@@ -7,7 +7,7 @@ function [handles] = pix2unit(hObject, eventdata, handles)
 %%%%%%%Output:                                                                       %
 % x,u[um] , u,v[um/s]                                                                %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+   hold off
 x_cal = str2double(get(handles.edit1,'String'));
 xp_cal = str2double(get(handles.edit2,'String'));
 y_cal = str2double(get(handles.edit3,'String'));
@@ -16,8 +16,10 @@ ChooseConvert =  get(handles.edit5,'String');
 handles.sizeFactor = str2double(get(handles.edit6,'String'));
 handles.fps = str2double(get(handles.edit7,'String'))
 handles.display = get(handles.edit8,'String')
+handles.saveVideo = get(handles.edit9,'String')
 
 handles.channelWitdh = y_cal; %for calculations
+handles.areaLength = x_cal; % for setEdit
 
 switch ChooseConvert
     case 'Correlation'
@@ -62,7 +64,7 @@ handles.cal = cal;
 
 
    %Save
-   folder  = fullfile(handles.FolderName,'Converted Data_Seq','Correlation');  
+   folder  = fullfile(handles.FolderName,'Converted Data_Seq','Pixel2Unit');  
       if exist(folder)==0 mkdir(folder); end
    datetime=datestr(now);
    datetime=strrep(datetime,':','_'); %Replace colon with underscore
@@ -71,43 +73,44 @@ handles.cal = cal;
 
 
    %.avi
+   if strcmp(handles.saveVideo,'yes')  
    datetimef = strcat('video_',datetime,'.avi');
    folder_vid = fullfile(folder,'video');   
    if exist(folder_vid)==0 mkdir(folder_vid); end
    FileName_vid = fullfile(folder_vid,datetimef)
    
+   
+   
    outputVideo = VideoWriter(FileName_vid);
    handles.fps
-   outputVideo.FrameRate = 0.5;%handles.fps;
+   outputVideo.FrameRate = handles.fps;
    outputVideo.Quality=100;
    open(outputVideo)
-
+   end
    
     timerVal = tic 
     for i=1:handles.seq
-
+      set(handles.text_Status,'String',sprintf('Wait: Clibrate %d / %d',i,handles.seq)); drawnow;
 x{i}=mpix{1,1}.x/cal.x;
 y{i}=mpix{1,1}.y/cal.y;
 u{i}=mpix{1,i}.u/cal.x;
 v{i}=mpix{1,i}.v/cal.y;   
 
    %.mat  
-   datetimef = strcat(datetime,sprintf('#%d-%d.mat',i,i+1));
+   datetimef = strcat(datetime,sprintf('_pix2unit#%d.mat',i+1));
    folder_mat  = fullfile(folder,'m-file');   
    if exist(folder_mat)==0 mkdir(folder_mat); end
    FileName = fullfile(folder_mat,datetimef)
-%    FileNameSeq = fullfile(FileName,i);
-    m = matfile(FileName, 'Writable', true);
+
     m.x = x{1,1};
     m.y = y{1,1};
     m.u = u{1,i};
     m.v = v{1,i};
     mSeqPix2unit{i} = m;
-%     clear m 
+
     
  if strcmp(handles.display,'yes')
     cla(handles.axes1);
-    set(handles.text_Status,'String','Wait: Plot Data'); drawnow;
     handles.fig = quiver(m.x,m.y,m.u,m.v,handles.sizeFactor);
     xlabel('x [um]'); ylabel('y [um]');
     title(sprintf('Velocity field [um/sec] # %d-%d ',i ,i+1 ));
@@ -145,9 +148,11 @@ v{i}=mpix{1,i}.v/cal.y;
     handles.mpSeq = mSeqPix2unit; %Global use;
 
 
- 
+    mc = matfile(FileName, 'Writable', true);
+    mc.cell = mSeqPix2unit;
  %%%%%%%%%%%%%%%%%%%%%%%%%%
-    
+    load gong.mat;
+    sound(y, 5*Fs);   
     str = sprintf('Finished Converting The Data , %.2fsec',elapsedTime)
     set(handles.text_Status,'String',str); drawnow;
 

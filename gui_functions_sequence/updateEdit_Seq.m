@@ -9,9 +9,10 @@ switch caseIndex
           end
         case 'Pixel2Unit'
           if isfield(handles,'mpSeq')~=1
-              SetEdit(hObject, eventdata, handles,600,1000,'','','Interpolate',handles.sizeFactor,handles.fps,handles.display)        
+              SetEdit(hObject, eventdata, handles,600,1000,'','','Interpolate',handles.sizeFactor,handles.fps,handles.display,'no')        
           else
-              SetEdit(hObject, eventdata, handles, handles.channelWitdh , handles.y_cal,handles.areaLength,handles.x_cal,handles.ChooseConvert,handles.sizeFactor, handles.fps,handles.display)
+              cal = handles.cal; 
+              SetEdit(hObject, eventdata, handles, handles.channelWitdh , cal.y,handles.areaLength, cal.x,handles.ChooseConvert,handles.sizeFactor, handles.fps,handles.display,handles.saveVideo)
           end  
         case 'Filtering'
             if isfield(handles,'filterChoose')~=1
@@ -27,9 +28,10 @@ switch caseIndex
         end
         case 'ColorMap'
             if isfield(handles,'magitudeComponent')~=1
-               SetEdit(hObject, eventdata, handles,'m','magnitude','no', handles.sizeFactor,handles.fps,handles.display)
+               SetEdit(hObject, eventdata, handles,'m','magnitude','no', handles.sizeFactor,'yes',handles.fps,handles.display,0,100,'color','no')
             else
-               SetEdit(hObject, eventdata, handles,handles.magitudeComponent, handles.display,  handles.displayVector, handles.sizeFactor,handles.fps,handles.display)
+               SetEdit(hObject, eventdata, handles,handles.magitudeComponent, handles.analysisDisplay,  handles.displayVector,...
+                   handles.sizeFactor,handles.noScale,handles.fps,handles.display,handles.guessMinU,handles.guessMaxU,handles.sacleColor,handles.saveVideo)
             end
         case 'VelocityProfile'
             if isfield(handles,'AvgVelocity')~=1

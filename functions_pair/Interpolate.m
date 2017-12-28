@@ -2,6 +2,7 @@ function [handles] = Interpolate(hObject, eventdata, handles)
 
 handles.sizeFactor = str2num(get(handles.edit1,'string'));
 set(handles.text_Status,'String','Wait: Interpolating');drawnow;
+hold off
 
 timerVal = tic 
 m = handles.mFiltering;

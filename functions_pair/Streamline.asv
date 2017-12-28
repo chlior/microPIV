@@ -1,0 +1,22 @@
+function Streamline(hObject, eventdata, handles)
+hold off
+handles.streamlineGap = str2num(get(handles.edit1,'string')) %streamGap
+handles.streamlineGap = get(handles.edit2,'string')
+timerVal = tic  
+% m = handles.mp;
+m = handles.mp; %Only for dispaly, there for using Pixels Unit
+
+imshow(handles.image{1});
+% mstreamline(m.x,m.y,m.u,m.v,handles.streamlineGap);
+
+[sx,sy] = meshgrid(m.x(1,1),m.y(:,1));
+streamline(m.x,m.y,m.u,m.v,sx,sy)
+
+[sx,sy] = meshgrid(m.x(1,:),m.y(1,1));
+streamline(m.x,m.y,m.u,m.v,sx,sy)
+
+ elapsedTime = toc(timerVal)
+ str = sprintf('Finished Correlation , %.2fsec',elapsedTime)
+ set(handles.text_Status,'String',str); drawnow;
+
+end

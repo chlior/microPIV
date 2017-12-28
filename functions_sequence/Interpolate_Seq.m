@@ -9,7 +9,7 @@ set(handles.text_Status,'String','Wait: Interpolating');drawnow;
 
 
      %Save
-   folder  = fullfile(handles.FolderName,'Interpolatie_Correlation_Seq');  
+   folder  = fullfile(handles.FolderName,'Correlation_Seq','Interpolate');  
       if exist(folder)==0 mkdir(folder); end
    datetime=datestr(now);
    datetime=strrep(datetime,':','_'); %Replace colon with underscore
@@ -46,7 +46,7 @@ snr = mSeqFiltering{1,i}.snr;
 pkh = mSeqFiltering{1,i}.pkh;
 
 [u,v] = naninterp(u,v,'linear',handles.maskfile,x,y);
- set(handles.text_Status,'String','Finished');
+%  set(handles.text_Status,'String','Finished');
  
  cla(handles.axes1);
 %  imshow(handles.images{i});   hold on; 
@@ -60,7 +60,7 @@ pkh = mSeqFiltering{1,i}.pkh;
    folder_mat  = fullfile(folder,'m-file');   
    if exist(folder_mat)==0 mkdir(folder_mat); end
    FileName = fullfile(folder_mat,datetimef)
-    m = matfile(FileName, 'Writable', true);
+%     m = matfile(FileName, 'Writable', true);
     m.x = x;
     m.y = y;
     m.u = repmat(u,1,1,1);
@@ -105,6 +105,8 @@ pkh = mSeqFiltering{1,i}.pkh;
     handles.mSeqFiltering = mSeqInterpolate;
     handles.mSeq = mSeqInterpolate; %Global use;
  
+    mc = matfile(FileName, 'Writable', true);
+    mc.cell = mSeqInterpolate;
   %%%%%%%%%%%%%%%%%%%%%%%%%%
     
     str = sprintf('Finished Interpolate , %.2fsec',elapsedTime)

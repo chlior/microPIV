@@ -7,15 +7,16 @@ function [handles] = pix2unit(hObject, eventdata, handles)
 %%%%%%%Output:                                                                       %
 % x,u[um] , u,v[um/s]                                                                %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-handles.y_cal = str2double(get(handles.edit1,'String'));
+hold off
+handles.channelWitdh = str2double(get(handles.edit1,'String'));
 yp_cal = str2double(get(handles.edit2,'String'));
 handles.x_cal = str2double(get(handles.edit3,'String'));
 xp_cal = str2double(get(handles.edit4,'String'));
 handles.ChooseConvert =  get(handles.edit5,'String');
 handles.sizeFactor = str2double(get(handles.edit6,'String'));
 
-handles.channelWitdh = yp_cal; %for calculations 
+y_cal = handles.channelWitdh;
+handles.channelWitdh_p = yp_cal; %for calculations 
 handles.areaLength = xp_cal;
 % if xp_cal==0 || x_cal==0 
 %     x_cal = y_cal;
@@ -58,7 +59,7 @@ up = mpix.u;
 vp = mpix.v;
 
 
-cal = Calibration(handles.x_cal, xp_cal, handles.y_cal,  yp_cal);
+cal = Calibration(handles.x_cal, xp_cal, y_cal,  yp_cal);
 handles.cal = cal;
 
 x=xp/cal.x;
@@ -89,8 +90,9 @@ v=vp/cal.y;
 %        set(gca,'Ydir','reverse')
        
     handles.fig=quiver(m.x,m.y,m.u,m.v,handles.sizeFactor);
-    xlabel('x [um]'); ylabel('y [um]');
-    title('Velocity field [um/sec]');
+    xlabel('$x$ ($\mu$m)'); ylabel('$y$ ($\mu$m)');
+    title('Velocity field ($\mu$m/sec)');
+    set(gca,'fontsize',15)
     axis tight
     axis on
     zoom on
@@ -99,7 +101,7 @@ v=vp/cal.y;
     
     
     %save to image
-    datetimef = strcat(datetime,'_pix2unit.png');
+    datetimef = strcat(datetime,'_pix2unit.png'); 
     FileName = fullfile(folder,datetimef)
     
 %      set(gcf, 'Color', 'w');

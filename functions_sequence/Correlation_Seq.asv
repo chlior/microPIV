@@ -1,7 +1,7 @@
 function [handles] = Correlation_Seq(hObject, eventdata,handles)
 
     set(handles.text_Status,'String','Wait: Correlation...'); drawnow;
-   hold off    
+    
     handles.wins = str2num(get(handles.edit1,'String'))
     handles.deltaT = str2double(get(handles.edit2,'String'))
     handles.overlap = str2double(get(handles.edit3,'String'))
@@ -46,7 +46,8 @@ function [handles] = Correlation_Seq(hObject, eventdata,handles)
     
       if y(end,:) == 0; y(end,:) = []; x(end,:) = []; v(end,:) = []; u(end,:) = [];  end %%%Temporary 'multin' fix
     if x(:,end) == 0; x(:,end) = []; y(:,end) = []; v(:,end) = []; u(:,end) = []; end
-   
+ 
+    
        %.mat  
     m.x = x;
     m.y = y;
@@ -73,6 +74,7 @@ function [handles] = Correlation_Seq(hObject, eventdata,handles)
       if exist(folder_seq)==0 mkdir(folder_seq); end    
     s = sprintf('___%d-%d',i,i+1);
     FileNameSeqIm = strcat(fullfile(folder_seq,datetime),s);
+   
 %     imwrite(a.cdata,FileNameSeqIm)
     a = handles.axes1;
 %      a = getframe(gca)

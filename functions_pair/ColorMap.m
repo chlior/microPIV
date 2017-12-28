@@ -14,13 +14,13 @@ hold off
      switch handles.magitudeComponent
         case 'm'
         handles.w= magnitude(m.x,m.y,m.u,m.v);
-        strTitle = ' Velocity Magnitude';
+        strTitle = '  Magnitude';
         case 'u'
         handles.w=magnitude(m.x,m.y,m.u,m.v.*0);
-        strTitle = ' Velocity x component';
+        strTitle = '  x component';
         case 'v'
         handles.w=magnitude(m.x,m.y,m.u.*0,m.v);
-        strTitle = ' Velocity y component';
+        strTitle = '  y component';
          otherwise
             set(handles.text_Status,'String','Magnitude: fix and run again'); drawnow;
             uiwait(msgbox('Choose correct component')); return;
@@ -34,10 +34,10 @@ hold off
         case 'magnitude'
             handles.fig = pcolor(m.x,m.y,handles.w);% drawnow;%, shading flat, colorbar
             set(handles.fig,'edgecolor','none');  
-            strTitle = strcat('Magnitude  -',strTitle);
+            strTitle = strcat('Velocity  -',strTitle);
         case 'contour fill'
              handles.fig = contourf(m.x,m.y,m.v);
-             strTitle = strcat('Contour fill  -',strTitle);
+             strTitle = strcat('Contour fill Velocity  -',strTitle);
         case 'gradient contour'
             dw = gradient(handles.w)
             handles.fig = contour(m.x,m.y,dw);
@@ -67,17 +67,18 @@ hold off
   set(gca,'Ydir','reverse')
    set(ax,'XTickLabel');
    set(ax,'YTickLabel');
-   xlabel('x [um]'); ylabel('y [um]');
+   xlabel('$x$ ($\mu$m)'); ylabel('$y$ ($\mu$m)');
    title(strTitle);
+    
    
 if strcmp(handles.display,'vorticity')   
-      ylabel(colorbar,'Vorticity [1/sec]');
+      ylabel(colorbar,'\omega (sec^-1)');
 %       title('Vorticity');
 elseif strcmp(handles.display,'gradient contour fill') ||  strcmp(handles.display,'gradient contour')...
          ||  strcmp(handles.display,'gradient') 
       ylabel(colorbar,'Acceleration magnitude [um^2/sec]');
 else
-      ylabel(colorbar,'Velocity magnitude [um/sec]');      
+      ylabel(colorbar,'Velocity magnitude (\mu m/sec)');      
 end
 
   switch handles.displayVector
@@ -86,6 +87,7 @@ end
       case 'no'
   end
   
+set(gca,'fontsize',15)  
 elapsedTime = toc(timerVal)
 str = sprintf('Finished, %.2fsec,saving...',elapsedTime)
 set(handles.text_Status,'String',str); drawnow;  

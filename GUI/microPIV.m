@@ -26,6 +26,7 @@ addpath('../gui_functions_sequence')
 addpath('../additional_functions')
 addpath('../additional_functions/altmany-export_fig-f13ef82')
 addpath('../MatPIV')    
+set(0,'defaulttextinterpreter','latex')
 % Edit the above text to modify the response to help microPIV
 
 % Last Modified by GUIDE v2.5 18-Nov-2017 14:49:32
@@ -72,6 +73,20 @@ set(handles.text_Information,'String',doc.Open); drawnow;
 set(handles.ListboxPair,'Enable','off'); 
 set(handles.ListboxSequence,'Enable','off');
 set(handles.ListboxVideo,'Enable','off');
+
+username = 'micropivgui@gmail.com' % email set BEGIN
+password = '1234micropivgui1234'
+stmp_server = 'smtp.gmail.com'
+email = 'micropivgui@gmail.com'
+setpref('Internet','SMTP_Server',stmp_server);
+setpref('Internet','E_mail',email);
+props = java.lang.System.getProperties;
+props.setProperty('mail.smtp.auth','true');
+props.setProperty('mail.smtp.socketFactory.class', 'javax.net.ssl.SSLSocketFactory');
+props.setProperty('mail.smtp.socketFactory.port','465');
+setpref('Internet', 'SMTP_Username', username);
+setpref('Internet', 'SMTP_Password', password); % email set END
+
 % handlesReset = handles;
 handles.reset = handles;
 guidata(hObject, handles);
@@ -160,7 +175,7 @@ switch char(val(str))
     case 'Streamline'
         set(handles.text_Information,'String',doc.Streamline);drawnow;
         if fieldCheck(hObject, eventdata, handles , char(val(str)))==1 return; end         
-        SetText(hObject, eventdata, handles,'Streamline Gap')
+        SetText(hObject, eventdata, handles,'Starting Boundery','Streamline Gap','Start Point')
         updateEdit(hObject, eventdata, handles , char(val(str)));
         set(handles.text_Status,'String','Choose Parameters'); drawnow; 
     case 'VelocityProfile'
@@ -267,7 +282,7 @@ switch char(val(str))
         set(handles.text_Information,'String',doc.ColorMap);drawnow;
         if fieldCheck(hObject, eventdata, handles , 6)==1 return; end 
         handles.functionDir = val(str)
-        SetText(hObject, eventdata, handles,'Velocity Component','no scale vector','fps','Display')
+        SetText(hObject, eventdata, handles,'Velocity Component','Analysis','vector display','sizefactor','no scale vector','fps','Display','min scale [um/s^2]/[um/s]/[1/s]','max scale [um/s^2]/[um/s]/[1/s]','Scale Color','Video')
         updateEdit_Seq(hObject, eventdata, handles , 'ColorMap');
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 'VelocityProfile'
@@ -353,11 +368,13 @@ function PB_LoadPair_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 if isfield(handles,'FolderName')==0
     handles.FolderName = 'Temp'
+    handles.path_name = ''
 end
-
-[filename, pathname, filterindex] = uigetfile( ...
- {'*.jpg;*.bmp;*.tif;*.png','Use Shift key'} ,'Pick two images, use shift button','Pick pair of images', 'MultiSelect', 'on');
-%Tip imcontrast()
+[filename, pathname, filterindex] = uigetfile(fullfile(handles.path_name,'*.jpg;*.png;*.bmp;*.tif'),'Pick pair of images', 'MultiSelect', 'on')
+handles.path_name = pathname;
+% [filename, pathname, filterindex] = uigetfile(...
+% {'*.jpg;*.bmp;*.tif;*.png','Use Shift key'} ,'Pick two images, use shift button','Pick pair of images', 'MultiSelect', 'on');
+%Tip imcontrast()   'C:\Work\setpos1.png' 
 
 if size(filename,2)~=2
 uiwait(msgbox('Load pair of images first!'));
@@ -397,9 +414,10 @@ function PB_LoadSequence_Callback(hObject, eventdata, handles)
 if isfield(handles,'FolderName')==0
     handles.FolderName = 'Temp';
 end
+[filename, pathname, filterindex] = uigetfile(fullfile(handles.path_name,...
+ '*.jpg;*.png;*.bmp;*.tif') ,'Pick two images, use shift button', 'MultiSelect', 'on');
+handles.path_name = pathname;
 
-[filename, pathname, filterindex] = uigetfile( ...
- {'*.jpg;*.bmp;*.tif;*.png','Use Shift key'} ,'Pick two images, use shift button','Pick pair of images', 'MultiSelect', 'on');
 %Tip imcontrast()
 
 if isstr(filename)==1
@@ -420,10 +438,11 @@ images = cell(index,1);
    im = imread(imagefile);
    if ndims(im) == 3, im = rgb2gray(im); end
    images{k} = im;
-   imshow(im);
+%    imshow(im);  Temporaly!!
 %    set(handles.text_Status,'String',k); drawnow;     
-   set(handles.text_Status,'String',sprintf('Wait: Correlate %d / %d',k,NumberOfImages)); drawnow;
+   set(handles.text_Status,'String',sprintf('Wait:  %d / %d',k,NumberOfImages)); drawnow;
   end
+imshow(im);  
 handles.images = images;
 set(handles.radiobutton1,'Value',0);
 set(handles.radiobutton2,'Value',1);
@@ -740,8 +759,12 @@ function PB_SaveFolder_Callback(hObject, eventdata, handles)
 % hObject    handle to PB_SaveFolder (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-path_name = uigetdir;
-if path_name==0
+if isfield(handles,'path_name')    
+    handles.path_name = uigetdir(handles.path_name); 
+else
+    handles.path_name = uigetdir; 
+end
+if handles.path_name==0
    uiwait(msgbox('Choose Saving Location!'))
    return
 end
@@ -750,7 +773,7 @@ datetime=strrep(datetime,':','_'); %Replace colon with underscore
 datetime=strrep(datetime,'-','_');%Replace minus sign with underscore
 datetime=strrep(datetime,' ','_');%Replace space with underscore
 
-handles.FolderName = fullfile(path_name,datetime);
+handles.FolderName = fullfile(handles.path_name,datetime);
 if exist(handles.FolderName)==0 mkdir(handles.FolderName); end
 guidata(hObject, handles)
 set(handles.text_Status,'String','Load File'); drawnow;
@@ -810,6 +833,7 @@ function PB_Reset_Callback(hObject, eventdata, handles)
 clc;
 cla(handles.axes1,'reset');
 resetTemp = handles.reset;
+if isfield(handles,'path_name') resetTemp.path_name = handles.path_name; end
  handles = handles.reset;
 handles.reset = resetTemp;
 
@@ -1025,15 +1049,18 @@ end
       %save to image
    folder  = fullfile(folderf,'Plot');   
    if exist(folder)==0 mkdir(folder); end
-    datetimef = strcat(datetime,'_PrintScreen.png');
+    datetimef = strcat(datetime,'_PrintScreen'); %.png
     FileName = fullfile(folder,datetimef)
 % %     a = getframe(gca)
 % %     imwrite(a.cdata,FileName)
-    set(gcf, 'Color', 'w');
+%     set(gcf, 'Color', 'w');
 a = handles.axes1;
 b = a.Children;
-     export_fig(a,FileName,  '-png', '-q101');
-     set(gcf, 'Color', [0.94 0.94 0.94]);
+c = a.Parent;
+%      export_fig(a,FileName,  '-png', '-q101');
+     export_fig(a,FileName,  '-pdf', '-transparent');
+%         save2pdf(FileName,a,600)
+%      set(gcf, 'Color', [0.94 0.94 0.94]);
     
     
     %screen capture

@@ -26,9 +26,9 @@ switch caseIndex
         end
         case 'Pixel2Unit'
         if isfield(handles,'y_cal')~=1
-           SetEdit(hObject, eventdata, handles,600,1000,'','','Interpolate',handles.sizeFactor)
+           SetEdit(hObject, eventdata, handles,800,512,'','','Interpolate',handles.sizeFactor)
         else
-           SetEdit(hObject, eventdata, handles, handles.channelWitdh , handles.y_cal,handles.areaLength,handles.x_cal,handles.ChooseConvert,handles.sizeFactor)
+           SetEdit(hObject, eventdata, handles, handles.channelWitdh , handles.channelWitdh_p,handles.areaLength,handles.x_cal,handles.ChooseConvert,handles.sizeFactor)
         end
         case 'ColorMap'
             if isfield(handles,'magitudeComponent')~=1
@@ -52,9 +52,9 @@ switch caseIndex
             end
         case 'Streamline'
             if isfield(handles,'streamlineGap')~=1
-               SetEdit(hObject, eventdata, handles, 1)
+               SetEdit(hObject, eventdata, handles, 'left',1,'1')
             else
-               SetEdit(hObject, eventdata, handles, handles.streamlineGap)
+               SetEdit(hObject, eventdata, handles, handles.streamlineGap, handles.streamlineGap,handle.streamLevel)
             end
         case 'VelocityProfile'
             if isfield(handles,'vp')~=1
