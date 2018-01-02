@@ -85,24 +85,28 @@ v=vp/cal.y;
     handles.mphysical = m;
     handles.mp = m;
         cla(handles.axes1);
-        a = handles.axes1;
-        a.YDir = 'reverse';
-%        set(gca,'Ydir','reverse')
-       
+        a = handles.axes1;  
+
+%        set(handles.axes1,'Ydir','reverse'
+    
     handles.fig=quiver(m.x,m.y,m.u,m.v,handles.sizeFactor);
+%   a.CameraViewAngleMode = 'manual';
+    a.PlotBoxAspectRatioMode = 'manual';
+    a.DataAspectRatioMode = 'manual';
+    a.YDir = 'reverse';
     xlabel('$x$ ($\mu$m)'); ylabel('$y$ ($\mu$m)');
     title('Velocity field ($\mu$m/sec)');
     set(gca,'fontsize',15)
-    axis tight
-    axis on
-    zoom on
+%     axis tight
+%     axis on
+%     zoom on
     set(handles.text_Status,'String','Wait: Finished'); drawnow; 
     
     
     
     %save to image
     datetimef = strcat(datetime,'_pix2unit.png'); 
-    FileName = fullfile(folder,datetimef)
+    FileName = fullfile(folder,datetimef);
     
 %      set(gcf, 'Color', 'w');
      a = handles.axes1;
@@ -111,7 +115,7 @@ v=vp/cal.y;
      
          %screen capture
     datetimef = strcat(datetime,'_pix2unit_screen.png');
-    FileName = fullfile(folder,datetimef)
+    FileName = fullfile(folder,datetimef);
     export_fig(FileName,  '-png', '-q101');%
  %%%%%%%%%%%%%%%%%%%%%%%%%%
     

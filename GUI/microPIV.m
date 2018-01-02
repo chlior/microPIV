@@ -74,10 +74,11 @@ set(handles.ListboxPair,'Enable','off');
 set(handles.ListboxSequence,'Enable','off');
 set(handles.ListboxVideo,'Enable','off');
 
-username = 'micropivgui@gmail.com' % email set BEGIN
-password = '1234micropivgui1234'
-stmp_server = 'smtp.gmail.com'
-email = 'micropivgui@gmail.com'
+if system('ping -n 1 www.google.com')==0  % email set BEGIN
+username = 'micropivgui@gmail.com';
+password = '1234micropivgui1234';
+stmp_server = 'smtp.gmail.com';
+email = 'micropivgui@gmail.com';
 setpref('Internet','SMTP_Server',stmp_server);
 setpref('Internet','E_mail',email);
 props = java.lang.System.getProperties;
@@ -85,8 +86,9 @@ props.setProperty('mail.smtp.auth','true');
 props.setProperty('mail.smtp.socketFactory.class', 'javax.net.ssl.SSLSocketFactory');
 props.setProperty('mail.smtp.socketFactory.port','465');
 setpref('Internet', 'SMTP_Username', username);
-setpref('Internet', 'SMTP_Password', password); % email set END
-
+setpref('Internet', 'SMTP_Password', password);
+sendmail(email,'microPIV Used');
+end   % email set END
 % handlesReset = handles;
 handles.reset = handles;
 guidata(hObject, handles);
@@ -129,7 +131,7 @@ switch char(val(str))
     case 'Mask' 
         set(handles.text_Information,'String',doc.Mask);drawnow;
         if fieldCheck(hObject, eventdata, handles , char(val(str)))==1 return; end
-        set(handles.text_Status,'String','Wait: Create mask'); drawnow; 
+        set(handles.text_Status,'String','Create a mask press Run'); drawnow; 
     case 'Filtering'
         set(handles.text_Information,'String',doc.Filtering);drawnow;
         if fieldCheck(hObject, eventdata, handles , char(val(str)))==1 return; end
@@ -216,11 +218,11 @@ function PB_Run_Callback(hObject, eventdata, handles)
 if  isfield(handles,'islist')==0  uiwait(msgbox('Choos Function to Execute!')); return; end
 switch handles.islist
     case 1
-        hand = RunPair(hObject, eventdata, handles)
+        hand = RunPair(hObject, eventdata, handles);
         handles = hand;
         guidata(hObject, handles);
     case 2
-        hand = RunSequence(hObject, eventdata, handles)
+        hand = RunSequence(hObject, eventdata, handles);
         handles = hand;
         guidata(hObject, handles);
     case 3
@@ -238,7 +240,7 @@ function ListboxSequence_Callback(hObject, eventdata, handles)
 handles.islist = 2;
 resetEdit(hObject, eventdata, handles)
 resetText(hObject, eventdata, handles)
-doc = funDoc();
+doc = funDoc_Seq();
 val = get(handles.ListboxSequence, 'string'); % Determine the selected data set.
 str = get(handles.ListboxSequence, 'Value');
 handles.functionDir = char(val(str));
@@ -248,31 +250,31 @@ switch char(val(str))
         set(handles.text_Information,'String',doc.Correlation);drawnow;
 %         if fieldCheck(hObject, eventdata, handles, 1)==1 return; end
         handles.functionDir = val(str)
-        SetText(hObject, eventdata, handles,'Window Size','Time Gap','Overlap','Method','SizeFactor','fps','Display')
+        SetText(hObject, eventdata, handles,'Window Size','Time Gap','Overlap','Method','SizeFactor','fps','Display','Email')
         updateEdit_Seq(hObject, eventdata, handles , 'Correlation');
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 'Mask' 
         set(handles.text_Information,'String',doc.Mask);drawnow;
 %         if fieldCheck(hObject, eventdata, handles , 2)==1 return; end
-        handles.functionDir = val(str)
+        handles.functionDir = val(str);
     case 'Filtering'
         set(handles.text_Information,'String',doc.Filtering);drawnow;
         if fieldCheck(hObject, eventdata, handles , 3)==1 return; end
-        handles.functionDir = val(str)
+        handles.functionDir = val(str);
         SetText(hObject, eventdata, handles,'Choose Filter','Global Threshold(1)','Local Threshold(2)','Snr Threshold(3)','SizeFactor','fps','Display')
         updateEdit_Seq(hObject, eventdata, handles , 'Filtering');        
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 'Interpolate'
         set(handles.text_Information,'String',doc.Interpolate);drawnow;
         if fieldCheck(hObject, eventdata, handles , 4)==1 return; end        
-        handles.functionDir = val(str)
+        handles.functionDir = val(str);
         SetText(hObject, eventdata, handles,'SizeFactor','fps','Display')
         updateEdit_Seq(hObject, eventdata, handles , 'Interpolate');
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 'Pixel2Unit'
         set(handles.text_Information,'String',doc.Pixel2Unit);drawnow;
         if fieldCheck(hObject, eventdata, handles , 5)==1 return; end 
-        handles.functionDir = val(str)
+        handles.functionDir = val(str);
         SetText(hObject, eventdata, handles,'Channel width [um]','Channel width [pixel]',...
             'Y Calibration distance [um]','Y Calibration distance',...
             'Choose Convert Data','sizeFactor','fps','Display')
@@ -281,42 +283,42 @@ switch char(val(str))
     case 'ColorMap'
         set(handles.text_Information,'String',doc.ColorMap);drawnow;
         if fieldCheck(hObject, eventdata, handles , 6)==1 return; end 
-        handles.functionDir = val(str)
+        handles.functionDir = val(str);
         SetText(hObject, eventdata, handles,'Velocity Component','Analysis','vector display','sizefactor','no scale vector','fps','Display','min scale [um/s^2]/[um/s]/[1/s]','max scale [um/s^2]/[um/s]/[1/s]','Scale Color','Video')
         updateEdit_Seq(hObject, eventdata, handles , 'ColorMap');
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 'VelocityProfile'
         set(handles.text_Information,'String',doc.VelocityProfile);drawnow;
         if fieldCheck(hObject, eventdata, handles , 7)==1 return; end 
-        handles.functionDir = val(str)
+        handles.functionDir = val(str);
         SetText(hObject, eventdata, handles,'Velocity Component','Average Direction' , 'Channel Width' , 'Channel Length','fps','Display')
         updateEdit_Seq(hObject, eventdata, handles , 'VelocityProfile');
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 'FlowRate'
         set(handles.text_Information,'String',doc.FlowRate);drawnow;
         if fieldCheck(hObject, eventdata, handles , 8)==1 return; end 
-        handles.functionDir = val(str)
+        handles.functionDir = val(str);
         SetText(hObject, eventdata, handles,'Channel Width','Channel Height','fps','Display')
         updateEdit_Seq(hObject, eventdata, handles , 'FlowRate');
         set(handles.text_Status,'String','Choose Parameters'); drawnow;
     case 'Density'
         set(handles.text_Information,'String',doc.Density);drawnow;
         if fieldCheck(hObject, eventdata, handles , 9)==1 return; end 
-        handles.functionDir = val(str)
+        handles.functionDir = val(str);
         SetText(hObject, eventdata, handles,'Window Width','Window Height','fps','Display')
         updateEdit_Seq(hObject, eventdata, handles , 'Density');
         set(handles.text_Status,'String','Choose Parameters'); drawnow;        
     case 'Streamline'
         set(handles.text_Information,'String',doc.Streamline);drawnow;
         if fieldCheck(hObject, eventdata, handles , 10)==1 return; end         
-        handles.functionDir = val(str)
+        handles.functionDir = val(str);
         SetText(hObject, eventdata, handles,'Streamline Gap','fps','Display')
         updateEdit_Seq(hObject, eventdata, handles , 'Streamline');
         set(handles.text_Status,'String','Choose Parameters'); drawnow; 
     case 'TimeFunction'
 %         set(handles.text_Information,'String',doc.TimeFunction);drawnow;
         if fieldCheck(hObject, eventdata, handles , 10)==1 return; end         
-        handles.functionDir = val(str)
+        handles.functionDir = val(str);
         SetText(hObject, eventdata, handles,'Velocity Component','Average Direction' , 'Channel Width' , 'Channel Length', 'nan', 'section','analysis','span','height','fps','Display')
         updateEdit_Seq(hObject, eventdata, handles , 'Streamline');
         set(handles.text_Status,'String','Choose Parameters'); drawnow;       
@@ -367,11 +369,16 @@ function PB_LoadPair_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if isfield(handles,'FolderName')==0
-    handles.FolderName = 'Temp'
-    handles.path_name = ''
+    handles.FolderName = 'Temp';
+    handles.path_name = '';
 end
-[filename, pathname, filterindex] = uigetfile(fullfile(handles.path_name,'*.jpg;*.png;*.bmp;*.tif'),'Pick pair of images', 'MultiSelect', 'on')
+[filename, pathname, filterindex] = uigetfile(fullfile(handles.path_name,'*.jpg;*.png;*.bmp;*.tif'),'Pick pair of images', 'MultiSelect', 'on');
 handles.path_name = pathname;
+
+textpath = fullfile(handles.FolderName,'info.txt');
+fid=fopen(textpath,'w');
+fprintf(fid,'Image 1: %s \r\nImage2: %s \r\nFile Location:%s',filename{1},filename{2},pathname);
+fclose(fid);
 % [filename, pathname, filterindex] = uigetfile(...
 % {'*.jpg;*.bmp;*.tif;*.png','Use Shift key'} ,'Pick two images, use shift button','Pick pair of images', 'MultiSelect', 'on');
 %Tip imcontrast()   'C:\Work\setpos1.png' 
@@ -380,11 +387,12 @@ if size(filename,2)~=2
 uiwait(msgbox('Load pair of images first!'));
 return
 end
-imagefile = fullfile(char(pathname), char(filename(1)))
+imagefile = fullfile(char(pathname), char(filename(1)));
 
 im1=imread(imagefile);
 if ndims(im1) == 3, im1 = rgb2gray(im1); end
 handles.image{1} = im1;
+hold off
 imshow(im1);
 
 imagefile = fullfile(char(pathname), char(filename(2)));
@@ -413,6 +421,7 @@ function PB_LoadSequence_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 if isfield(handles,'FolderName')==0
     handles.FolderName = 'Temp';
+    handles.path_name = '';
 end
 [filename, pathname, filterindex] = uigetfile(fullfile(handles.path_name,...
  '*.jpg;*.png;*.bmp;*.tif') ,'Pick two images, use shift button', 'MultiSelect', 'on');
@@ -425,12 +434,16 @@ uiwait(msgbox('Sequence Is More Then One Images!'));
 return
 end
 
+textpath = fullfile(handles.FolderName,'info.txt');
+fid=fopen(textpath,'w');
+fprintf(fid,'Image 1: %s \r\nImage2: %s \r\nFile Location:%s',filename{1},filename{2},pathname);
+fclose(fid);
 
 NumberOfImages = size(filename,2);
 index = NumberOfImages-1;
 handles.seq = index;
 images = cell(index,1);
-
+hold off
 
   % load the images
   for k = 1 : NumberOfImages  
@@ -775,9 +788,8 @@ datetime=strrep(datetime,' ','_');%Replace space with underscore
 
 handles.FolderName = fullfile(handles.path_name,datetime);
 if exist(handles.FolderName)==0 mkdir(handles.FolderName); end
-guidata(hObject, handles)
 set(handles.text_Status,'String','Load File'); drawnow;
-
+guidata(hObject, handles)
 
 
 function edit13_Callback(hObject, eventdata, handles)
@@ -871,7 +883,8 @@ set(handles.text_Status,'String','Choose Saving Path First');drawnow;
 set(handles.text_Information,'String','');drawnow;
 set(handles.text_Data,'String','');drawnow;
 set(handles.text_Results,'String','');drawnow;
-
+doc = funDoc();
+set(handles.text_Information,'String',doc.Open);drawnow;
 guidata(hObject, handles)
 handles
 % clear all;
@@ -1050,7 +1063,7 @@ end
    folder  = fullfile(folderf,'Plot');   
    if exist(folder)==0 mkdir(folder); end
     datetimef = strcat(datetime,'_PrintScreen'); %.png
-    FileName = fullfile(folder,datetimef)
+    FileName = fullfile(folder,datetimef);
 % %     a = getframe(gca)
 % %     imwrite(a.cdata,FileName)
 %     set(gcf, 'Color', 'w');
@@ -1061,13 +1074,14 @@ c = a.Parent;
      export_fig(a,FileName,  '-pdf', '-transparent');
 %         save2pdf(FileName,a,600)
 %      set(gcf, 'Color', [0.94 0.94 0.94]);
-    
-    
+
     %screen capture
       folder  = fullfile(folderf,'Screen');   
    if exist(folder)==0 mkdir(folder); end
    
     datetimef = strcat(datetime,'_Plot.png');
-    FileName = fullfile(folder,datetimef)
+    FileName = fullfile(folder,datetimef);
     export_fig(FileName,  '-png', '-q101');
  %%%%%%%%%%%%%%%%%%%%%%%%%%
+ load gong.mat;
+sound(y, 20*Fs);  

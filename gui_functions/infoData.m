@@ -44,7 +44,7 @@ end
 if isfield(handles,'fr')
     strFlowrate = sprintf('\n>>Flowrate = Yes');
 end
-str = strcat(strCorrelation,strMask,strFiltering,strInterpolate,strPixel2Unit,strFlowrate)
+str = strcat(strCorrelation,strMask,strFiltering,strInterpolate,strPixel2Unit,strFlowrate);
 set(handles.text_Data,'String',str);drawnow;   
 end
 

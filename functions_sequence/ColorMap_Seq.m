@@ -1,10 +1,10 @@
 function [handles] = ColorMap(hObject, eventdata,handles)
     set(handles.text_Status,'String','Wait: Calculating...'); drawnow;
    hold off    
-    handles.magitudeComponent = get(handles.edit1,'string')
-    handles.analysisDisplay = get(handles.edit2,'string')
-    handles.displayVector = get(handles.edit3,'string')    
-    handles.sizeFactor = str2double(get(handles.edit4,'String')) 
+    handles.magitudeComponent = get(handles.edit1,'string');
+    handles.analysisDisplay = get(handles.edit2,'string');
+    handles.displayVector = get(handles.edit3,'string');    
+    handles.sizeFactor = str2double(get(handles.edit4,'String'));
     handles.noScale =(get(handles.edit5,'string'));
     handles.fps = str2num(get(handles.edit6,'string'));
     handles.display = (get(handles.edit7,'string'));
@@ -31,7 +31,7 @@ hold off
    datetimef = strcat(datetime,'_colormap.mat');
    folder_mat  = fullfile(folder,'m-file');   
    if exist(folder_mat)==0 mkdir(folder_mat); end
-   FileName = fullfile(folder_mat,datetimef)
+   FileName = fullfile(folder_mat,datetimef);
    mag = matfile(FileName, 'Writable', true);
 %    mag = matfile('testm', 'Writable', true);
 
@@ -41,15 +41,14 @@ hold off
    datetimef = strcat('video_',datetime,'.avi');
    folder_vid = fullfile(folder,'video');   
    if exist(folder_vid)==0 mkdir(folder_vid); end
-   FileName_vid = fullfile(folder_vid,datetimef)
+   FileName_vid = fullfile(folder_vid,datetimef);
    
    outputVideo = VideoWriter(FileName_vid);
-   handles.fps
-   outputVideo.FrameRate = 0.5;%handles.fps;
+   outputVideo.FrameRate = handles.fps;
    outputVideo.Quality=100;
-   open(outputVideo)
+   open(outputVideo);
  end
-    timerVal = tic 
+    timerVal = tic ;
     colormap(jet);
     for i=1:handles.seq
 %%%%%%%%function%%%%%%
@@ -161,7 +160,7 @@ a = handles.axes1;
          end
       case 'no'
   end
-     axis(lim) 
+     axis(lim);
 %%%%%%%%After save%%%%
         %save to image   
    folder_seq = fullfile(folder,'seq');  
@@ -170,7 +169,9 @@ a = handles.axes1;
     FileNameSeqIm = strcat(fullfile(folder_seq,datetime),s);
    
 %     a = handles.axes1;
-    
+        a.PlotBoxAspectRatioMode = 'manual';
+    a.DataAspectRatioMode = 'manual';
+    a.YDir = 'reverse';
      a.CLim = clim;
 %     a.XLim = lim(1,1:2)
 %     a.YLim = lim(1,3:4)
@@ -183,7 +184,7 @@ end
     
  if  strcmp(handles.display,'yes') && strcmp(handles.saveVideo,'yes')
     close(outputVideo);   end
-    elapsedTime = toc(timerVal)
+    elapsedTime = toc(timerVal);
   
     if exist('magnitude_m','var') mag.magnitude_m = magnitude_m; end
     if exist('magnitude_u','var') mag.magnitude_u = magnitude_u; end
@@ -195,8 +196,8 @@ end
     
 load gong.mat;
 sound(y, 5*Fs);  
-recipient = get(handles.edit_email,'String')
-sendmail('liorch@mail.tau.ac.il','Correlation complete.')
+% recipient = get(handles.edit_email,'String');
+% sendmail('liorch@mail.tau.ac.il','Correlation complete.');
 set(handles.text_Status,'String','ColorMap: Finish'); drawnow;
 
  end

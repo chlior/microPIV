@@ -9,7 +9,7 @@ function [handles] = Correlation_Seq(hObject, eventdata,handles)
     handles.sizeFactor = str2double(get(handles.edit5,'String'))
     handles.fps = str2double(get(handles.edit6,'String')) 
     handles.display = get(handles.edit7,'String')
-    
+    handles.recipient = get(handles.edit8,'String')
        %Save
    folder  = fullfile(handles.FolderName,'Correlation_Seq','Correlation');  
       if exist(folder)==0 mkdir(folder); end
@@ -32,6 +32,12 @@ function [handles] = Correlation_Seq(hObject, eventdata,handles)
    open(outputVideo)
    end   
    
+   %image
+   folder_seq = fullfile(folder,'seq');  
+   if exist(folder_seq)==0 mkdir(folder_seq); end    
+   FileNameSeqIm = strcat(fullfile(folder_seq,datetime));
+   export_fig(FileNameSeqIm,  '-png', '-q101');
+    
    %.mat  
    datetimef = strcat(datetime,sprintf('_%d.mat',handles.seq));
    folder_mat  = fullfile(folder,'m-file');   
@@ -68,11 +74,8 @@ function [handles] = Correlation_Seq(hObject, eventdata,handles)
     if i==1 axis tight; lim = axis ; end
     axis on
     axis(lim)
-        %save to image   
-   folder_seq = fullfile(folder,'seq');  
-      if exist(folder_seq)==0 mkdir(folder_seq); end    
-    s = sprintf('___%d-%d',i,i+1);
-    FileNameSeqIm = strcat(fullfile(folder_seq,datetime),s);
+    
+    %save to image   
 %     imwrite(a.cdata,FileNameSeqIm)
     a = handles.axes1;
 %      a = getframe(gca)
@@ -98,8 +101,10 @@ function [handles] = Correlation_Seq(hObject, eventdata,handles)
  %%%%%%%%%%%%%%%%%%%%%%%%%%
 load gong.mat;
 sound(y, 5*Fs);   
-recipient = get(handles.edit_email,'String')
-sendmail('liorch@mail.tau.ac.il','Correlation complete.')
+if strcmp(handles.recipient,'')~=1
+sendmail(handles.recipient,'Correlation complete.')
+
+end
 str = sprintf('Finished Correlation , %.2fsec',elapsedTime)
 set(handles.text_Status,'String',str); drawnow;
 

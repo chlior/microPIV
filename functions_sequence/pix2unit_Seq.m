@@ -12,7 +12,7 @@ x_cal = str2double(get(handles.edit1,'String'));
 xp_cal = str2double(get(handles.edit2,'String'));
 y_cal = str2double(get(handles.edit3,'String'));
 yp_cal = str2double(get(handles.edit4,'String'));
-ChooseConvert =  get(handles.edit5,'String');
+handles.ChooseConvert =  get(handles.edit5,'String');
 handles.sizeFactor = str2double(get(handles.edit6,'String'));
 handles.fps = str2double(get(handles.edit7,'String'))
 handles.display = get(handles.edit8,'String')
@@ -21,7 +21,7 @@ handles.saveVideo = get(handles.edit9,'String')
 handles.channelWitdh = y_cal; %for calculations
 handles.areaLength = x_cal; % for setEdit
 
-switch ChooseConvert
+switch handles.ChooseConvert
     case 'Correlation'
         mpix = handles.mSeqCorrelation;
         1
@@ -126,6 +126,9 @@ v{i}=mpix{1,i}.v/cal.y;
     FileNameSeqIm = strcat(fullfile(folder_seq,datetime),s);
    
     a = handles.axes1;
+    a.PlotBoxAspectRatioMode = 'manual';
+    a.DataAspectRatioMode = 'manual';
+    a.YDir = 'reverse';
     d = export_fig(a,FileNameSeqIm,  '-png', '-q101');    
     writeVideo(outputVideo,d); %a.cdata) 
    
@@ -133,6 +136,7 @@ v{i}=mpix{1,i}.v/cal.y;
     d = export_fig(a,FileNameSeqIm,  '-png', '-q101');    
     writeVideo(outputVideo,d); %a.cdata)
     end
+
     end
      if strcmp(handles.display,'yes')  
     close(outputVideo);
@@ -147,7 +151,7 @@ v{i}=mpix{1,i}.v/cal.y;
     handles.mSeqPix2unit = mSeqPix2unit;
     handles.mpSeq = mSeqPix2unit; %Global use;
 
-
+    export_fig(FileName,  '-png', '-q101');
     mc = matfile(FileName, 'Writable', true);
     mc.cell = mSeqPix2unit;
  %%%%%%%%%%%%%%%%%%%%%%%%%%

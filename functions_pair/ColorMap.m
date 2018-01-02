@@ -59,12 +59,17 @@ hold off
      end
 
 
-
+%  cla(handles.axes1);
+    a = handles.axes1;  
+    a.PlotBoxAspectRatioMode = 'manual';
+    a.DataAspectRatioMode = 'manual';
+    a.YDir = 'reverse';
   shading interp %shading interp/flat/faceted 
   %// get axes handle
   ax = gca;
   %// set labels
-  set(gca,'Ydir','reverse')
+  
+%   set(gca,'Ydir','reverse')
    set(ax,'XTickLabel');
    set(ax,'YTickLabel');
    xlabel('$x$ ($\mu$m)'); ylabel('$y$ ($\mu$m)');

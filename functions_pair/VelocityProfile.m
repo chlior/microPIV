@@ -236,7 +236,8 @@ handles.vp = vp;
     elapsedTime = toc(timerVal)
 title(sprintf('Analysis: %s. Direction: %s. Component: %s.', handles.analysis, handles.Direction, handles.Component))
 grid on
-
+    a.PlotBoxAspectRatioMode = 'manual';
+    a.DataAspectRatioMode = 'manual';
 
     m.x = x;
     m.y = y;

@@ -3,9 +3,9 @@ function updateEdit_Seq(hObject, eventdata, handles , caseIndex)
 switch caseIndex
         case 'Correlation'
           if isfield(handles,'wins')~=1
-              SetEdit(hObject, eventdata, handles,64,1,0.5,'single',1,0.5,'yes')        
+              SetEdit(hObject, eventdata, handles,64,1,0.5,'single',1,0.5,'yes','')        
           else
-              SetEdit(hObject, eventdata, handles,handles.wins,handles.deltaT,handles.overlap,handles.method,handles.sizeFactor,handles.fps,handles.display)
+              SetEdit(hObject, eventdata, handles,handles.wins,handles.deltaT,handles.overlap,handles.method,handles.sizeFactor,handles.fps,handles.display,handles.recipient);
           end
         case 'Pixel2Unit'
           if isfield(handles,'mpSeq')~=1

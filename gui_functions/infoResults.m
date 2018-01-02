@@ -83,7 +83,7 @@ strMinVelocity = sprintf('Umin = %.0f  Vmin = %.0f',umin , vmin);
 stMaxMinVelocity = [strMaxVelocity,strMinVelocity];
 end
 
-str = strcat(stMaxMinVelocity,strVelocityProfile,strFlowrate)
+str = strcat(stMaxMinVelocity,strVelocityProfile,strFlowrate);
 set(handles.text_Results,'String',str);drawnow;   
 end
 

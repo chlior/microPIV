@@ -45,6 +45,6 @@ elseif strcmp(handles.functionDir,'VelocityProfile')
     handles = hand;
     guidata(hObject , handles) 
 end
-infoData(hObject, eventdata, handles)
-infoResults(hObject, eventdata, handles)
+infoData(hObject, eventdata, handles);
+infoResults(hObject, eventdata, handles);
 guidata(hObject, handles)
